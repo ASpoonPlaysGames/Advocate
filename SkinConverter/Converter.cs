@@ -14,7 +14,7 @@ using Pfim;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 
-namespace SkinConverter
+namespace Advocate
 {
     internal class Converter : INotifyPropertyChanged 
     {

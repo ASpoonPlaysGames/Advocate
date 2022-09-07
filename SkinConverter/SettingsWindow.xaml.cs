@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using HandyControl.Themes;
 using Microsoft.Win32;
 
-namespace SkinConverter
+namespace Advocate
 {
     /// <summary>
     /// Interaction logic for SettingsWindow.xaml
