@@ -1,0 +1,54 @@
+﻿<Window x:Class="SkinConverter.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SkinConverter"
+        xmlns:hc="https://handyorg.github.io/handycontrol" x:Name="window"
+        mc:Ignorable="d"
+        Title="Settings" Height="450" Width="800"
+        Background="{DynamicResource MainContentForegroundBrush}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid Margin="10,10,10,40">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Content="RePak Path:" Margin="5,5,5,45" Height="40" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                        Grid.Column="0"
+                        Grid.Row="0" 
+                   Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
+            <hc:TextBox x:Name="RePakPath_TextBox" AcceptsReturn="True" AcceptsTab="True" TextChanged="RePakPath_TextBox_TextChanged" TextWrapping="Wrap" Margin="5,5,5,5" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Height="40" />
+
+            <Button x:Name="SelectRePakPathButton" Content="Browse" HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Bottom" 
+                    Grid.Column="1" 
+                    Grid.Row="0"
+                    Height="40" Click="SelectRePakPathButton_Click"/>
+            <Label Content="Output Path:" Margin="5,5,5,45" Height="40" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                        Grid.Column="0"
+                        Grid.Row="1" 
+                   Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
+            <hc:TextBox x:Name="OutputPath_TextBox" TextWrapping="Wrap" TextChanged="OutputPath_TextBox_TextChanged" Margin="5,5,5,5" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Height="40"/>
+
+            <Button x:Name="SelectOutputPathButton" Content="Browse" HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Bottom" 
+                    Grid.Column="1" 
+                    Grid.Row="1"
+                    Height="40" Click="SelectOutputPathButton_Click"/>
+        </Grid>
+    </Grid>
+</Window>
