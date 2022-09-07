@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Advocate"
         xmlns:hc="https://handyorg.github.io/handycontrol" x:Name="window" x:Class="Advocate.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="Advocate Skin Converter" Height="450" Width="800"
         Background="{DynamicResource MainContentForegroundBrush}">
     <Grid Visibility="Visible" Margin="5,5,5,5">
         <StackPanel Height="30" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="0,0,0,0">
