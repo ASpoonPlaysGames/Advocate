@@ -7,6 +7,7 @@
         xmlns:hc="https://handyorg.github.io/handycontrol" x:Name="window"
         mc:Ignorable="d"
         Title="Advocate | Settings" Height="450" Width="800"
+        
         Background="{DynamicResource MainContentForegroundBrush}">
     <Grid>
         <Grid.ColumnDefinitions>
