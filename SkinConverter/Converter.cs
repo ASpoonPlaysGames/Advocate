@@ -10,7 +10,6 @@ using System.Windows;
 using System.IO.Compression;
 using System.Drawing;
 using System.Drawing.Imaging;
-using Pfim;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 
@@ -220,7 +219,7 @@ namespace Advocate
             button.SetResourceReference(styleProperty, style);
         }
 
-        public async void Convert(HandyControl.Controls.ProgressButton button, System.Windows.DependencyProperty styleProperty)
+        public void Convert(HandyControl.Controls.ProgressButton button, System.Windows.DependencyProperty styleProperty)
         {
             if (!CheckConvertStatus())
             {
@@ -399,6 +398,7 @@ namespace Advocate
                         {
                             foreach (string texture in Directory.GetFiles(resolution))
                             {
+                                DdsHandler thing = new DdsHandler(texture);
                                 // move texture to temp folder for packing
                                 // convert from skin tool syntax to actual texture path, gotta be hardcoded because pain
                                 string texturePath = TextureNameToPath(Path.GetFileNameWithoutExtension(texture));
@@ -413,13 +413,17 @@ namespace Advocate
                                 {
                                     if (!isFirst)
                                         map += ",\n";
-                                    map += "{\n\"$type\":\"txtr\",\n\"path\":\"" + texturePath + "\",\n\"disableStreaming\":true\n}";
-                                    textures.Append(texturePath);
+                                    map += "{\n\"$type\":\"txtr\",\n\"path\":\"" + texturePath + "\",\n\"disableStreaming\":true,\n\"saveDebugName\":true\n}";
+                                    textures.Add(texturePath);
                                 }
                                 isFirst = false;
                                 // copy file
                                 Directory.CreateDirectory(Directory.GetParent(repakTempFolderPath + "\\assets\\" + texturePath + ".dds").FullName);
-                                File.Copy(texture, repakTempFolderPath + "\\assets\\" + texturePath + ".dds", true);
+                                //File.Copy(texture, repakTempFolderPath + "\\assets\\" + texturePath + ".dds", true);
+                                
+                                DdsHandler handler = new(texture);
+                                handler.Convert();
+                                handler.Save(repakTempFolderPath + "\\assets\\" + texturePath + ".dds");
                             }
                         }
                     }
@@ -429,6 +433,7 @@ namespace Advocate
                 map += "\n]\n}";
                 File.WriteAllText(repakTempFolderPath + "\\map.json", map);
 
+                
 
                 //////////////////////////
                 // pack using RePak.exe //
@@ -473,7 +478,7 @@ namespace Advocate
                 // move result out of temp folder //
                 ////////////////////////////////////
 
-                File.Move(tempFolderPath + "\\" + AuthorName + "." + ModName + ".zip", Properties.Settings.Default.OutputPath + "\\" + AuthorName + "." + ModName + ".zip");
+                File.Move(tempFolderPath + "\\" + AuthorName + "." + ModName + ".zip", Properties.Settings.Default.OutputPath + "\\" + AuthorName + "." + ModName + ".zip", true);
             }
             catch (Exception ex)
             {
@@ -502,7 +507,7 @@ namespace Advocate
         private bool DdsToPng(string imagePath, string outputPath)
         {
             // yoinked from pfim usage example
-            using (var image = Pfimage.FromFile(imagePath))
+            /*using (var image = Pfimage.FromFile(imagePath))
             {
                 PixelFormat format;
 
@@ -533,7 +538,7 @@ namespace Advocate
                 {
                     handle.Free();
                 }
-            }
+            }*/
             return true;
         }
 
