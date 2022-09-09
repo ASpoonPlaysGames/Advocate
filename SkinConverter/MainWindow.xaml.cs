@@ -42,8 +42,8 @@ namespace Advocate
         // BUTTON PRESSES AND OTHER UI STUFF //
         ///////////////////////////////////////
         private void ConvertButton_Click(object sender, RoutedEventArgs e)
-        {            
-            conv.Convert(ConvertButton, StyleProperty);
+        {
+            Task.Run(() => { conv.Convert(ConvertButton, StyleProperty); });
         }
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {

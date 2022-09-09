@@ -109,8 +109,10 @@ namespace Advocate
             OnPropertyChanged(nameof(ConvertProgress));
             Status = "Complete!";
             Message = "Converted Successfully!";
-
-            button.SetResourceReference(styleProperty, "ProgressButtonSuccess");
+            button.Dispatcher.Invoke(() =>
+            {
+                button.SetResourceReference(styleProperty, "ProgressButtonSuccess");
+            });
             await ChangeStyle_Delayed(button, styleProperty, 3000, "ProgressButtonPrimary");
             Status = "Convert Skin(s)";
             CheckConvertStatus();
@@ -122,14 +124,25 @@ namespace Advocate
             OnPropertyChanged(nameof(ConvertProgress));
             Status = "Failed!";
             Message = reason;
-
-            button.SetResourceReference(styleProperty, "ProgressButtonDanger");
+            button.Dispatcher.Invoke(() =>
+            {
+                button.SetResourceReference(styleProperty, "ProgressButtonDanger");
+            });
             await ChangeStyle_Delayed(button, styleProperty, 3000, "ProgressButtonPrimary");
             Status = "Convert Skin(s)";
             if (reset)
             {
                 CheckConvertStatus();
             }
+        }
+
+        public async Task ChangeStyle_Delayed(HandyControl.Controls.ProgressButton button, System.Windows.DependencyProperty styleProperty, int time, string style)
+        {
+            await Task.Delay(time);
+            button.Dispatcher.Invoke( () =>
+            {
+               button.SetResourceReference(styleProperty, style);
+            });
         }
 
         /// <summary>
@@ -211,12 +224,6 @@ namespace Advocate
             // everything looks good
             Message = "Ready!";
             return true;
-        }
-
-        public async Task ChangeStyle_Delayed(HandyControl.Controls.ProgressButton button, System.Windows.DependencyProperty styleProperty, int time, string style)
-        {
-            await Task.Delay(time);
-            button.SetResourceReference(styleProperty, style);
         }
 
         public void Convert(HandyControl.Controls.ProgressButton button, System.Windows.DependencyProperty styleProperty)
