@@ -7,6 +7,9 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resource\advocate.ico</ApplicationIcon>
     <DebugType>embedded</DebugType>
+    <RepositoryUrl>https://github.com/ASpoonPlaysGames/Advocate</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+	<PublishSingleFile>true</PublishSingleFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,10 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Costura.Fody" Version="5.7.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="HandyControls" Version="3.4.2" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
