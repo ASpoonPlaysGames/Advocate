@@ -77,7 +77,7 @@ namespace Advocate
 
         // conversion progress tracking variables
         private int currentConvertStep = 0;
-        private int numConvertSteps = 5;
+        private int numConvertSteps = 13;
         // checking
         // clearing old file structure if exists
         // unzipping zip to new folder
@@ -440,7 +440,7 @@ namespace Advocate
                 map += "\n]\n}";
                 File.WriteAllText(repakTempFolderPath + "\\map.json", map);
 
-                
+                ConvertTaskComplete();
 
                 //////////////////////////
                 // pack using RePak.exe //
@@ -467,6 +467,8 @@ namespace Advocate
                     return;
                 }
 
+                ConvertTaskComplete();
+
                 //////////////////////
                 // create rpak.json //
                 //////////////////////
@@ -475,17 +477,23 @@ namespace Advocate
 
                 File.WriteAllText(modTempFolderPath + "\\mods\\" + AuthorName + "." + ModName + "\\paks\\rpak.json", rpakjson);
 
+                ConvertTaskComplete();
+
                 ///////////////////
                 // zip up result //
                 ///////////////////
 
                 ZipFile.CreateFromDirectory(modTempFolderPath, tempFolderPath + "\\" + AuthorName + "." + ModName + ".zip");
 
+                ConvertTaskComplete();
+
                 ////////////////////////////////////
                 // move result out of temp folder //
                 ////////////////////////////////////
 
                 File.Move(tempFolderPath + "\\" + AuthorName + "." + ModName + ".zip", Properties.Settings.Default.OutputPath + "\\" + AuthorName + "." + ModName + ".zip", true);
+
+                ConvertTaskComplete();
             }
             catch (Exception ex)
             {
