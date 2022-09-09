@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using Pfim;
 
 namespace Advocate
 {
@@ -522,7 +523,7 @@ namespace Advocate
         private bool DdsToPng(string imagePath, string outputPath)
         {
             // yoinked from pfim usage example
-            /*using (var image = Pfimage.FromFile(imagePath))
+            using (var image = Pfimage.FromFile(imagePath))
             {
                 PixelFormat format;
 
@@ -553,7 +554,7 @@ namespace Advocate
                 {
                     handle.Free();
                 }
-            }*/
+            }
             return true;
         }
 
