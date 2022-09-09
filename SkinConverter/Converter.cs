@@ -406,7 +406,6 @@ namespace Advocate
                         {
                             foreach (string texture in Directory.GetFiles(resolution))
                             {
-                                DdsHandler thing = new DdsHandler(texture);
                                 // move texture to temp folder for packing
                                 // convert from skin tool syntax to actual texture path, gotta be hardcoded because pain
                                 string texturePath = TextureNameToPath(Path.GetFileNameWithoutExtension(texture));
