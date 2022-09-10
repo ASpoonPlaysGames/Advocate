@@ -395,7 +395,7 @@ namespace Advocate
                 //////////////////////////////////////////////////////////////////
 
                 string map = string.Format("{{\n\"name\":\"{0}\",\n\"assetsDir\":\"{1}\",\n\"outputDir\":\"{2}\",\n\"version\": 7,\n\"files\":[\n", ModName, (repakTempFolderPath + "\\assets").Replace('\\', '/'), (modTempFolderPath + "\\mods\\" + AuthorName + "." + ModName + "\\paks").Replace('\\', '/'));
-                // add texture entries
+                // this tracks the textures that we have already added to the json, so we can avoid duplicates in there
                 List<string> textures = new();
                 bool isFirst = true;
                 foreach(string skinPath in Directory.GetDirectories(skinTempFolderPath))
@@ -418,19 +418,21 @@ namespace Advocate
                                 // avoid duplicate textures in the json
                                 if (!textures.Contains(texturePath))
                                 {
+                                    // dont add a comma on the first one
                                     if (!isFirst)
                                         map += ",\n";
-                                    map += "{\n\"$type\":\"txtr\",\n\"path\":\"" + texturePath + "\",\n\"disableStreaming\":true,\n\"saveDebugName\":true\n}";
+                                    map += $"{{\n\"$type\":\"txtr\",\n\"path\":\"{texturePath}\",\n\"disableStreaming\":true,\n\"saveDebugName\":true\n}}";
+                                    // add texture to tracked textures
                                     textures.Add(texturePath);
                                 }
                                 isFirst = false;
                                 // copy file
-                                Directory.CreateDirectory(Directory.GetParent(repakTempFolderPath + "\\assets\\" + texturePath + ".dds").FullName);
+                                Directory.CreateDirectory(Directory.GetParent($"{repakTempFolderPath}\\assets\\{texturePath}.dds").FullName);
                                 //File.Copy(texture, repakTempFolderPath + "\\assets\\" + texturePath + ".dds", true);
                                 
                                 DdsHandler handler = new(texture);
                                 handler.Convert();
-                                handler.Save(repakTempFolderPath + "\\assets\\" + texturePath + ".dds");
+                                handler.Save($"{repakTempFolderPath}\\assets\\{texturePath}.dds");
                             }
                         }
                     }
@@ -447,7 +449,7 @@ namespace Advocate
                 //////////////////////////
                 //var sb = new StringBuilder();
 
-                Process P = new Process();
+                Process P = new();
 
                 //P.StartInfo.RedirectStandardOutput = true;
                 //P.StartInfo.RedirectStandardError = true;

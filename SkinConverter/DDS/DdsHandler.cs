@@ -49,7 +49,7 @@ namespace Advocate
         
         public DdsHandler(string path)
         {
-            BinaryReader reader = new BinaryReader(new FileStream(path, FileMode.Open));
+            BinaryReader reader = new(new FileStream(path, FileMode.Open));
             try
             {
                 // read magic
@@ -100,7 +100,7 @@ namespace Advocate
         }
         public void Convert()
         {
-            string str_fourCC = new string(pixel_FourCC);
+            string str_fourCC = new(pixel_FourCC);
             switch (str_fourCC)
             {
                 case "DXT1":
@@ -144,7 +144,8 @@ namespace Advocate
 
         public void Save(string path)
         {
-            BinaryWriter writer = new BinaryWriter(new FileStream(path, FileMode.Create));
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            BinaryWriter writer = new(new FileStream(path, FileMode.Create));
             try
             {
                 // write magic
