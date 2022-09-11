@@ -376,7 +376,7 @@ namespace Advocate
                 //////////////////////////
                 // create manifest.json //
                 //////////////////////////
-                string manifest = string.Format("{{\n\"name\":\"{0}\",\n\"version_number\":\"{1}\",\n\"website_url\":\"\",\n\"dependencies\":[],\n\"description\":\"{2}\"\n}}", ModName, Version, string.Format("Skin made by {0}", AuthorName));
+                string manifest = string.Format("{{\n\"name\":\"{0}\",\n\"version_number\":\"{1}\",\n\"website_url\":\"\",\n\"dependencies\":[],\n\"description\":\"{2}\"\n}}", ModName.Replace(' ', '_'), Version, string.Format("Skin made by {0}", AuthorName));
                 File.WriteAllText(modTempFolderPath + "\\manifest.json", manifest);
 
                 ConvertTaskComplete();
