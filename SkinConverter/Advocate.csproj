@@ -9,7 +9,12 @@
     <DebugType>embedded</DebugType>
     <RepositoryUrl>https://github.com/ASpoonPlaysGames/Advocate</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+
 	<PublishSingleFile>true</PublishSingleFile>
+	<SelfContained>true</SelfContained>
+	<RuntimeIdentifier>win-x86</RuntimeIdentifier>
+	<PublishReadyToRun>true</PublishReadyToRun>
+	  <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
   </PropertyGroup>
 
   <ItemGroup>
