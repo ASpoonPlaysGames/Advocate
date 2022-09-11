@@ -264,8 +264,15 @@ namespace Advocate
                 ///////////////////////////////
                 // unzip skin to temp folder //
                 ///////////////////////////////
-
-                ZipFile.ExtractToDirectory(SkinPath, skinTempFolderPath, true);
+                try
+                {
+                    ZipFile.ExtractToDirectory(SkinPath, skinTempFolderPath, true);
+                }
+                catch (System.IO.InvalidDataException ex)
+                {
+                    ConversionFailed(button, styleProperty, "Unable to unzip skin!");
+                    return;
+                }
 
                 ConvertTaskComplete();
 
