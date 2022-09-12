@@ -650,49 +650,52 @@ namespace Advocate
             { "ION_Default_ilm", @"texture\\models\\titans_r2\\medium_ion\\warpaint\\warpaint_02\\t_m_ion_warpaint_skin02_ilm" },
             { "ION_Default_nml", @"texture\\models\\titans_r2\\medium_ion\\warpaint\\warpaint_02\\t_m_ion_warpaint_skin02_nml" },
             // ion prime
+            { "PrimeION_Default_ao", @"texture\\models\\titans_r2\\medium_ion_prime\\warpaint\\warpaint_00\\t_m_ion_prime_warpaint_skin01_ao" },
+            { "PrimeION_Default_cav", @"texture\\models\\titans_r2\\medium_ion_prime\\warpaint\\warpaint_00\\t_m_ion_prime_warpaint_skin01_cav" },
+            { "PrimeION_Default_ilm", @"texture\\models\\titans_r2\\medium_ion_prime\\warpaint\\warpaint_00\\t_m_ion_prime_warpaint_skin01_ilm" },
             // tone
-            { "Tone_Default_ao", @"texture\\models\titans_r2\medium_tone\warpaint\warpaint_00\t_m_tone_warpaint_skin00_ao" },
-            { "Tone_Default_cav", @"texture\\models\titans_r2\medium_tone\warpaint\warpaint_00\t_m_tone_warpaint_skin00_cav" },
-            { "Tone_Default_ilm", @"texture\\models\titans_r2\medium_tone\warpaint\warpaint_00\t_m_tone_warpaint_skin00_ilm" },
+            { "Tone_Default_ao", @"texture\\models\\titans_r2\\medium_tone\\warpaint\\warpaint_00\\t_m_tone_warpaint_skin00_ao" },
+            { "Tone_Default_cav", @"texture\\models\\titans_r2\\medium_tone\\warpaint\\warpaint_00\\t_m_tone_warpaint_skin00_cav" },
+            { "Tone_Default_ilm", @"texture\\models\\titans_r2\\medium_tone\\warpaint\\warpaint_00\\t_m_tone_warpaint_skin00_ilm" },
             // tone prime
-            { "PrimeTone_Default_ao", @"texture\\models\titans_r2\medium_tone_prime\warpaint\warpaint_00\t_m_tone_prime_warpaint_skin00_ao" },
-            { "PrimeTone_Default_cav", @"texture\\models\titans_r2\medium_tone_prime\warpaint\warpaint_00\t_m_tone_prime_warpaint_skin00_cav" },
-            { "PrimeTone_Default_ilm", @"texture\\models\titans_r2\medium_tone_prime\warpaint\warpaint_00\t_m_tone_prime_warpaint_skin00_ilm" },
-            { "PrimeTone_Default_nml", @"texture\\models\titans_r2\medium_tone_prime\warpaint\warpaint_00\t_m_tone_prime_warpaint_skin00_nml" },
+            { "PrimeTone_Default_ao", @"texture\\models\\titans_r2\\medium_tone_prime\\warpaint\\warpaint_00\\t_m_tone_prime_warpaint_skin00_ao" },
+            { "PrimeTone_Default_cav", @"texture\\models\\titans_r2\\medium_tone_prime\\warpaint\\warpaint_00\\t_m_tone_prime_warpaint_skin00_cav" },
+            { "PrimeTone_Default_ilm", @"texture\\models\\titans_r2\\medium_tone_prime\\warpaint\\warpaint_00\\t_m_tone_prime_warpaint_skin00_ilm" },
+            { "PrimeTone_Default_nml", @"texture\\models\\titans_r2\\medium_tone_prime\\warpaint\\warpaint_00\\t_m_tone_prime_warpaint_skin00_nml" },
             // northstar
             // northstar prime
-            { "PrimeNorthstar_Default_ao", @"texture\\models\titans_r2\light_northstar_prime\warpaint\warpaint_00\t_l_northstar_prime_warpaint_skin00_ao" },
-            { "PrimeNorthstar_Default_cav", @"texture\\models\titans_r2\light_northstar_prime\warpaint\warpaint_00\t_l_northstar_prime_warpaint_skin00_cav" },
-            { "PrimeNorthstar_Default_ilm", @"texture\\models\titans_r2\light_northstar_prime\warpaint\warpaint_00\t_l_northstar_prime_warpaint_skin00_ilm" },
-            { "PrimeNorthstar_Default_nml", @"texture\\models\titans_r2\light_northstar_prime\warpaint\warpaint_00\t_l_northstar_prime_warpaint_skin00_nml" },
+            { "PrimeNorthstar_Default_ao", @"texture\\models\\titans_r2\\light_northstar_prime\\warpaint\\warpaint_00\\t_l_northstar_prime_warpaint_skin00_ao" },
+            { "PrimeNorthstar_Default_cav", @"texture\\models\\titans_r2\\light_northstar_prime\\warpaint\\warpaint_00\\t_l_northstar_prime_warpaint_skin00_cav" },
+            { "PrimeNorthstar_Default_ilm", @"texture\\models\\titans_r2\\light_northstar_prime\\warpaint\\warpaint_00\\t_l_northstar_prime_warpaint_skin00_ilm" },
+            { "PrimeNorthstar_Default_nml", @"texture\\models\\titans_r2\\light_northstar_prime\\warpaint\\warpaint_00\\t_l_northstar_prime_warpaint_skin00_nml" },
             // ronin
             // ronin prime
-            { "PrimeRonin_Default_ao", @"texture\\models\titans_r2\light_ronin_prime\warpaint\warpaint_00\t_l_ronin_prime_warpaint_skin00_ao" },
-            { "PrimeRonin_Default_cav", @"texture\\models\titans_r2\light_ronin_prime\warpaint\warpaint_00\t_l_ronin_prime_warpaint_skin00_cav" },
-            { "PrimeRonin_Default_ilm", @"texture\\models\titans_r2\light_ronin_prime\warpaint\warpaint_00\t_l_ronin_prime_warpaint_skin00_ilm" },
-            { "PrimeRonin_Default_nml", @"texture\\models\titans_r2\light_ronin_prime\warpaint\warpaint_00\t_l_ronin_prime_warpaint_skin00_nml" },
+            { "PrimeRonin_Default_ao", @"texture\\models\\titans_r2\\light_ronin_prime\\warpaint\\warpaint_00\\t_l_ronin_prime_warpaint_skin00_ao" },
+            { "PrimeRonin_Default_cav", @"texture\\models\\titans_r2\\light_ronin_prime\\warpaint\\warpaint_00\\t_l_ronin_prime_warpaint_skin00_cav" },
+            { "PrimeRonin_Default_ilm", @"texture\\models\\titans_r2\\light_ronin_prime\\warpaint\\warpaint_00\\t_l_ronin_prime_warpaint_skin00_ilm" },
+            { "PrimeRonin_Default_nml", @"texture\\models\\titans_r2\\light_ronin_prime\\warpaint\\warpaint_00\\t_l_ronin_prime_warpaint_skin00_nml" },
             // scorch
-            { "Scorch_Default_ao", @"texture\\models\titans_r2\heavy_scorch\warpaint\warpaint_00\t_h_scorch_warpaint_skin00_ao" },
-            { "Scorch_Default_cav", @"texture\\models\titans_r2\heavy_scorch\warpaint\warpaint_00\t_h_scorch_warpaint_skin00_cav" },
-            { "Scorch_Default_ilm", @"texture\\models\titans_r2\heavy_scorch\warpaint\warpaint_00\t_h_scorch_warpaint_skin00_ilm" },
+            { "Scorch_Default_ao", @"texture\\models\\titans_r2\\heavy_scorch\\warpaint\\warpaint_00\\t_h_scorch_warpaint_skin00_ao" },
+            { "Scorch_Default_cav", @"texture\\models\\titans_r2\\heavy_scorch\\warpaint\\warpaint_00\\t_h_scorch_warpaint_skin00_cav" },
+            { "Scorch_Default_ilm", @"texture\\models\\titans_r2\\heavy_scorch\\warpaint\\warpaint_00\\t_h_scorch_warpaint_skin00_ilm" },
             // scorch prime
-            { "PrimeScorch_Default_ao", @"texture\\models\titans_r2\heavy_scorch_prime\warpaint\warpaint_00\t_h_scorch_prime_warpaint_skin00_ao" },
-            { "PrimeScorch_Default_cav", @"texture\\models\titans_r2\heavy_scorch_prime\warpaint\warpaint_00\t_h_scorch_prime_warpaint_skin00_cav" },
-            { "PrimeScorch_Default_ilm", @"texture\\models\titans_r2\heavy_scorch_prime\warpaint\warpaint_00\t_h_scorch_prime_warpaint_skin00_ilm" },
+            { "PrimeScorch_Default_ao", @"texture\\models\\titans_r2\\heavy_scorch_prime\\warpaint\\warpaint_00\\t_h_scorch_prime_warpaint_skin00_ao" },
+            { "PrimeScorch_Default_cav", @"texture\\models\\titans_r2\\heavy_scorch_prime\\warpaint\\warpaint_00\\t_h_scorch_prime_warpaint_skin00_cav" },
+            { "PrimeScorch_Default_ilm", @"texture\\models\\titans_r2\\heavy_scorch_prime\\warpaint\\warpaint_00\\t_h_scorch_prime_warpaint_skin00_ilm" },
             // legion
-            { "Legion_Default_ao", @"texture\\models\titans_r2\heavy_legion\warpaint\warpaint_00\t_h_legion_warpaint_skin00_ao" },
-            { "Legion_Default_cav", @"texture\\models\titans_r2\heavy_legion\warpaint\warpaint_00\t_h_legion_warpaint_skin00_cav" },
-            { "Legion_Default_ilm", @"texture\\models\titans_r2\heavy_legion\warpaint\warpaint_00\t_h_legion_warpaint_skin00_ilm" },
+            { "Legion_Default_ao", @"texture\\models\\titans_r2\\heavy_legion\\warpaint\\warpaint_00\\t_h_legion_warpaint_skin00_ao" },
+            { "Legion_Default_cav", @"texture\\models\\titans_r2\\heavy_legion\\warpaint\\warpaint_00\\t_h_legion_warpaint_skin00_cav" },
+            { "Legion_Default_ilm", @"texture\\models\\titans_r2\\heavy_legion\\warpaint\\warpaint_00\\t_h_legion_warpaint_skin00_ilm" },
             // legion prime
-            { "PrimeLegion_Default_ao", @"texture\\models\titans_r2\heavy_legion_prime\warpaint\warpaint_00\t_h_legion_prime_warpaint_skin00_ao" },
-            { "PrimeLegion_Default_cav", @"texture\\models\titans_r2\heavy_legion_prime\warpaint\warpaint_00\t_h_legion_prime_warpaint_skin00_cav" },
-            { "PrimeLegion_Default_ilm", @"texture\\models\titans_r2\heavy_legion_prime\warpaint\warpaint_00\t_h_legion_prime_warpaint_skin00_ilm" },
-            { "PrimeLegion_Default_nml", @"texture\\models\titans_r2\heavy_legion_prime\warpaint\warpaint_00\t_h_legion_prime_warpaint_skin00_nml" },
+            { "PrimeLegion_Default_ao", @"texture\\models\\titans_r2\\heavy_legion_prime\\warpaint\\warpaint_00\\t_h_legion_prime_warpaint_skin00_ao" },
+            { "PrimeLegion_Default_cav", @"texture\\models\\titans_r2\\heavy_legion_prime\\warpaint\\warpaint_00\\t_h_legion_prime_warpaint_skin00_cav" },
+            { "PrimeLegion_Default_ilm", @"texture\\models\\titans_r2\\heavy_legion_prime\\warpaint\\warpaint_00\\t_h_legion_prime_warpaint_skin00_ilm" },
+            { "PrimeLegion_Default_nml", @"texture\\models\\titans_r2\\heavy_legion_prime\\warpaint\\warpaint_00\\t_h_legion_prime_warpaint_skin00_nml" },
             // monarch
-            { "Monarch_Default_ao", @"texture\\models\titans_r2\medium_vanguard\warpaint\warpaint_00\t_m_vanguard_prime_warpaint_skin00_ao" },
-            { "Monarch_Default_cav", @"texture\\models\titans_r2\medium_vanguard\warpaint\warpaint_00\t_m_vanguard_prime_warpaint_skin00_cav" },
-            { "Monarch_Default_ilm", @"texture\\models\titans_r2\medium_vanguard\warpaint\warpaint_00\t_m_vanguard_prime_warpaint_skin00_ilm" },
-            { "Monarch_Default_nml", @"texture\\models\titans_r2\medium_vanguard\warpaint\warpaint_00\t_m_vanguard_prime_warpaint_skin00_nml" },
+            { "Monarch_Default_ao", @"texture\\models\\titans_r2\\medium_vanguard\\warpaint\\warpaint_00\\t_m_vanguard_prime_warpaint_skin00_ao" },
+            { "Monarch_Default_cav", @"texture\\models\\titans_r2\\medium_vanguard\\warpaint\\warpaint_00\\t_m_vanguard_prime_warpaint_skin00_cav" },
+            { "Monarch_Default_ilm", @"texture\\models\\titans_r2\\medium_vanguard\\warpaint\\warpaint_00\\t_m_vanguard_prime_warpaint_skin00_ilm" },
+            { "Monarch_Default_nml", @"texture\\models\\titans_r2\\medium_vanguard\\warpaint\\warpaint_00\\t_m_vanguard_prime_warpaint_skin00_nml" },
         };
         // pilots and titans
         private readonly Dictionary<string, string> nameToPath = new()
@@ -766,29 +769,29 @@ namespace Advocate
             // ion
             { "ION_Default", @"texture\\models\\titans_r2\\medium_ion\\warpaint\\warpaint_01\\t_m_ion_warpaint_skin01" },
             // ion prime
-            { "PrimeION_Default", @"texture\\models\titans_r2\medium_ion_prime\warpaint\warpaint_01\t_m_ion_prime_warpaint_skin01" },
+            { "PrimeION_Default", @"texture\\models\\titans_r2\\medium_ion_prime\\warpaint\\warpaint_01\\t_m_ion_prime_warpaint_skin01" },
             // tone
-            { "Tone_Default", @"texture\\models\titans_r2\medium_tone\warpaint\warpaint_02\t_m_tone_warpaint_skin02" },
+            { "Tone_Default", @"texture\\models\\titans_r2\\medium_tone\\warpaint\\warpaint_02\\t_m_tone_warpaint_skin02" },
             // tone prime
-            { "PrimeTone_Default", @"texture\\models\titans_r2\medium_tone_prime\warpaint\warpaint_01\t_m_tone_prime_warpaint_skin01" },
+            { "PrimeTone_Default", @"texture\\models\\titans_r2\\medium_tone_prime\\warpaint\\warpaint_01\\t_m_tone_prime_warpaint_skin01" },
             // northstar
-            { "Northstar_Default", @"texture\\models\titans_r2\light_northstar\warpaint\warpaint_01\t_l_northstar_warpaint_skin01" },
+            { "Northstar_Default", @"texture\\models\\titans_r2\\light_northstar\\warpaint\\warpaint_01\\t_l_northstar_warpaint_skin01" },
             // northstar prime
-            { "PrimeNorthstar_Default", @"texture\\models\titans_r2\light_northstar_prime\warpaint\warpaint_01\t_l_northstar_prime_warpaint_skin01" },
+            { "PrimeNorthstar_Default", @"texture\\models\\titans_r2\\light_northstar_prime\\warpaint\\warpaint_01\\t_l_northstar_prime_warpaint_skin01" },
             // ronin
-            { "Ronin_Default", @"texture\\models\titans_r2\light_ronin\warpaint\warpaint_02\t_l_ronin_warpaint_skin02" },
+            { "Ronin_Default", @"texture\\models\\titans_r2\\light_ronin\\warpaint\\warpaint_02\\t_l_ronin_warpaint_skin02" },
             // ronin prime
-            { "PrimeRonin_Default", @"texture\\models\titans_r2\light_ronin_prime\warpaint\warpaint_01\t_l_ronin_prime_warpaint_skin01" },
+            { "PrimeRonin_Default", @"texture\\models\\titans_r2\\light_ronin_prime\\warpaint\\warpaint_01\\t_l_ronin_prime_warpaint_skin01" },
             // scorch
-            { "Scorch_Default", @"texture\\models\titans_r2\heavy_scorch\warpaint\warpaint_01\t_h_scorch_warpaint_skin01" },
+            { "Scorch_Default", @"texture\\models\\titans_r2\\heavy_scorch\\warpaint\\warpaint_01\\t_h_scorch_warpaint_skin01" },
             // scorch prime
-            { "PrimeScorch_Default", @"texture\\models\titans_r2\heavy_scorch_prime\warpaint\warpaint_01\t_h_scorch_prime_warpaint_skin01" },
+            { "PrimeScorch_Default", @"texture\\models\\titans_r2\\heavy_scorch_prime\\warpaint\\warpaint_01\\t_h_scorch_prime_warpaint_skin01" },
             // legion
-            { "Legion_Default", @"texture\\models\titans_r2\heavy_legion\warpaint\warpaint_01\t_h_legion_warpaint_skin01" },
+            { "Legion_Default", @"texture\\models\\titans_r2\\heavy_legion\\warpaint\\warpaint_01\\t_h_legion_warpaint_skin01" },
             // legion prime
-            { "PrimeLegion_Default", @"texture\\models\titans_r2\heavy_legion_prime\warpaint\warpaint_01\t_h_legion_prime_warpaint_skin01" },
+            { "PrimeLegion_Default", @"texture\\models\\titans_r2\\heavy_legion_prime\\warpaint\\warpaint_01\\t_h_legion_prime_warpaint_skin01" },
             // monarch
-            { "Monarch_Default", @"texture\\models\titans_r2\medium_vanguard\warpaint\warpaint_01\t_m_vanguard_prime_warpaint_skin01" },
+            { "Monarch_Default", @"texture\\models\\titans_r2\\medium_vanguard\\warpaint\\warpaint_01\\t_m_vanguard_prime_warpaint_skin01" },
 
         };
         private string TextureNameToPath(string textureName)
