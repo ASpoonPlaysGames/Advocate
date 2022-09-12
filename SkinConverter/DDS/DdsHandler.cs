@@ -109,6 +109,7 @@ namespace Advocate
                     ToDX10(DXGI_FORMAT.DXGI_FORMAT_BC1_UNORM_SRGB);
                     break;
                 case "ATI2":
+                case "BC5U":
                     pixel_FourCC = new char[4] { 'B', 'C', '5', 'U' };
                     if (pitchOrLinearSize == 0)
                         pitchOrLinearSize = (uint)data.Length;
@@ -119,7 +120,6 @@ namespace Advocate
                     //ToDX10(DXGI_FORMAT.DXGI_FORMAT_BC4_UNORM);
                     if (pitchOrLinearSize == 0)
                         pitchOrLinearSize = (uint)data.Length;
-                        //pitchOrLinearSize = Math.Max(1, ((width + 3) / 4)) * 8;
                     if ((flags & 0x000A0000) != 0x000A0000)
                         flags |= 0x000A0000;
                     if ((caps & 0x00400000) != 0x00400000)
@@ -135,7 +135,7 @@ namespace Advocate
 
         public void ToDX10(DXGI_FORMAT format)
         {
-            dxgiFormat = DXGI_FORMAT.DXGI_FORMAT_BC1_UNORM_SRGB;
+            dxgiFormat = format;
             arraySize = 1;
             resourceDimension = DX10ResourceDimension.Texture2D;
             alphaMode = DX10AlphaMode.Unknown;
