@@ -617,90 +617,178 @@ namespace Advocate
             { "Sword_Default", @"texture\\models\\weapons\\bolo_sword\\bolo_sword_01" }, // also idk about this, this is a blank texture in vanilla
             { "Kunai_Default", @"texture\\models\\Weapons_R2\\shuriken_kunai\\kunai_shuriken" }, // again, not entirely sure
         };
-        // pilot overrides - used for weird exceptions where things share textures etc.
-        private readonly Dictionary<string, string> pilotNameToPathOverrides = new()
+        // pilot and titan overrides - used for weird exceptions where things share textures etc.
+        private readonly Dictionary<string, string> nameToPathOverrides = new()
         {
+            //////////////
+            /// PILOTS ///
+            //////////////
             // cloak
             // A-wall
             // phase
-            { "PhaseShift_fbody_ilm", @"models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_b_v1_skn01_ilm" },
+            { "PhaseShift_fbody_ilm", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_b_v1_skn01_ilm" },
             // stim
             // grapple
             // pulse
             // holo
-            { "HoloPilot_fbody_col", @"models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_female_b_v1_skn02_col" },
-            { "HoloPilot_mbody_col", @"models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_b_v1_skn02_col" },
-            { "HoloPilot_mbody_spc", @"models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_b_v1_skn02_spc" },
-            { "HoloPilot_gear_col", @"models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_g_v1_skn02_col" },
-            { "HoloPilot_gear_spc", @"models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_g_v1_skn02_spc" },
-            { "HoloPilot_helmet_col", @"models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_he_v1_skn02_col" },
-            { "HoloPilot_helmet_spc", @"models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_he_v1_skn02_spc" },
-            { "HoloPilot_jumpkit_col", @"models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_j_v1_skn02_col" },
-            { "HoloPilot_viewhand_col", @"models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_vh_v1_skn02_col" },
-            { "HoloPilot_viewhand_spc", @"models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_vh_v1_skn02_spc" }
+            { "HoloPilot_fbody_col", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_female_b_v1_skn02_col" },
+            { "HoloPilot_mbody_col", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_b_v1_skn02_col" },
+            { "HoloPilot_mbody_spc", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_b_v1_skn02_spc" },
+            { "HoloPilot_gear_col", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_g_v1_skn02_col" },
+            { "HoloPilot_gear_spc", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_g_v1_skn02_spc" },
+            { "HoloPilot_helmet_col", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_he_v1_skn02_col" },
+            { "HoloPilot_helmet_spc", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_he_v1_skn02_spc" },
+            { "HoloPilot_jumpkit_col", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_j_v1_skn02_col" },
+            { "HoloPilot_viewhand_col", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_vh_v1_skn02_col" },
+            { "HoloPilot_viewhand_spc", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_vh_v1_skn02_spc" },
+            //////////////
+            /// TITANS ///
+            //////////////
+            // ion
+            { "ION_Default_ao", @"texture\\models\\titans_r2\\medium_ion\\warpaint\\warpaint_02\\t_m_ion_warpaint_skin02_ao" },
+            { "ION_Default_cav", @"texture\\models\\titans_r2\\medium_ion\\warpaint\\warpaint_02\\t_m_ion_warpaint_skin02_cav" },
+            { "ION_Default_ilm", @"texture\\models\\titans_r2\\medium_ion\\warpaint\\warpaint_02\\t_m_ion_warpaint_skin02_ilm" },
+            { "ION_Default_nml", @"texture\\models\\titans_r2\\medium_ion\\warpaint\\warpaint_02\\t_m_ion_warpaint_skin02_nml" },
+            // ion prime
+            // tone
+            { "Tone_Default_ao", @"texture\\models\titans_r2\medium_tone\warpaint\warpaint_00\t_m_tone_warpaint_skin00_ao" },
+            { "Tone_Default_cav", @"texture\\models\titans_r2\medium_tone\warpaint\warpaint_00\t_m_tone_warpaint_skin00_cav" },
+            { "Tone_Default_ilm", @"texture\\models\titans_r2\medium_tone\warpaint\warpaint_00\t_m_tone_warpaint_skin00_ilm" },
+            // tone prime
+            { "PrimeTone_Default_ao", @"texture\\models\titans_r2\medium_tone_prime\warpaint\warpaint_00\t_m_tone_prime_warpaint_skin00_ao" },
+            { "PrimeTone_Default_cav", @"texture\\models\titans_r2\medium_tone_prime\warpaint\warpaint_00\t_m_tone_prime_warpaint_skin00_cav" },
+            { "PrimeTone_Default_ilm", @"texture\\models\titans_r2\medium_tone_prime\warpaint\warpaint_00\t_m_tone_prime_warpaint_skin00_ilm" },
+            { "PrimeTone_Default_nml", @"texture\\models\titans_r2\medium_tone_prime\warpaint\warpaint_00\t_m_tone_prime_warpaint_skin00_nml" },
+            // northstar
+            // northstar prime
+            { "PrimeNorthstar_Default_ao", @"texture\\models\titans_r2\light_northstar_prime\warpaint\warpaint_00\t_l_northstar_prime_warpaint_skin00_ao" },
+            { "PrimeNorthstar_Default_cav", @"texture\\models\titans_r2\light_northstar_prime\warpaint\warpaint_00\t_l_northstar_prime_warpaint_skin00_cav" },
+            { "PrimeNorthstar_Default_ilm", @"texture\\models\titans_r2\light_northstar_prime\warpaint\warpaint_00\t_l_northstar_prime_warpaint_skin00_ilm" },
+            { "PrimeNorthstar_Default_nml", @"texture\\models\titans_r2\light_northstar_prime\warpaint\warpaint_00\t_l_northstar_prime_warpaint_skin00_nml" },
+            // ronin
+            // ronin prime
+            { "PrimeRonin_Default_ao", @"texture\\models\titans_r2\light_ronin_prime\warpaint\warpaint_00\t_l_ronin_prime_warpaint_skin00_ao" },
+            { "PrimeRonin_Default_cav", @"texture\\models\titans_r2\light_ronin_prime\warpaint\warpaint_00\t_l_ronin_prime_warpaint_skin00_cav" },
+            { "PrimeRonin_Default_ilm", @"texture\\models\titans_r2\light_ronin_prime\warpaint\warpaint_00\t_l_ronin_prime_warpaint_skin00_ilm" },
+            { "PrimeRonin_Default_nml", @"texture\\models\titans_r2\light_ronin_prime\warpaint\warpaint_00\t_l_ronin_prime_warpaint_skin00_nml" },
+            // scorch
+            { "Scorch_Default_ao", @"texture\\models\titans_r2\heavy_scorch\warpaint\warpaint_00\t_h_scorch_warpaint_skin00_ao" },
+            { "Scorch_Default_cav", @"texture\\models\titans_r2\heavy_scorch\warpaint\warpaint_00\t_h_scorch_warpaint_skin00_cav" },
+            { "Scorch_Default_ilm", @"texture\\models\titans_r2\heavy_scorch\warpaint\warpaint_00\t_h_scorch_warpaint_skin00_ilm" },
+            // scorch prime
+            { "PrimeScorch_Default_ao", @"texture\\models\titans_r2\heavy_scorch_prime\warpaint\warpaint_00\t_h_scorch_prime_warpaint_skin00_ao" },
+            { "PrimeScorch_Default_cav", @"texture\\models\titans_r2\heavy_scorch_prime\warpaint\warpaint_00\t_h_scorch_prime_warpaint_skin00_cav" },
+            { "PrimeScorch_Default_ilm", @"texture\\models\titans_r2\heavy_scorch_prime\warpaint\warpaint_00\t_h_scorch_prime_warpaint_skin00_ilm" },
+            // legion
+            { "Legion_Default_ao", @"texture\\models\titans_r2\heavy_legion\warpaint\warpaint_00\t_h_legion_warpaint_skin00_ao" },
+            { "Legion_Default_cav", @"texture\\models\titans_r2\heavy_legion\warpaint\warpaint_00\t_h_legion_warpaint_skin00_cav" },
+            { "Legion_Default_ilm", @"texture\\models\titans_r2\heavy_legion\warpaint\warpaint_00\t_h_legion_warpaint_skin00_ilm" },
+            // legion prime
+            { "PrimeLegion_Default_ao", @"texture\\models\titans_r2\heavy_legion_prime\warpaint\warpaint_00\t_h_legion_prime_warpaint_skin00_ao" },
+            { "PrimeLegion_Default_cav", @"texture\\models\titans_r2\heavy_legion_prime\warpaint\warpaint_00\t_h_legion_prime_warpaint_skin00_cav" },
+            { "PrimeLegion_Default_ilm", @"texture\\models\titans_r2\heavy_legion_prime\warpaint\warpaint_00\t_h_legion_prime_warpaint_skin00_ilm" },
+            { "PrimeLegion_Default_nml", @"texture\\models\titans_r2\heavy_legion_prime\warpaint\warpaint_00\t_h_legion_prime_warpaint_skin00_nml" },
+            // monarch
+            { "Monarch_Default_ao", @"texture\\models\titans_r2\medium_vanguard\warpaint\warpaint_00\t_m_vanguard_prime_warpaint_skin00_ao" },
+            { "Monarch_Default_cav", @"texture\\models\titans_r2\medium_vanguard\warpaint\warpaint_00\t_m_vanguard_prime_warpaint_skin00_cav" },
+            { "Monarch_Default_ilm", @"texture\\models\titans_r2\medium_vanguard\warpaint\warpaint_00\t_m_vanguard_prime_warpaint_skin00_ilm" },
+            { "Monarch_Default_nml", @"texture\\models\titans_r2\medium_vanguard\warpaint\warpaint_00\t_m_vanguard_prime_warpaint_skin00_nml" },
         };
-        // pilots
-        private readonly Dictionary<string, string> pilotNameToPath = new()
+        // pilots and titans
+        private readonly Dictionary<string, string> nameToPath = new()
         {
+            //////////////
+            /// PILOTS ///
+            //////////////
             // cloak
-            { "Cloak_fbody", @"models\\humans\\titanpilot_gsuits\\pilot_heavy_drex\\pilot_heavy_drex_f_body_skin_01" },
-            { "Cloak_mbody", @"models\\humans\\titanpilot_gsuits\\pilot_heavy_drex\\pilot_heavy_drex_m_body_skin_01" },
-            { "Cloak_gauntlet", @"models\\humans\\titanpilot_gsuits\\pilot_heavy_drex\\pilot_heavy_drex_gauntlet_skin_01" },
-            { "Cloak_gear", @"models\\humans\\titanpilot_gsuits\\pilot_heavy_drex\\pilot_heavy_drex_gear_skin_01" },
-            { "Cloak_jumpkit", @"models\\humans\\titanpilot_gsuits\\pilot_heavy_drex\\pilot_heavy_drex_jumpkit_skin_01" },
-            { "Cloak_ghillie", @"models\\humans\\titanpilot_gsuits\\pilot_heavy_drex\\pilot_heavy_drex_ghullie_skin_01" },// ghullie lol
-            { "Cloak_helmet", @"models\\humans\\titanpilot_gsuits\\pilot_heavy_drex\\pilot_heavy_drex_helmet_skin_01" },
+            { "Cloak_fbody", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_heavy_drex\\pilot_heavy_drex_f_body_skin_01" },
+            { "Cloak_mbody", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_heavy_drex\\pilot_heavy_drex_m_body_skin_01" },
+            { "Cloak_gauntlet", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_heavy_drex\\pilot_heavy_drex_gauntlet_skin_01" },
+            { "Cloak_gear", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_heavy_drex\\pilot_heavy_drex_gear_skin_01" },
+            { "Cloak_jumpkit", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_heavy_drex\\pilot_heavy_drex_jumpkit_skin_01" },
+            { "Cloak_ghillie", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_heavy_drex\\pilot_heavy_drex_ghullie_skin_01" },// ghullie lol
+            { "Cloak_helmet", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_heavy_drex\\pilot_heavy_drex_helmet_skin_01" },
             // A-wall
-            { "AWall_fbody", @"models\\humans\\titanpilot_gsuits\\pilot_hevy_roog\\pilot_hev_roog_f_body_skn_01" },
-            { "AWall_mbody", @"models\\humans\\titanpilot_gsuits\\pilot_hevy_roog\\pilot_hev_roog_m_body_skn_01" },
-            { "AWall_gauntlet", @"models\\humans\\titanpilot_gsuits\\pilot_hevy_roog\\pilot_hev_roog_m_gauntlet_skn_01" },
-            { "AWall_gear", @"models\\humans\\titanpilot_gsuits\\pilot_hevy_roog\\pilot_hev_roog_m_gear_skn_01" },
-            { "AWall_jumpkit", @"models\\humans\\titanpilot_gsuits\\pilot_hevy_roog\\pilot_hev_roog_m_jumpkit_skn_01" },
-            { "AWall_helmet", @"models\\humans\\titanpilot_gsuits\\pilot_heavy_helmets\\pilot_hev_helmet_v1_skn" },
+            { "AWall_fbody", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_hevy_roog\\pilot_hev_roog_f_body_skn_01" },
+            { "AWall_mbody", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_hevy_roog\\pilot_hev_roog_m_body_skn_01" },
+            { "AWall_gauntlet", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_hevy_roog\\pilot_hev_roog_m_gauntlet_skn_01" },
+            { "AWall_gear", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_hevy_roog\\pilot_hev_roog_m_gear_skn_01" },
+            { "AWall_jumpkit", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_hevy_roog\\pilot_hev_roog_m_jumpkit_skn_01" },
+            { "AWall_helmet", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_heavy_helmets\\pilot_hev_helmet_v1_skn" },
             // phase
-            { "PhaseShift_fbody", @"models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_female_body_v1_skn01" },
-            { "PhaseShift_mbody", @"models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_b_v1_skn01" },
-            { "PhaseShift_gear", @"models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_g_v1_skn01" },
-            { "PhaseShift_viewhand", @"models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_vh_v1_skn01" },
-            { "PhaseShift_jumpkit", @"models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_j_v1_skn01" },
-            { "PhaseShift_helmet", @"models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_g_v1_skn01" },
-            { "PhaseShift_hair", @"models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_alpha_v1_skn01" },
+            { "PhaseShift_fbody", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_female_body_v1_skn01" },
+            { "PhaseShift_mbody", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_b_v1_skn01" },
+            { "PhaseShift_gear", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_g_v1_skn01" },
+            { "PhaseShift_viewhand", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_vh_v1_skn01" },
+            { "PhaseShift_jumpkit", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_j_v1_skn01" },
+            { "PhaseShift_helmet", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_g_v1_skn01" },
+            { "PhaseShift_hair", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_alpha_v1_skn01" },
             // stim
-            { "Stim_fbody", @"models\\humans\\titanpilot_gsuits\\pilot_light_jester\\pilot_lit_jester_f_body" },
-            { "Stim_mbody", @"models\\humans\\titanpilot_gsuits\\pilot_light_jester\\pilot_lit_jester_m_body" },
-            { "Stim_fgear", @"models\\humans\\titanpilot_gsuits\\pilot_light_jester\\pilot_lit_jester_f_gear" },
-            { "Stim_gear", @"models\\humans\\titanpilot_gsuits\\pilot_light_jester\\pilot_lit_jester_gear" },
-            { "Stim_gauntlet", @"models\\humans\\titanpilot_gsuits\\pilot_light_jester\\pilot_lit_jester_gauntlet" },
-            { "Stim_fjumpkit", @"models\\humans\\titanpilot_gsuits\\pilot_light_jester\\pilot_lit_jester_f_jumpkit" },
-            { "Stim_jumpkit", @"models\\humans\\titanpilot_gsuits\\pilot_light_jester\\pilot_lit_jester_jumpkit" },
-            { "Stim_head", @"models\\humans\\titanpilot_gsuits\\pilot_light_jester\\pilot_lit_jester_head" },
+            { "Stim_fbody", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_light_jester\\pilot_lit_jester_f_body" },
+            { "Stim_mbody", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_light_jester\\pilot_lit_jester_m_body" },
+            { "Stim_fgear", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_light_jester\\pilot_lit_jester_f_gear" },
+            { "Stim_gear", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_light_jester\\pilot_lit_jester_gear" },
+            { "Stim_gauntlet", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_light_jester\\pilot_lit_jester_gauntlet" },
+            { "Stim_fjumpkit", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_light_jester\\pilot_lit_jester_f_jumpkit" },
+            { "Stim_jumpkit", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_light_jester\\pilot_lit_jester_jumpkit" },
+            { "Stim_head", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_light_jester\\pilot_lit_jester_head" },
             // grapple
-            { "Grapple_fbody", @"models\\humans\\titanpilot_gsuits\\pilot_medium_geist\\pilot_med_geist_f_body_skn_01" },
-            { "Grapple_mbody", @"models\\humans\\titanpilot_gsuits\\pilot_medium_geist\\pilot_med_geist_m_body_skn_02" },
-            { "Grapple_gear", @"models\\humans\\titanpilot_gsuits\\pilot_medium_geist\\pilot_med_geist_gear_skn_02" },
-            { "Grapple_gauntlet", @"models\\humans\\titanpilot_gsuits\\pilot_medium_geist\\pilot_med_geist_gauntlet_skn_02" },
-            { "Grapple_jumpkit", @"models\\humans\\titanpilot_gsuits\\pilot_medium_geist\\pilot_med_geist_jumpkit_skn_01" },
-            { "Grapple_helmet", @"models\\humans\\titanpilot_gsuits\\pilot_medium_geist\\pilot_med_geist_helmet_v2_skn_01" },
+            { "Grapple_fbody", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_geist\\pilot_med_geist_f_body_skn_01" },
+            { "Grapple_mbody", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_geist\\pilot_med_geist_m_body_skn_02" },
+            { "Grapple_gear", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_geist\\pilot_med_geist_gear_skn_02" },
+            { "Grapple_gauntlet", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_geist\\pilot_med_geist_gauntlet_skn_02" },
+            { "Grapple_jumpkit", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_geist\\pilot_med_geist_jumpkit_skn_01" },
+            { "Grapple_helmet", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_geist\\pilot_med_geist_helmet_v2_skn_01" },
             // pulse
-            { "PulseBlade_fbody", @"models\\humans\\titanpilot_gsuits\\pilot_medium_reaper\\pilot_med_reaper_f_body_skin_01" },
-            { "PulseBlade_mbody", @"models\\humans\\titanpilot_gsuits\\pilot_medium_reaper\\pilot_med_reaper_m_body_skin_01" },
-            { "PulseBlade_gear", @"models\\humans\\titanpilot_gsuits\\pilot_medium_reaper\\pilot_med_reaper_m_gear_skin_01" },
-            { "PulseBlade_gauntlet", @"models\\humans\\titanpilot_gsuits\\pilot_medium_reaper\\pilot_med_reaper_m_gauntlet1_skin_01" },
-            { "PulseBlade_jumpkit", @"models\\humans\\titanpilot_gsuits\\pilot_medium_reaper\\pilot_med_reaper_jumpkit_skin_02" },
-            { "PulseBlade_helmet", @"models\\humans\\titanpilot_gsuits\\pilot_medium_v_helmets\\pilot_med_helmet_v2_skn_02" },
+            { "PulseBlade_fbody", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_reaper\\pilot_med_reaper_f_body_skin_01" },
+            { "PulseBlade_mbody", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_reaper\\pilot_med_reaper_m_body_skin_01" },
+            { "PulseBlade_gear", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_reaper\\pilot_med_reaper_m_gear_skin_01" },
+            { "PulseBlade_gauntlet", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_reaper\\pilot_med_reaper_m_gauntlet1_skin_01" },
+            { "PulseBlade_jumpkit", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_reaper\\pilot_med_reaper_jumpkit_skin_02" },
+            { "PulseBlade_helmet", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_v_helmets\\pilot_med_helmet_v2_skn_02" },
             // holo
-            { "HoloPilot_fbody", @"models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_female_b_v1_skn01" },
-            { "HoloPilot_mbody", @"models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_b_v1_skn01" },
-            { "HoloPilot_gear", @"models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_g_v1_skn01" },
-            { "HoloPilot_viewhand", @"models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_vh_v1_skn01" },
-            { "HoloPilot_jumpkit", @"models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_j_v1_skn01" },
-            { "HoloPilot_helmet", @"models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_he_v1_skn01" },
+            { "HoloPilot_fbody", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_female_b_v1_skn01" },
+            { "HoloPilot_mbody", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_b_v1_skn01" },
+            { "HoloPilot_gear", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_g_v1_skn01" },
+            { "HoloPilot_viewhand", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_vh_v1_skn01" },
+            { "HoloPilot_jumpkit", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_j_v1_skn01" },
+            { "HoloPilot_helmet", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_he_v1_skn01" },
             // shared
-            { "Cloak_head", @"models\\humans\\titanpilot_heads\\pilot_v3_head" },
-            { "AWall_head", @"models\\humans\\titanpilot_heads\\pilot_v3_head" },
-            { "Grapple_head", @"models\\humans\\titanpilot_heads\\pilot_v3_head" },
-            { "PulseBlade_head", @"models\\humans\\titanpilot_heads\\pilot_v3_head" },
-            { "HoloPilot_head", @"models\\humans\\titanpilot_heads\\pilot_v3_head" },
+            { "Cloak_head", @"texture\\models\\humans\\titanpilot_heads\\pilot_v3_head" },
+            { "AWall_head", @"texture\\models\\humans\\titanpilot_heads\\pilot_v3_head" },
+            { "Grapple_head", @"texture\\models\\humans\\titanpilot_heads\\pilot_v3_head" },
+            { "PulseBlade_head", @"texture\\models\\humans\\titanpilot_heads\\pilot_v3_head" },
+            { "HoloPilot_head", @"texture\\models\\humans\\titanpilot_heads\\pilot_v3_head" },
+
+            //////////////
+            /// TITANS ///
+            //////////////
+            // ion
+            { "ION_Default", @"texture\\models\\titans_r2\\medium_ion\\warpaint\\warpaint_01\\t_m_ion_warpaint_skin01" },
+            // ion prime
+            { "PrimeION_Default", @"texture\\models\titans_r2\medium_ion_prime\warpaint\warpaint_01\t_m_ion_prime_warpaint_skin01" },
+            // tone
+            { "Tone_Default", @"texture\\models\titans_r2\medium_tone\warpaint\warpaint_02\t_m_tone_warpaint_skin02" },
+            // tone prime
+            { "PrimeTone_Default", @"texture\\models\titans_r2\medium_tone_prime\warpaint\warpaint_01\t_m_tone_prime_warpaint_skin01" },
+            // northstar
+            { "Northstar_Default", @"texture\\models\titans_r2\light_northstar\warpaint\warpaint_01\t_l_northstar_warpaint_skin01" },
+            // northstar prime
+            { "PrimeNorthstar_Default", @"texture\\models\titans_r2\light_northstar_prime\warpaint\warpaint_01\t_l_northstar_prime_warpaint_skin01" },
+            // ronin
+            { "Ronin_Default", @"texture\\models\titans_r2\light_ronin\warpaint\warpaint_02\t_l_ronin_warpaint_skin02" },
+            // ronin prime
+            { "PrimeRonin_Default", @"texture\\models\titans_r2\light_ronin_prime\warpaint\warpaint_01\t_l_ronin_prime_warpaint_skin01" },
+            // scorch
+            { "Scorch_Default", @"texture\\models\titans_r2\heavy_scorch\warpaint\warpaint_01\t_h_scorch_warpaint_skin01" },
+            // scorch prime
+            { "PrimeScorch_Default", @"texture\\models\titans_r2\heavy_scorch_prime\warpaint\warpaint_01\t_h_scorch_prime_warpaint_skin01" },
+            // legion
+            { "Legion_Default", @"texture\\models\titans_r2\heavy_legion\warpaint\warpaint_01\t_h_legion_warpaint_skin01" },
+            // legion prime
+            { "PrimeLegion_Default", @"texture\\models\titans_r2\heavy_legion_prime\warpaint\warpaint_01\t_h_legion_prime_warpaint_skin01" },
+            // monarch
+            { "Monarch_Default", @"texture\\models\titans_r2\medium_vanguard\warpaint\warpaint_01\t_m_vanguard_prime_warpaint_skin01" },
 
         };
         private string TextureNameToPath(string textureName)
@@ -713,10 +801,10 @@ namespace Advocate
             if (weaponNameToPath.ContainsKey(textureName))
                 return weaponNameToPath[textureName] + txtrType;
 
-            if (pilotNameToPathOverrides.ContainsKey(textureName + txtrType))
-                return pilotNameToPathOverrides[textureName + txtrType];
-            if (pilotNameToPath.ContainsKey(textureName))
-                return pilotNameToPath[textureName] + txtrType;
+            if (nameToPathOverrides.ContainsKey(textureName + txtrType))
+                return nameToPathOverrides[textureName + txtrType];
+            if (nameToPath.ContainsKey(textureName))
+                return nameToPath[textureName] + txtrType;
 
             return "";
         }
