@@ -714,9 +714,9 @@ namespace Advocate
                 return weaponNameToPath[textureName] + txtrType;
 
             if (pilotNameToPathOverrides.ContainsKey(textureName + txtrType))
-                return pilotNameToPathOverrides[textureName];
+                return pilotNameToPathOverrides[textureName + txtrType];
             if (pilotNameToPath.ContainsKey(textureName))
-                return pilotNameToPath[textureName + txtrType];
+                return pilotNameToPath[textureName] + txtrType;
 
             return "";
         }
