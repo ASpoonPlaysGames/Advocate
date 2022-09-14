@@ -238,10 +238,10 @@ namespace Advocate
             ConvertTaskComplete();
 
             // make some variables that are useful at various points
-            string tempFolderPath = Path.GetFullPath("./Temp");
-            string skinTempFolderPath = Path.GetFullPath("./Temp/Skin");
-            string modTempFolderPath = Path.GetFullPath("./Temp/Mod");
-            string repakTempFolderPath = Path.GetFullPath("./Temp/RePak");
+            string tempFolderPath = Path.GetTempPath();
+            string skinTempFolderPath = Path.GetFullPath(tempFolderPath + "/Skin");
+            string modTempFolderPath = Path.GetFullPath(tempFolderPath + "/Mod");
+            string repakTempFolderPath = Path.GetFullPath(tempFolderPath + "/RePak");
 
             // try convert stuff, if we get a weird exception, don't crash preferably
             try
