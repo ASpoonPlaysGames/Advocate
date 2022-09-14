@@ -114,7 +114,7 @@ namespace Advocate
             {
                 button.SetResourceReference(styleProperty, "ProgressButtonSuccess");
             });
-            await ChangeStyle_Delayed(button, styleProperty, 3000, "ProgressButtonPrimary");
+            await ChangeStyle_Delayed(button, styleProperty, 10000, "ProgressButtonPrimary");
             Status = "Convert Skin(s)";
             CheckConvertStatus();
         }
@@ -250,6 +250,8 @@ namespace Advocate
                 // create temp directories //
                 /////////////////////////////
 
+                Message = "Creating temporary directories...";
+
                 // directory for unzipped file
                 Directory.CreateDirectory(skinTempFolderPath);
 
@@ -264,6 +266,9 @@ namespace Advocate
                 ///////////////////////////////
                 // unzip skin to temp folder //
                 ///////////////////////////////
+
+                Message = "Unzipping skin...";
+
                 try
                 {
                     ZipFile.ExtractToDirectory(SkinPath, skinTempFolderPath, true);
@@ -280,6 +285,8 @@ namespace Advocate
                 // create temp mod file structure //
                 ////////////////////////////////////
 
+                Message = "Creating mod file structure...";
+
                 Directory.CreateDirectory(modTempFolderPath + "\\mods\\" + AuthorName + "." + ModName + "\\paks");
 
                 ConvertTaskComplete();
@@ -290,6 +297,7 @@ namespace Advocate
 
                 if (IconPath == "")
                 {
+                    Message = "Generating icon.png...";
                     // fuck you, im using the col of the first folder i find, shouldve specified an icon path
                     string[] skinPaths = Directory.GetDirectories(skinTempFolderPath);
                     if (skinPaths.Length == 0)
@@ -351,6 +359,7 @@ namespace Advocate
                 }
                 else
                 {
+                    Message = "Copying icon.png...";
                     // check that png is correct size
                     Image img = Image.FromFile(IconPath);
                     if (img.Width != 256 || img.Height != 256)
@@ -370,11 +379,13 @@ namespace Advocate
 
                 if (ReadMePath == "")
                 {
+                    Message = "Generating README.md...";
                     // todo, maybe add some basic default text here idk
                     File.WriteAllText(modTempFolderPath + "\\README.md", "");
                 }
                 else
                 {
+                    Message = "Copying README.md...";
                     File.Copy(ReadMePath, modTempFolderPath + "\\README.md");
                 }
 
@@ -383,6 +394,9 @@ namespace Advocate
                 //////////////////////////
                 // create manifest.json //
                 //////////////////////////
+
+                Message = "Writing manifest.json...";
+
                 string manifest = string.Format("{{\n\"name\":\"{0}\",\n\"version_number\":\"{1}\",\n\"website_url\":\"\",\n\"dependencies\":[],\n\"description\":\"{2}\"\n}}", ModName.Replace(' ', '_'), Version, string.Format("Skin made by {0}", AuthorName));
                 File.WriteAllText(modTempFolderPath + "\\manifest.json", manifest);
 
@@ -392,6 +406,8 @@ namespace Advocate
                 // create mod.json //
                 /////////////////////
 
+                Message = "Writing mod.json...";
+
                 string modJson = string.Format("{{\n\"Name\": \"{0}\",\n\"Description\": \"\",\n\"Version\": \"{1}\",\n\"LoadPriority\": 1,\n\"ConVars\":[],\n\"Scripts\":[],\n\"Localisation\":[]\n}}", AuthorName + "." + ModName, Version);
                 File.WriteAllText(modTempFolderPath + "\\mods\\" + AuthorName + "." + ModName + "\\mod.json", modJson);
 
@@ -400,6 +416,8 @@ namespace Advocate
                 //////////////////////////////////////////////////////////////////
                 // create map.json and move textures to temp folder for packing //
                 //////////////////////////////////////////////////////////////////
+
+                Message = "Copying textures...";
 
                 string map = string.Format("{{\n\"name\":\"{0}\",\n\"assetsDir\":\"{1}\",\n\"outputDir\":\"{2}\",\n\"version\": 7,\n\"files\":[\n", ModName, (repakTempFolderPath + "\\assets").Replace('\\', '/'), (modTempFolderPath + "\\mods\\" + AuthorName + "." + ModName + "\\paks").Replace('\\', '/'));
                 // this tracks the textures that we have already added to the json, so we can avoid duplicates in there
@@ -435,7 +453,6 @@ namespace Advocate
                                 isFirst = false;
                                 // copy file
                                 Directory.CreateDirectory(Directory.GetParent($"{repakTempFolderPath}\\assets\\{texturePath}.dds").FullName);
-                                //File.Copy(texture, repakTempFolderPath + "\\assets\\" + texturePath + ".dds", true);
                                 
                                 DdsHandler handler = new(texture);
                                 handler.Convert();
@@ -454,6 +471,9 @@ namespace Advocate
                 //////////////////////////
                 // pack using RePak.exe //
                 //////////////////////////
+
+                Message = "Packing using RePak...";
+
                 //var sb = new StringBuilder();
 
                 Process P = new();
@@ -482,6 +502,8 @@ namespace Advocate
                 // create rpak.json //
                 //////////////////////
 
+                Message = "Generating rpak.json...";
+
                 string rpakjson = string.Format("{{\n\"Preload\":\n{{\n\"{0}\":true\n}}\n}}", ModName + ".rpak");
 
                 File.WriteAllText(modTempFolderPath + "\\mods\\" + AuthorName + "." + ModName + "\\paks\\rpak.json", rpakjson);
@@ -492,6 +514,8 @@ namespace Advocate
                 // zip up result //
                 ///////////////////
 
+                Message = "Zipping mod...";
+
                 ZipFile.CreateFromDirectory(modTempFolderPath, tempFolderPath + "\\" + AuthorName + "." + ModName + ".zip");
 
                 ConvertTaskComplete();
@@ -499,6 +523,8 @@ namespace Advocate
                 ////////////////////////////////////
                 // move result out of temp folder //
                 ////////////////////////////////////
+
+                Message = "Moving zip to output folder...";
 
                 File.Move(tempFolderPath + "\\" + AuthorName + "." + ModName + ".zip", Properties.Settings.Default.OutputPath + "\\" + AuthorName + "." + ModName + ".zip", true);
 
@@ -520,7 +546,9 @@ namespace Advocate
                 // cleanup //
                 /////////////
 
-                Directory.Delete(tempFolderPath, true);
+                Message = "Cleaning up...";
+
+                // nothing here for now, but might need things here later
             }
 
 
