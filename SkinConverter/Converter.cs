@@ -548,7 +548,15 @@ namespace Advocate
 
                 Message = "Cleaning up...";
 
-                // nothing here for now, but might need things here later
+                // delete temp folders
+                if (Directory.Exists(modTempFolderPath))
+                    Directory.Delete(modTempFolderPath, true);
+
+                if (Directory.Exists(repakTempFolderPath))
+                    Directory.Delete(repakTempFolderPath, true);
+
+                if (Directory.Exists(skinTempFolderPath))
+                    Directory.Delete(skinTempFolderPath, true);
             }
 
 
