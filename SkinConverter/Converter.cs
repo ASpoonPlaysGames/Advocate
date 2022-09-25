@@ -104,7 +104,7 @@ namespace Advocate
             OnPropertyChanged(nameof(ConvertProgress));
         }
 
-        private async void ConversionComplete(HandyControl.Controls.ProgressButton button, System.Windows.DependencyProperty styleProperty)
+        private async void ConversionComplete(HandyControl.Controls.ProgressButton button, DependencyProperty styleProperty)
         {
             currentConvertStep = 0;
             OnPropertyChanged(nameof(ConvertProgress));
@@ -119,7 +119,7 @@ namespace Advocate
             CheckConvertStatus();
         }
 
-        private async void ConversionFailed(HandyControl.Controls.ProgressButton button, System.Windows.DependencyProperty styleProperty, string reason, bool reset = false)
+        private async void ConversionFailed(HandyControl.Controls.ProgressButton button, DependencyProperty styleProperty, string reason, bool reset = false)
         {
             currentConvertStep = 0;
             OnPropertyChanged(nameof(ConvertProgress));
@@ -137,7 +137,7 @@ namespace Advocate
             }
         }
 
-        public async Task ChangeStyle_Delayed(HandyControl.Controls.ProgressButton button, System.Windows.DependencyProperty styleProperty, int time, string style)
+        public async Task ChangeStyle_Delayed(HandyControl.Controls.ProgressButton button, DependencyProperty styleProperty, int time, string style)
         {
             await Task.Delay(time);
             button.Dispatcher.Invoke( () =>
@@ -227,7 +227,7 @@ namespace Advocate
             return true;
         }
 
-        public void Convert(HandyControl.Controls.ProgressButton button, System.Windows.DependencyProperty styleProperty)
+        public void Convert(HandyControl.Controls.ProgressButton button, DependencyProperty styleProperty)
         {
             if (!CheckConvertStatus())
             {
