@@ -216,7 +216,7 @@ namespace Advocate
                 Message = "Error: Version is required!";
                 return false;
             }
-            if (!Regex.Match(Version, "\\d+.\\d+.\\d+").Success)
+            if (!Regex.Match(Version, "^\\d+.\\d+.\\d+$").Success)
             {
                 Message = "Error: Version is invalid! (Example: 1.0.0)";
                 return false;
