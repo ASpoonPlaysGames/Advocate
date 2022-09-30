@@ -25,8 +25,8 @@ jobs:
       run: nuget restore Advocate.sln
 
     - name: Build
-      run: msbuild Advocate.sln /p:Configuration=Release
-
+      run: msbuild Advocate.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=x64
+      
     - name: Extract Short Commit Hash
       id: extract
       shell: bash
@@ -34,9 +34,9 @@ jobs:
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: RePak-${{ steps.extract.outputs.commit }}
+        name: Advocate-${{ steps.extract.outputs.commit }}
         path: |
-          x64/${{ env.BUILD_PROFILE }}/*.dll
-          x64/${{ env.BUILD_PROFILE }}/*.exe
-          x64/${{ env.BUILD_PROFILE }}/*.pdb
-          x64/${{ env.BUILD_PROFILE }}/*.txt
+          bin/Publish/x64/*.dll
+          bin/Publish/x64/*.exe
+          bin/Publish/x64/*.pdb
+          bin/Publish/x64/*.txt

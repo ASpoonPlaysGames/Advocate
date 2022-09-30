@@ -10,9 +10,9 @@
     <RepositoryUrl>https://github.com/ASpoonPlaysGames/Advocate</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
 
-	  <PublishSingleFile Condition="'$(Configuration)' == 'Release'">true</PublishSingleFile>
+	<PublishSingleFile Condition="'$(Configuration)' == 'Release'">true</PublishSingleFile>
 	<SelfContained>true</SelfContained>
-	<RuntimeIdentifier>win-x86</RuntimeIdentifier>
+	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	<PublishReadyToRun>true</PublishReadyToRun>
 	<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
   </PropertyGroup>
