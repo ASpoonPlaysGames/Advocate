@@ -15,6 +15,9 @@ jobs:
       with:
         dotnet-version: 6.0.x
 
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+
     - name: Setup Nuget
       uses: Nuget/setup-nuget@v1.0.5
 
