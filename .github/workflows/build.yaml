@@ -25,7 +25,7 @@ jobs:
       run: nuget restore Advocate.sln
 
     - name: Build
-      run: msbuild Advocate.csproj /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=x64
+      run: msbuild SkinConverter/Advocate.csproj /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=x64
       
     - name: Extract Short Commit Hash
       id: extract
