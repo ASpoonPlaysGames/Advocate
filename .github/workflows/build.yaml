@@ -1,5 +1,5 @@
 name: build
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -16,13 +16,27 @@ jobs:
         dotnet-version: 6.0.x
 
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.2
+      uses: microsoft/setup-msbuild@v1.1
 
     - name: Setup Nuget
-      uses: Nuget/setup-nuget@v1.0.5
+      uses: Nuget/setup-nuget@v1.0.7
 
     - name: Restore nuget packages
       run: nuget restore Advocate.sln
 
     - name: Build
       run: msbuild Advocate.sln /p:Configuration=Release
+
+    - name: Extract Short Commit Hash
+      id: extract
+      shell: bash
+      run: echo ::set-output name=commit::`git rev-parse --short HEAD`
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: RePak-${{ steps.extract.outputs.commit }}
+        path: |
+          x64/${{ env.BUILD_PROFILE }}/*.dll
+          x64/${{ env.BUILD_PROFILE }}/*.exe
+          x64/${{ env.BUILD_PROFILE }}/*.pdb
+          x64/${{ env.BUILD_PROFILE }}/*.txt
