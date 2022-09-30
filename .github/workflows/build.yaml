@@ -22,7 +22,7 @@ jobs:
       uses: Nuget/setup-nuget@v1.0.5
 
     - name: Restore nuget packages
-      run: nuget restore Advocate\Advocate.sln
+      run: nuget restore Advocate.sln
 
     - name: Build
-      run: msbuild Advocate\Advocate.sln /p:Configuration=Release
+      run: msbuild Advocate.sln /p:Configuration=Release
