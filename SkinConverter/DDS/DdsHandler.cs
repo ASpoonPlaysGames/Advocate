@@ -127,6 +127,8 @@ namespace Advocate
                     if ((caps & 0x00000008) != 0x00000008)
                         caps |= 0x00000008;
                     break;
+                case "DX10":
+                    break;
 
                 default:
                     throw new NotImplementedException("DDS fourCC not supported: " + str_fourCC);
