@@ -238,7 +238,7 @@ namespace Advocate
             ConvertTaskComplete();
 
             // make some variables that are useful at various points
-            string tempFolderPath = Path.GetTempPath();
+            string tempFolderPath = Path.GetTempPath() + "/Advocate";
             string skinTempFolderPath = Path.GetFullPath(tempFolderPath + "/Skin");
             string modTempFolderPath = Path.GetFullPath(tempFolderPath + "/Mod");
             string repakTempFolderPath = Path.GetFullPath(tempFolderPath + "/RePak");
@@ -540,23 +540,27 @@ namespace Advocate
                 ConversionFailed(button, styleProperty, "Unknown Error!", true);
                 return;
             }
-            finally
+            /////////////
+            // cleanup //
+            /////////////
+
+            Message = "Cleaning up...";
+
+            try
             {
-                /////////////
-                // cleanup //
-                /////////////
-
-                Message = "Cleaning up...";
-
                 // delete temp folders
-                if (Directory.Exists(modTempFolderPath))
-                    Directory.Delete(modTempFolderPath, true);
+                if (Directory.Exists(tempFolderPath))
+                    Directory.Delete(tempFolderPath, true);
+            }
+            catch (Exception ex)
+            {
+                // create message box showing the full error
+                MessageBoxButton msgButton = MessageBoxButton.OK;
+                MessageBoxImage msgIcon = MessageBoxImage.Error;
+                MessageBox.Show("There was an unhandled error during conversion!\n\n" + ex.Message + "\n\n" + ex.StackTrace, "Conversion Error", msgButton, msgIcon);
 
-                if (Directory.Exists(repakTempFolderPath))
-                    Directory.Delete(repakTempFolderPath, true);
-
-                if (Directory.Exists(skinTempFolderPath))
-                    Directory.Delete(skinTempFolderPath, true);
+                ConversionFailed(button, styleProperty, "Cleanup Error!", true);
+                return;
             }
 
 
