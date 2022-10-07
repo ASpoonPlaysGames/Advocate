@@ -78,7 +78,7 @@ namespace Advocate
 
         // conversion progress tracking variables
         private int currentConvertStep = 0;
-        private int numConvertSteps = 13;
+        private const int numConvertSteps = 13;
         // checking
         // clearing old file structure if exists
         // unzipping zip to new folder
@@ -93,51 +93,91 @@ namespace Advocate
         // zip up result
         // move result out of temp folder
  
+        /// <summary>
+        /// The current conversion progress as a percentage
+        /// </summary>
         public float ConvertProgress
         {
             get { return 100 * ((float)currentConvertStep / (float)numConvertSteps); }
         }
 
+        /// <summary>
+        /// Increments the current conversion step, for tracking progress
+        /// </summary>
         private void ConvertTaskComplete()
         {
+            // increment the currentConvertStep
             currentConvertStep++;
+            // update progress bar
             OnPropertyChanged(nameof(ConvertProgress));
         }
 
+        /// <summary>
+        /// Changes a button to the success style and message, for when conversion is complete
+        /// </summary>
+        /// <param name="button">The button which has it's style changed</param>
+        /// <param name="styleProperty">The style property to change</param>
         private async void ConversionComplete(HandyControl.Controls.ProgressButton button, DependencyProperty styleProperty)
         {
+            // reset the currentConvertStep to 0, so that the progress bar is empty
             currentConvertStep = 0;
+            // update progress bar
             OnPropertyChanged(nameof(ConvertProgress));
+            // set message and status to show user that conversion is complete
             Status = "Complete!";
             Message = "Converted Successfully!";
+            // change button style, using Invoke due to async
             button.Dispatcher.Invoke(() =>
             {
                 button.SetResourceReference(styleProperty, "ProgressButtonSuccess");
             });
+            // wait 10 seconds before resetting back to normal
             await ChangeStyle_Delayed(button, styleProperty, 10000, "ProgressButtonPrimary");
             Status = "Convert Skin(s)";
+            // re-check the conversion status
             CheckConvertStatus();
         }
 
+        /// <summary>
+        /// Changes a button to a failure style, and show the reason for doing so for 3 seconds
+        /// </summary>
+        /// <param name="button">The button which has it's style changed</param>
+        /// <param name="styleProperty">The style property to change</param>
+        /// <param name="reason">The reason for failure</param>
+        /// <param name="reset">Whether or not to check the conversion status after the style has reset</param>
         private async void ConversionFailed(HandyControl.Controls.ProgressButton button, DependencyProperty styleProperty, string reason, bool reset = false)
         {
+            // reset the currentConvertStep to 0, so that the progress bar is empty
             currentConvertStep = 0;
+            // update progress bar
             OnPropertyChanged(nameof(ConvertProgress));
+            // set message and status to show user the error
             Status = "Failed!";
             Message = reason;
+            // change button style, using Invoke due to async
             button.Dispatcher.Invoke(() =>
             {
                 button.SetResourceReference(styleProperty, "ProgressButtonDanger");
             });
+            // wait 3 seconds before resetting back to normal
             await ChangeStyle_Delayed(button, styleProperty, 3000, "ProgressButtonPrimary");
             Status = "Convert Skin(s)";
+            // if needed, check the conversion status again
             if (reset)
             {
                 CheckConvertStatus();
             }
         }
 
-        public async Task ChangeStyle_Delayed(HandyControl.Controls.ProgressButton button, DependencyProperty styleProperty, int time, string style)
+        /// <summary>
+        /// Waits a specified amount of time, before changing the style of the button
+        /// </summary>
+        /// <param name="button">The button which has it's style changed</param>
+        /// <param name="styleProperty">The style property to change</param>
+        /// <param name="time">How long to wait before changing style, in ms</param>
+        /// <param name="style">The style name</param>
+        /// <returns>A Task to be used in async stuff</returns>
+        public static async Task ChangeStyle_Delayed(HandyControl.Controls.ProgressButton button, DependencyProperty styleProperty, int time, string style)
         {
             await Task.Delay(time);
             button.Dispatcher.Invoke( () =>
@@ -229,15 +269,17 @@ namespace Advocate
 
         public void Convert(HandyControl.Controls.ProgressButton button, DependencyProperty styleProperty)
         {
+            // check the conversion status before converting
             if (!CheckConvertStatus())
             {
                 // something is wrong with the setup, just exit
                 ConversionFailed(button, styleProperty, Message);
                 return;
             }
+            // move progress bar
             ConvertTaskComplete();
 
-            // make some variables that are useful at various points
+            // initialise various path variables, just because they are useful
             string tempFolderPath = Path.GetTempPath() + "/Advocate";
             string skinTempFolderPath = Path.GetFullPath(tempFolderPath + "/Skin");
             string modTempFolderPath = Path.GetFullPath(tempFolderPath + "/Mod");
@@ -261,14 +303,17 @@ namespace Advocate
                 // directory for RePak things
                 Directory.CreateDirectory(repakTempFolderPath);
 
+                // move progress bar
                 ConvertTaskComplete();
 
                 ///////////////////////////////
                 // unzip skin to temp folder //
                 ///////////////////////////////
 
+                // set the message for the new conversion step
                 Message = "Unzipping skin...";
 
+                // try to extract the zip, catch any errors and just exit, sometimes we get bad zips, non-zips, etc. etc.
                 try
                 {
                     ZipFile.ExtractToDirectory(SkinPath, skinTempFolderPath, true);
@@ -279,24 +324,30 @@ namespace Advocate
                     return;
                 }
 
+                // move progress bar
                 ConvertTaskComplete();
 
                 ////////////////////////////////////
                 // create temp mod file structure //
                 ////////////////////////////////////
 
+                // set the message for the new conversion step
                 Message = "Creating mod file structure...";
 
+                // create the bare-bones folder structure for the mod
                 Directory.CreateDirectory(modTempFolderPath + "\\mods\\" + AuthorName + "." + ModName + "\\paks");
 
+                // move progress bar
                 ConvertTaskComplete();
 
                 /////////////////////
                 // create icon.png //
                 /////////////////////
 
+                // if IconPath is an empty string, we try and generate the icon from a _col texture (thunderstore requires an icon)
                 if (IconPath == "")
                 {
+                    // set the message for the new conversion step
                     Message = "Generating icon.png...";
                     // fuck you, im using the col of the first folder i find, shouldve specified an icon path
                     string[] skinPaths = Directory.GetDirectories(skinTempFolderPath);
@@ -359,6 +410,7 @@ namespace Advocate
                 }
                 else
                 {
+                    // set the message for the new conversion step
                     Message = "Copying icon.png...";
                     // check that png is correct size
                     Image img = Image.FromFile(IconPath);
@@ -371,52 +423,63 @@ namespace Advocate
                     File.Copy(IconPath, modTempFolderPath + "\\icon.png");
                 }
 
+                // move progress bar
                 ConvertTaskComplete();
 
                 //////////////////////
                 // create README.md //
                 //////////////////////
 
+                // if the path is an empty string, we should be generating a README.md (for now it's just blank)
                 if (ReadMePath == "")
                 {
+                    // set the message for the new conversion step
                     Message = "Generating README.md...";
                     // todo, maybe add some basic default text here idk
                     File.WriteAllText(modTempFolderPath + "\\README.md", "");
                 }
                 else
                 {
+                    // set the message for the new conversion step
                     Message = "Copying README.md...";
+                    // copy the file over to the temp folder
                     File.Copy(ReadMePath, modTempFolderPath + "\\README.md");
                 }
 
+                // move progress bar
                 ConvertTaskComplete();
 
                 //////////////////////////
                 // create manifest.json //
                 //////////////////////////
 
+                // set the message for the new conversion step
                 Message = "Writing manifest.json...";
 
                 string manifest = string.Format("{{\n\"name\":\"{0}\",\n\"version_number\":\"{1}\",\n\"website_url\":\"\",\n\"dependencies\":[],\n\"description\":\"{2}\"\n}}", ModName.Replace(' ', '_'), Version, string.Format("Skin made by {0}", AuthorName));
                 File.WriteAllText(modTempFolderPath + "\\manifest.json", manifest);
 
+                // move progress bar
                 ConvertTaskComplete();
 
                 /////////////////////
                 // create mod.json //
                 /////////////////////
 
+                // set the message for the new conversion step
                 Message = "Writing mod.json...";
 
                 string modJson = string.Format("{{\n\"Name\": \"{0}\",\n\"Description\": \"\",\n\"Version\": \"{1}\",\n\"LoadPriority\": 1,\n\"ConVars\":[],\n\"Scripts\":[],\n\"Localisation\":[]\n}}", AuthorName + "." + ModName, Version);
                 File.WriteAllText(modTempFolderPath + "\\mods\\" + AuthorName + "." + ModName + "\\mod.json", modJson);
 
+                // move progress bar
                 ConvertTaskComplete();
 
                 //////////////////////////////////////////////////////////////////
                 // create map.json and move textures to temp folder for packing //
                 //////////////////////////////////////////////////////////////////
 
+                // set the message for the new conversion step
                 Message = "Copying textures...";
 
                 string map = string.Format("{{\n\"name\":\"{0}\",\n\"assetsDir\":\"{1}\",\n\"outputDir\":\"{2}\",\n\"version\": 7,\n\"files\":[\n", ModName, (repakTempFolderPath + "\\assets").Replace('\\', '/'), (modTempFolderPath + "\\mods\\" + AuthorName + "." + ModName + "\\paks").Replace('\\', '/'));
@@ -465,8 +528,11 @@ namespace Advocate
                                 // copy file
                                 Directory.CreateDirectory(Directory.GetParent($"{repakTempFolderPath}\\assets\\{texturePath}.dds").FullName);
                                 
+                                // instantiate dds handler, pass it the texture path
                                 DdsHandler handler = new(texture);
+                                // convert the dds image to one that works with RePak
                                 handler.Convert();
+                                // save the file where RePak expects it to be
                                 handler.Save($"{repakTempFolderPath}\\assets\\{texturePath}.dds");
                             }
                         }
@@ -477,12 +543,14 @@ namespace Advocate
                 map += "\n]\n}";
                 File.WriteAllText(repakTempFolderPath + "\\map.json", map);
 
+                // move progress bar
                 ConvertTaskComplete();
 
                 //////////////////////////
                 // pack using RePak.exe //
                 //////////////////////////
 
+                // set the message for the new conversion step
                 Message = "Packing using RePak...";
 
                 //var sb = new StringBuilder();
@@ -507,18 +575,22 @@ namespace Advocate
                     return;
                 }
 
+                // move progress bar
                 ConvertTaskComplete();
 
                 //////////////////////
                 // create rpak.json //
                 //////////////////////
 
+                // set the message for the new conversion step
                 Message = "Generating rpak.json...";
 
+                // we can just preload our rpak, since it should only contain textures
                 string rpakjson = string.Format("{{\n\"Preload\":\n{{\n\"{0}\":true\n}}\n}}", ModName + ".rpak");
 
                 File.WriteAllText(modTempFolderPath + "\\mods\\" + AuthorName + "." + ModName + "\\paks\\rpak.json", rpakjson);
 
+                // move progress bar
                 ConvertTaskComplete();
 
                 ///////////////////
@@ -529,6 +601,7 @@ namespace Advocate
 
                 ZipFile.CreateFromDirectory(modTempFolderPath, tempFolderPath + "\\" + AuthorName + "." + ModName + ".zip");
 
+                // move progress bar
                 ConvertTaskComplete();
 
                 ////////////////////////////////////
@@ -539,6 +612,7 @@ namespace Advocate
 
                 File.Move(tempFolderPath + "\\" + AuthorName + "." + ModName + ".zip", Properties.Settings.Default.OutputPath + "\\" + AuthorName + "." + ModName + ".zip", true);
 
+                // move progress bar
                 ConvertTaskComplete();
             }
             catch (Exception ex)
@@ -576,12 +650,20 @@ namespace Advocate
 
 
             // everything is done and good
+            // move progress bar
             ConversionComplete(button, styleProperty);
         }
 
-        private bool DdsToPng(string imagePath, string outputPath)
+        /// <summary>
+        /// Converts a .dds file to a .png file with dimensions of 256x256 (thunderstore compliant)
+        /// </summary>
+        /// <param name="imagePath">The path of the input image (.dds)</param>
+        /// <param name="outputPath">The path of the output image (.png)</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        private static bool DdsToPng(string imagePath, string outputPath)
         {
-            // yoinked from pfim usage example
+            // this code is just yoinked from pfim usage example
             using (var image = Pfimage.FromFile(imagePath))
             {
                 PixelFormat format;
@@ -605,7 +687,7 @@ namespace Advocate
                 {
                     var data = Marshal.UnsafeAddrOfPinnedArrayElement(image.Data, 0);
                     var bitmap = new Bitmap(image.Width, image.Height, image.Stride, format, data);
-                    // resize the bitmap before saving it
+                    // resize the bitmap before saving it, we need 256x256
                     var resized = new Bitmap(bitmap, new System.Drawing.Size(256, 256));
                     resized.Save(outputPath, System.Drawing.Imaging.ImageFormat.Png);
                 }
@@ -618,6 +700,7 @@ namespace Advocate
         }
 
         // these dictionaries have to be hardcoded because skin tool just hardcodes in offsets afaik
+        // maybe eventually use a .csv for this?
 
         // weapons
         private readonly Dictionary<string, string> weaponNameToPath = new()
@@ -845,6 +928,12 @@ namespace Advocate
             { "Monarch_Default", @"texture\\models\\titans_r2\\medium_vanguard\\warpaint\\warpaint_01\\t_m_vanguard_prime_warpaint_skin01" },
 
         };
+
+        /// <summary>
+        /// Gets the texture path from the skintool name for the texture
+        /// </summary>
+        /// <param name="textureName">The skintool name for the texture</param>
+        /// <returns>The texture path for RePak and the game, or an empty string if it couldn't be found</returns>
         private string TextureNameToPath(string textureName)
         {
             int lastIndex = textureName.LastIndexOf('_');
