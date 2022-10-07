@@ -425,7 +425,18 @@ namespace Advocate
                 bool isFirst = true;
                 foreach(string skinPath in Directory.GetDirectories(skinTempFolderPath))
                 {
-                    foreach (string resolution in Directory.GetDirectories(skinPath).OrderBy(path => int.Parse(Path.GetFileName(path))))
+                    // some skins have random files and folders in here, like images and stuff, so I have to do sorting in an annoying way
+                    List<string> parsedDirs = new();
+                    foreach(string dir in Directory.GetDirectories(skinPath))
+                    {
+                        // only add to the list of dirs
+                        if (int.TryParse(Path.GetFileName(dir), out int val))
+                        {
+                            parsedDirs.Add(dir);
+                        }
+                    }
+
+                    foreach (string resolution in parsedDirs.OrderBy(path => int.Parse(Path.GetFileName(path))))
                     {
                         if (int.TryParse(Path.GetFileName(resolution), out int res))
                         {
