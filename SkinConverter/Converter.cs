@@ -302,13 +302,13 @@ namespace Advocate
                     string[] skinPaths = Directory.GetDirectories(skinTempFolderPath);
                     if (skinPaths.Length == 0)
                     {
-                        ConversionFailed(button, styleProperty, "No Skins found in zip!");
+                        ConversionFailed(button, styleProperty, "Couldn't generate icon.png: No Skins found in zip!");
                         return;
                     }
                     string[] resolutions = Directory.GetDirectories(skinPaths[0]);
                     if (resolutions.Length == 0)
                     {
-                        ConversionFailed(button, styleProperty, "No Skins found in zip!");
+                        ConversionFailed(button, styleProperty, "Couldn't generate icon.png: No Skins found in zip!");
                         return;
                     }
                     // find highest resolution folder
@@ -325,14 +325,14 @@ namespace Advocate
                     // check that we actually found something
                     if (highestRes == 0)
                     {
-                        ConversionFailed(button, styleProperty, "No valid image resolutions found in zip!");
+                        ConversionFailed(button, styleProperty, "Couldn't generate icon.png: No valid image resolutions found in zip!");
                         return;
                     }
 
                     string[] files = Directory.GetFiles(skinPaths[0] + "\\" + highestRes.ToString());
                     if (files.Length == 0)
                     {
-                        ConversionFailed(button, styleProperty, "No files in highest resolution folder!");
+                        ConversionFailed(button, styleProperty, "Couldn't generate icon.png: No files in highest resolution folder!");
                         return;
                     }
                     // find _col file
@@ -347,13 +347,13 @@ namespace Advocate
                     }
                     if (colPath == "")
                     {
-                        ConversionFailed(button, styleProperty, "No _col texture found in highest resolution folder");
+                        ConversionFailed(button, styleProperty, "Couldn't generate icon.png: No _col texture found in highest resolution folder!");
                         return;
                     }
 
                     if(!DdsToPng(colPath, modTempFolderPath + "\\icon.png"))
                     {
-                        ConversionFailed(button, styleProperty, "Failed to convert dds to png for icon!");
+                        ConversionFailed(button, styleProperty, "Couldn't generate icon.png: Failed to convert dds to png!");
                         return;
                     }
                 }
