@@ -280,33 +280,12 @@ namespace Advocate
             ConvertTaskComplete();
 
             // initialise various path variables, just because they are useful
-            string tempFolderPath = Path.GetTempPath() + "/Advocate";
+
+            // the temp path is appended with the current date and time to prevent duplicates
+            string tempFolderPath = Path.GetTempPath() + "/Advocate-" + DateTime.Now.ToString("yyyyMMdd-THHmmss");
             string skinTempFolderPath = Path.GetFullPath(tempFolderPath + "/Skin");
             string modTempFolderPath = Path.GetFullPath(tempFolderPath + "/Mod");
             string repakTempFolderPath = Path.GetFullPath(tempFolderPath + "/RePak");
-
-            /////////////
-            // cleanup //
-            /////////////
-
-            Message = "Cleaning up...";
-
-            try
-            {
-                // delete temp folders
-                if (Directory.Exists(tempFolderPath))
-                    Directory.Delete(tempFolderPath, true);
-            }
-            catch (Exception ex)
-            {
-                // create message box showing the full error
-                MessageBoxButton msgButton = MessageBoxButton.OK;
-                MessageBoxImage msgIcon = MessageBoxImage.Error;
-                MessageBox.Show("There was an unhandled error during conversion!\n\n" + ex.Message + "\n\n" + ex.StackTrace, "Conversion Error", msgButton, msgIcon);
-
-                ConversionFailed(button, styleProperty, "Cleanup Error!", true);
-                return;
-            }
 
             // try convert stuff, if we get a weird exception, don't crash preferably
             try
@@ -648,6 +627,16 @@ namespace Advocate
 
                 // move progress bar
                 ConvertTaskComplete();
+
+                /////////////
+                // cleanup //
+                /////////////
+
+                Message = "Cleaning up...";
+
+                // delete temp folders
+                if (Directory.Exists(tempFolderPath))
+                    Directory.Delete(tempFolderPath, true);
             }
             catch (Exception ex)
             {
