@@ -576,6 +576,10 @@ namespace Advocate
                 // set the message for the new conversion step
                 Message = "Packing using RePak...";
 
+
+                // create the process for RePak
+
+
                 //var sb = new StringBuilder();
 
                 Process P = new();
@@ -590,8 +594,11 @@ namespace Advocate
                 P.Start();
                 //P.BeginOutputReadLine();
                 //P.BeginErrorReadLine();
+
+                // wait for RePak to finish
                 P.WaitForExit();
 
+                // currently, RePak always uses exitcode 1 for failure, if we implement more error codes then I'll probably give a more detailed error here
                 if (P.ExitCode == 1)
                 {
                     ConversionFailed(button, styleProperty, "RePak failed to pack the rpak!");
@@ -620,8 +627,10 @@ namespace Advocate
                 // zip up result //
                 ///////////////////
 
+                // set the message for the new conversion step
                 Message = "Zipping mod...";
 
+                // create the zip file from the mod temp path
                 ZipFile.CreateFromDirectory(modTempFolderPath, tempFolderPath + "\\" + AuthorName + "." + ModName + ".zip");
 
                 // move progress bar
@@ -631,8 +640,10 @@ namespace Advocate
                 // move result out of temp folder //
                 ////////////////////////////////////
 
+                // set the message for the new conversion step
                 Message = "Moving zip to output folder...";
 
+                // move the zip file we created to the output folder
                 File.Move(tempFolderPath + "\\" + AuthorName + "." + ModName + ".zip", Properties.Settings.Default.OutputPath + "\\" + AuthorName + "." + ModName + ".zip", true);
 
                 // move progress bar
@@ -645,6 +656,7 @@ namespace Advocate
                 MessageBoxImage msgIcon = MessageBoxImage.Error;
                 MessageBox.Show("There was an unhandled error during conversion!\n\n" + ex.Message + "\n\n" + ex.StackTrace, "Conversion Error", msgButton, msgIcon);
 
+                // exit out of the conversion
                 ConversionFailed(button, styleProperty, "Unknown Error!", true);
                 return;
             }
@@ -936,19 +948,25 @@ namespace Advocate
         /// <returns>The texture path for RePak and the game, or an empty string if it couldn't be found</returns>
         private string TextureNameToPath(string textureName)
         {
+            // find the last '_', the chars after this determine the texture type
             int lastIndex = textureName.LastIndexOf('_');
 
+            // split textureName into the texture type and the texture name
             string txtrType = textureName.Substring(lastIndex, textureName.Length - lastIndex);
             textureName = textureName.Substring(0, lastIndex);
 
+            // check if the texture is a weapon
             if (weaponNameToPath.ContainsKey(textureName))
                 return weaponNameToPath[textureName] + txtrType;
 
+            // check if the texture is an overwritten texture
             if (nameToPathOverrides.ContainsKey(textureName + txtrType))
                 return nameToPathOverrides[textureName + txtrType];
+            // check if the texture is a pilot/titan/misc
             if (nameToPath.ContainsKey(textureName))
                 return nameToPath[textureName] + txtrType;
 
+            // return empty string, signifying failure
             return "";
         }
     }
