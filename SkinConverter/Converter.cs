@@ -282,7 +282,7 @@ namespace Advocate
             // initialise various path variables, just because they are useful
 
             // the temp path is appended with the current date and time to prevent duplicates
-            string tempFolderPath = Path.GetTempPath() + "/Advocate-" + DateTime.Now.ToString("yyyyMMdd-THHmmss");
+            string tempFolderPath = Path.GetTempPath() + "/Advocate/" + DateTime.Now.ToString("yyyyMMdd-THHmmss");
             string skinTempFolderPath = Path.GetFullPath(tempFolderPath + "/Skin");
             string modTempFolderPath = Path.GetFullPath(tempFolderPath + "/Mod");
             string repakTempFolderPath = Path.GetFullPath(tempFolderPath + "/RePak");
