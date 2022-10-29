@@ -103,6 +103,10 @@ namespace Advocate
         public void Convert()
         {
             string str_fourCC = new(pixel_FourCC);
+            // this is required by the game (and legion) to read things properly, but sometimes it isn't set
+            if (pitchOrLinearSize == 0)
+                pitchOrLinearSize = (uint)data.Length;
+
             switch (str_fourCC)
             {
                 case "DXT1":
@@ -111,15 +115,11 @@ namespace Advocate
                 case "ATI2":
                 case "BC5U":
                     pixel_FourCC = new char[4] { 'B', 'C', '5', 'U' };
-                    if (pitchOrLinearSize == 0)
-                        pitchOrLinearSize = (uint)data.Length;
                     if ((flags & 0x000A0000) != 0x000A0000)
                         flags |= 0x000A0000;
                     break;
                 case "BC4U":
                     //ToDX10(DXGI_FORMAT.DXGI_FORMAT_BC4_UNORM);
-                    if (pitchOrLinearSize == 0)
-                        pitchOrLinearSize = (uint)data.Length;
                     if ((flags & 0x000A0000) != 0x000A0000)
                         flags |= 0x000A0000;
                     if ((caps & 0x00400000) != 0x00400000)
