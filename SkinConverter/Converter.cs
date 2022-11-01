@@ -205,6 +205,12 @@ namespace Advocate
                 Message = "Error: RePak path does not lead to RePak.exe! (Change in Settings)";
                 return false;
             }
+            // check that Output path is valid
+            if (!Directory.Exists(Properties.Settings.Default.OutputPath))
+            {
+                Message = "Error: Output path is invalid! (Change in Settings)";
+                return false;
+            }
             // check that SkinPath is valid and leads to a .zip file
             if (!File.Exists(SkinPath))
             {
