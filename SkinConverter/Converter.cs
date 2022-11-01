@@ -192,85 +192,99 @@ namespace Advocate
         /// <returns>true if no issues are found</returns>
         public bool CheckConvertStatus()
         {
-            Status = "Convert Skin(s)";
-            // check that RePak path is valid
-            if (!File.Exists(Properties.Settings.Default.RePakPath))
+            try
             {
-                Message = "Error: RePak path is invalid! (Change in Settings)";
-                return false;
-            }
-            // i swear to god if people rename RePak.exe and break shit im going to commit war crimes
-            if (!Properties.Settings.Default.RePakPath.EndsWith("RePak.exe"))
-            {
-                Message = "Error: RePak path does not lead to RePak.exe! (Change in Settings)";
-                return false;
-            }
-            // check that Output path is valid
-            if (!Directory.Exists(Properties.Settings.Default.OutputPath))
-            {
-                Message = "Error: Output path is invalid! (Change in Settings)";
-                return false;
-            }
-            // check that SkinPath is valid and leads to a .zip file
-            if (!File.Exists(SkinPath))
-            {
-                Message = "Error: Skin path is invalid!";
-                return false;
-            }
-            if (!SkinPath.EndsWith(".zip"))
-            {
-                Message = "Error: Skin path doesn't lead to a .zip file!";
-                return false;
-            }
-            // check that ReadMePath is valid and leads to a .md file
-            if (!string.IsNullOrWhiteSpace(ReadMePath) && !ReadMePath.EndsWith(".md"))
-            {
-                Message = "Error: README path doesn't lead to a .md file!";
-                return false;
-            }
-            // check that IconPath is valid and leads to a .png file
-            if (!string.IsNullOrWhiteSpace(IconPath) && !IconPath.EndsWith(".png"))
-            {
-                Message = "Error: Icon path doesn't lead to a .png file!";
-                return false;
-            }
-            // check that AuthorName is valid
-            if (AuthorName.Length == 0)
-            {
-                Message = "Error: Author Name is required!";
-                return false;
-            }
-            if (Regex.Match(AuthorName, "[^\\da-zA-Z _]").Success)
-            {
-                Message = "Error: Author Name is invalid!";
-                return false;
-            }
-            // check that ModName is valid
-            if (ModName.Length == 0)
-            {
-                Message = "Error: Skin Name is required!";
-                return false;
-            }
-            if (Regex.Match(ModName, "[^\\da-zA-Z _]").Success)
-            {
-                Message = "Error: Skin Name is invalid!";
-                return false;
-            }
-            // check that Version is valid
-            if (Version.Length == 0)
-            {
-                Message = "Error: Version is required!";
-                return false;
-            }
-            if (!Regex.Match(Version, "^\\d+.\\d+.\\d+$").Success)
-            {
-                Message = "Error: Version is invalid! (Example: 1.0.0)";
-                return false;
-            }
+                Status = "Convert Skin(s)";
+                // check that RePak path is valid
+                if (!File.Exists(Properties.Settings.Default.RePakPath))
+                {
+                    Message = "Error: RePak path is invalid! (Change in Settings)";
+                    return false;
+                }
+                // i swear to god if people rename RePak.exe and break shit im going to commit war crimes
+                if (!Properties.Settings.Default.RePakPath.EndsWith("RePak.exe"))
+                {
+                    Message = "Error: RePak path does not lead to RePak.exe! (Change in Settings)";
+                    return false;
+                }
+                // check that Output path is valid
+                if (!Directory.Exists(Properties.Settings.Default.OutputPath))
+                {
+                    Message = "Error: Output path is invalid! (Change in Settings)";
+                    return false;
+                }
+                // check that SkinPath is valid and leads to a .zip file
+                if (!File.Exists(SkinPath))
+                {
+                    Message = "Error: Skin path is invalid!";
+                    return false;
+                }
+                if (!SkinPath.EndsWith(".zip"))
+                {
+                    Message = "Error: Skin path doesn't lead to a .zip file!";
+                    return false;
+                }
+                // check that ReadMePath is valid and leads to a .md file
+                if (!string.IsNullOrWhiteSpace(ReadMePath) && !ReadMePath.EndsWith(".md"))
+                {
+                    Message = "Error: README path doesn't lead to a .md file!";
+                    return false;
+                }
+                // check that IconPath is valid and leads to a .png file
+                if (!string.IsNullOrWhiteSpace(IconPath) && !IconPath.EndsWith(".png"))
+                {
+                    Message = "Error: Icon path doesn't lead to a .png file!";
+                    return false;
+                }
+                // check that AuthorName is valid
+                if (AuthorName.Length == 0)
+                {
+                    Message = "Error: Author Name is required!";
+                    return false;
+                }
+                if (Regex.Match(AuthorName, "[^\\da-zA-Z _]").Success)
+                {
+                    Message = "Error: Author Name is invalid!";
+                    return false;
+                }
+                // check that ModName is valid
+                if (ModName.Length == 0)
+                {
+                    Message = "Error: Skin Name is required!";
+                    return false;
+                }
+                if (Regex.Match(ModName, "[^\\da-zA-Z _]").Success)
+                {
+                    Message = "Error: Skin Name is invalid!";
+                    return false;
+                }
+                // check that Version is valid
+                if (Version.Length == 0)
+                {
+                    Message = "Error: Version is required!";
+                    return false;
+                }
+                if (!Regex.Match(Version, "^\\d+.\\d+.\\d+$").Success)
+                {
+                    Message = "Error: Version is invalid! (Example: 1.0.0)";
+                    return false;
+                }
 
-            // everything looks good
-            Message = "Ready!";
-            return true;
+                // everything looks good
+                Message = "Ready!";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // create message box showing the full error
+                MessageBoxButton msgButton = MessageBoxButton.OK;
+                MessageBoxImage msgIcon = MessageBoxImage.Error;
+                MessageBox.Show("There was an unhandled error during checking!\n\n" + ex.Message + "\n\n" + ex.StackTrace, "Conversion Checking Error", msgButton, msgIcon);
+
+                // exit out of the conversion
+                Message = "Unknown Error!";
+                return false;
+            }
         }
 
         public void Convert(HandyControl.Controls.ProgressButton button, DependencyProperty styleProperty)
