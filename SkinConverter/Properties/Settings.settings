@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SkinConverter.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Advocate.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="RePakPath" Type="System.String" Scope="User">
@@ -7,6 +7,9 @@
     </Setting>
     <Setting Name="OutputPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">&lt;select output path&gt;</Value>
+    </Setting>
+    <Setting Name="Description" Type="System.String" Scope="User">
+      <Value Profile="(Default)">{TYPES} skin made by {AUTHOR}, converted using Advocate</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         Title="Advocate Skin Converter" Height="450" Width="800"
        
-        Background="{DynamicResource MainContentForegroundBrush}">
+        Background="{DynamicResource MainContentForegroundBrush}"
+        ResizeMode="CanMinimize">
     <Grid Visibility="Visible" Margin="5,5,5,5">
         <StackPanel Height="30" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="0,0,0,0">
             <hc:ProgressButton Style="{StaticResource ProgressButtonPrimary}" Progress = "{Binding ConvertProgress}" x:Name="ConvertButton" Content="{Binding Status, Mode = OneWay}" Margin="5,0,5,0" Checked="ConvertButton_Click"/>

@@ -46,5 +46,17 @@ namespace Advocate.Properties {
                 this["OutputPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("{TYPES} skin made by {AUTHOR}, converted using Advocate")]
+        public string Description {
+            get {
+                return ((string)(this["Description"]));
+            }
+            set {
+                this["Description"] = value;
+            }
+        }
     }
 }
