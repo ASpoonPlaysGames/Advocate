@@ -24,8 +24,8 @@
                             <ColumnDefinition Width="3*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Label Grid.Column="0" Content="{Binding Path=key}" Margin="5,5,5,5" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalContentAlignment="Left"/>
-                        <Label Grid.Column="1" Content="{Binding Path=description}" Margin="5,5,5,5" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalContentAlignment="Left"/>
+                        <Label Grid.Column="0" Content="{Binding Path=Key}" Margin="5,5,5,5" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalContentAlignment="Left"/>
+                        <Label Grid.Column="1" Content="{Binding Path=Description}" Margin="5,5,5,5" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalContentAlignment="Left"/>
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

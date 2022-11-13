@@ -22,8 +22,8 @@ namespace Advocate
     {
         public struct HelpHint
         {
-            public string key { get; set; }
-            public string description { get; set; }
+            public string Key { get; set; }
+            public string Description { get; set; }
         }
 
         public ObservableCollection<HelpHint> descHelpHints { get; set; }
@@ -31,8 +31,8 @@ namespace Advocate
         public void AddHelpHint(string key, string desc)
         {
             HelpHint newHint = new();
-            newHint.key = key;
-            newHint.description = desc;
+            newHint.Key = key;
+            newHint.Description = desc;
             descHelpHints.Add(newHint);
         }
 
@@ -40,7 +40,6 @@ namespace Advocate
         {
             InitializeComponent();
             descHelpHints = new ObservableCollection<HelpHint>();
-
             
             AddHelpHint("Key:", "Description:"); // todo, replace with a proper header
 

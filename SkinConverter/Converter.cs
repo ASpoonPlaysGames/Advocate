@@ -621,7 +621,7 @@ namespace Advocate
                 };
 
                 string manifest = $"{{\n\"name\": \"{ModName.Replace(' ', '_')}\",\n\"version_number\":\"{Version}\",\n\"website_url\":\"https://github.com/ASpoonPlaysGames/Advocate\",\n\"dependencies\":[],\n\"description\":\"{desc.ParseDescription(Properties.Settings.Default.Description)}\"\n}}";
-                File.WriteAllText(modTempFolderPath + "\\manifest.json", manifest);
+                File.WriteAllText($"{modTempFolderPath}/manifest.json", manifest);
 
                 // move progress bar
                 ConvertTaskComplete();
@@ -660,7 +660,7 @@ namespace Advocate
                 Message = "Moving zip to output folder...";
 
                 // move the zip file we created to the output folder
-                File.Move($"{tempFolderPath}/{AuthorName}.{ModName}.zip", $"{Properties.Settings.Default.OutputPath}/{AuthorName}.{ModName}.zip", true);
+                File.Move($"{tempFolderPath}/{AuthorName}.{ModName}.zip", $"{Properties.Settings.Default.OutputPath}/{AuthorName}.{ModName}-{Version}.zip", true);
 
                 // move progress bar
                 ConvertTaskComplete();
@@ -680,7 +680,7 @@ namespace Advocate
                 // create message box showing the full error
                 MessageBoxButton msgButton = MessageBoxButton.OK;
                 MessageBoxImage msgIcon = MessageBoxImage.Error;
-                MessageBox.Show("There was an unhandled error during conversion!\n\n" + ex.Message + "\n\n" + ex.StackTrace, "Conversion Error", msgButton, msgIcon);
+                MessageBox.Show($"There was an unhandled error during conversion!\n\n{ex.Message}\n\n{ex.StackTrace}", "Conversion Error", msgButton, msgIcon);
 
                 // exit out of the conversion
                 ConversionFailed(button, styleProperty, "Unknown Error!", true);
@@ -978,8 +978,8 @@ namespace Advocate
             int lastIndex = textureName.LastIndexOf('_');
 
             // split textureName into the texture type and the texture name
-            string txtrType = textureName.Substring(lastIndex, textureName.Length - lastIndex);
-            textureName = textureName.Substring(0, lastIndex);
+            string txtrType = textureName[lastIndex..];
+            textureName = textureName[..lastIndex];
 
             // check if the texture is a weapon
             if (weaponNameToPath.ContainsKey(textureName))
