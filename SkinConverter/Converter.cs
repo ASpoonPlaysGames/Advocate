@@ -16,11 +16,11 @@ using Pfim;
 
 namespace Advocate
 {
-    internal class Converter : INotifyPropertyChanged 
+    internal class Converter : INotifyPropertyChanged
     {
         // property change stuff that i don't really understand tbh
         public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged( string propertyName = "")
+        private void OnPropertyChanged(string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -92,7 +92,7 @@ namespace Advocate
         // pack using RePak.exe
         // zip up result
         // move result out of temp folder
- 
+
         /// <summary>
         /// The current conversion progress as a percentage
         /// </summary>
@@ -179,10 +179,13 @@ namespace Advocate
         /// <returns>A Task to be used in async stuff</returns>
         public static async Task ChangeStyle_Delayed(HandyControl.Controls.ProgressButton button, DependencyProperty styleProperty, int time, string style)
         {
+            // wait the specified time
             await Task.Delay(time);
-            button.Dispatcher.Invoke( () =>
+            // change button style, using Invoke due to async
+            button.Dispatcher.Invoke(() =>
             {
-               button.SetResourceReference(styleProperty, style);
+                // set the style of the button
+                button.SetResourceReference(styleProperty, style);
             });
         }
 
@@ -279,10 +282,10 @@ namespace Advocate
                 // create message box showing the full error
                 MessageBoxButton msgButton = MessageBoxButton.OK;
                 MessageBoxImage msgIcon = MessageBoxImage.Error;
-                MessageBox.Show("There was an unhandled error during checking!\n\n" + ex.Message + "\n\n" + ex.StackTrace, "Conversion Checking Error", msgButton, msgIcon);
+                MessageBox.Show($"There was an unhandled error during checking!\n\n{ex.Message}\n\n{ex.StackTrace}", "Conversion Checking Error", msgButton, msgIcon);
 
                 // exit out of the conversion
-                Message = "Unknown Error!";
+                Message = "Unknown Checking Error!";
                 return false;
             }
         }
@@ -302,10 +305,10 @@ namespace Advocate
             // initialise various path variables, just because they are useful
 
             // the temp path is appended with the current date and time to prevent duplicates
-            string tempFolderPath = Path.GetTempPath() + "/Advocate/" + DateTime.Now.ToString("yyyyMMdd-THHmmss");
-            string skinTempFolderPath = Path.GetFullPath(tempFolderPath + "/Skin");
-            string modTempFolderPath = Path.GetFullPath(tempFolderPath + "/Mod");
-            string repakTempFolderPath = Path.GetFullPath(tempFolderPath + "/RePak");
+            string tempFolderPath = $"{Path.GetTempPath()}/Advocate/{DateTime.Now:yyyyMMdd-THHmmss}";
+            string skinTempFolderPath = Path.GetFullPath($"{tempFolderPath}/Skin");
+            string modTempFolderPath = Path.GetFullPath($"{tempFolderPath}/Mod");
+            string repakTempFolderPath = Path.GetFullPath($"{tempFolderPath}/RePak");
 
             // try convert stuff, if we get a weird exception, don't crash preferably
             try
@@ -357,7 +360,7 @@ namespace Advocate
                 Message = "Creating mod file structure...";
 
                 // create the bare-bones folder structure for the mod
-                Directory.CreateDirectory(modTempFolderPath + "\\mods\\" + AuthorName + "." + ModName + "\\paks");
+                Directory.CreateDirectory($"{modTempFolderPath}/mods/{AuthorName}.{ModName}/paks");
 
                 // move progress bar
                 ConvertTaskComplete();
@@ -367,7 +370,7 @@ namespace Advocate
                 /////////////////////
 
                 // if IconPath is an empty string, we try and generate the icon from a _col texture (thunderstore requires an icon)
-                if (IconPath == "")
+                if (string.IsNullOrWhiteSpace(IconPath))
                 {
                     // set the message for the new conversion step
                     Message = "Generating icon.png...";
@@ -424,7 +427,7 @@ namespace Advocate
                         return;
                     }
 
-                    if(!DdsToPng(colPath, modTempFolderPath + "\\icon.png"))
+                    if (!DdsToPng(colPath, modTempFolderPath + "\\icon.png"))
                     {
                         ConversionFailed(button, styleProperty, "Couldn't generate icon.png: Failed to convert dds to png!");
                         return;
@@ -442,7 +445,7 @@ namespace Advocate
                         return;
                     }
                     // copy png over
-                    File.Copy(IconPath, modTempFolderPath + "\\icon.png");
+                    File.Copy(IconPath, $"{modTempFolderPath}/icon.png");
                 }
 
                 // move progress bar
@@ -452,47 +455,21 @@ namespace Advocate
                 // create README.md //
                 //////////////////////
 
-                // if the path is an empty string, we should be generating a README.md (for now it's just blank)
-                if (ReadMePath == "")
+                // if the path is an empty/whitespace string, we should be generating a README.md (for now it's just blank)
+                if (string.IsNullOrWhiteSpace(ReadMePath))
                 {
                     // set the message for the new conversion step
                     Message = "Generating README.md...";
                     // todo, maybe add some basic default text here idk
-                    File.WriteAllText(modTempFolderPath + "\\README.md", "");
+                    File.WriteAllText($"{modTempFolderPath}/README.md", "");
                 }
                 else
                 {
                     // set the message for the new conversion step
                     Message = "Copying README.md...";
                     // copy the file over to the temp folder
-                    File.Copy(ReadMePath, modTempFolderPath + "\\README.md");
+                    File.Copy(ReadMePath, $"{modTempFolderPath}/README.md");
                 }
-
-                // move progress bar
-                ConvertTaskComplete();
-
-                //////////////////////////
-                // create manifest.json //
-                //////////////////////////
-
-                // set the message for the new conversion step
-                Message = "Writing manifest.json...";
-
-                string manifest = string.Format("{{\n\"name\":\"{0}\",\n\"version_number\":\"{1}\",\n\"website_url\":\"\",\n\"dependencies\":[],\n\"description\":\"{2}\"\n}}", ModName.Replace(' ', '_'), Version, string.Format("Skin made by {0}", AuthorName));
-                File.WriteAllText(modTempFolderPath + "\\manifest.json", manifest);
-
-                // move progress bar
-                ConvertTaskComplete();
-
-                /////////////////////
-                // create mod.json //
-                /////////////////////
-
-                // set the message for the new conversion step
-                Message = "Writing mod.json...";
-
-                string modJson = string.Format("{{\n\"Name\": \"{0}\",\n\"Description\": \"\",\n\"Version\": \"{1}\",\n\"LoadPriority\": 1,\n\"ConVars\":[],\n\"Scripts\":[],\n\"Localisation\":[]\n}}", AuthorName + "." + ModName, Version);
-                File.WriteAllText(modTempFolderPath + "\\mods\\" + AuthorName + "." + ModName + "\\mod.json", modJson);
 
                 // move progress bar
                 ConvertTaskComplete();
@@ -504,17 +481,22 @@ namespace Advocate
                 // set the message for the new conversion step
                 Message = "Copying textures...";
 
-                string map = string.Format("{{\n\"name\":\"{0}\",\n\"assetsDir\":\"{1}\",\n\"outputDir\":\"{2}\",\n\"version\": 7,\n\"files\":[\n", ModName, (repakTempFolderPath + "\\assets").Replace('\\', '/'), (modTempFolderPath + "\\mods\\" + AuthorName + "." + ModName + "\\paks").Replace('\\', '/'));
+                // this holds a string of json which will be appended to as the map file is constructed, TODO - refactor to use json library?
+                string map = $"{{\n\"name\":\"{ModName}\",\n\"assetsDir\":\"{repakTempFolderPath.Replace('\\', '/')}/assets\",\n\"outputDir\":\"{modTempFolderPath.Replace('\\', '/')}/mods/{AuthorName}.{ModName}/paks\",\n\"version\": 7,\n\"files\":[\n";
+                
                 // this tracks the textures that we have already added to the json, so we can avoid duplicates in there
                 List<string> textures = new();
+                // this tracks the different skin types that we have found, for description parsing later
+                List<string> skinTypes = new();
+
                 bool isFirst = true;
-                foreach(string skinPath in Directory.GetDirectories(skinTempFolderPath))
+                foreach (string skinPath in Directory.GetDirectories(skinTempFolderPath))
                 {
                     // some skins have random files and folders in here, like images and stuff, so I have to do sorting in an annoying way
                     List<string> parsedDirs = new();
-                    foreach(string dir in Directory.GetDirectories(skinPath))
+                    foreach (string dir in Directory.GetDirectories(skinPath))
                     {
-                        // only add to the list of dirs
+                        // only add to the list of dirs if we manage to parse the value
                         if (int.TryParse(Path.GetFileName(dir), out int val))
                         {
                             parsedDirs.Add(dir);
@@ -530,9 +512,9 @@ namespace Advocate
                                 // move texture to temp folder for packing
                                 // convert from skin tool syntax to actual texture path, gotta be hardcoded because pain
                                 string texturePath = TextureNameToPath(Path.GetFileNameWithoutExtension(texture));
-                                if (texturePath == "")
+                                if (string.IsNullOrWhiteSpace(texturePath))
                                 {
-                                    ConversionFailed(button, styleProperty, "Failed to convert texture '" + Path.GetFileNameWithoutExtension(texture) + "')");
+                                    ConversionFailed(button, styleProperty, $"Failed to convert texture '{Path.GetFileNameWithoutExtension(texture)}')");
                                     return;
                                 }
 
@@ -543,19 +525,19 @@ namespace Advocate
                                     if (!isFirst)
                                         map += ",\n";
                                     map += $"{{\n\"$type\":\"txtr\",\n\"path\":\"{texturePath}\",\n\"disableStreaming\":true,\n\"saveDebugName\":true\n}}";
-                                    // add texture to tracked textures
+                                    // add texturePath to tracked textures
                                     textures.Add(texturePath);
+                                    // add texture to skinTypes for tracking which skins are in the package
+                                    skinTypes.Add(Path.GetFileNameWithoutExtension(texture).Split("_")[0]);
                                 }
                                 isFirst = false;
-                                // copy file
-                                Directory.CreateDirectory(Directory.GetParent($"{repakTempFolderPath}\\assets\\{texturePath}.dds").FullName);
-                                
+
                                 // instantiate dds handler, pass it the texture path
                                 DdsHandler handler = new(texture);
                                 // convert the dds image to one that works with RePak
                                 handler.Convert();
                                 // save the file where RePak expects it to be
-                                handler.Save($"{repakTempFolderPath}\\assets\\{texturePath}.dds");
+                                handler.Save($"{repakTempFolderPath}/assets/{texturePath}.dds");
                             }
                         }
                     }
@@ -563,7 +545,7 @@ namespace Advocate
 
                 // end the json
                 map += "\n]\n}";
-                File.WriteAllText(repakTempFolderPath + "\\map.json", map);
+                File.WriteAllText($"{repakTempFolderPath}/map.json", map);
 
                 // move progress bar
                 ConvertTaskComplete();
@@ -589,7 +571,7 @@ namespace Advocate
                 //P.ErrorDataReceived += (sender, args) => sb.AppendLine(args.Data);
                 //P.StartInfo.UseShellExecute = false;
                 P.StartInfo.FileName = Properties.Settings.Default.RePakPath;
-                P.StartInfo.Arguments = "\"" + repakTempFolderPath + "\\map.json\"";
+                P.StartInfo.Arguments = $"\"{repakTempFolderPath}\\map.json\"";
                 P.Start();
                 //P.BeginOutputReadLine();
                 //P.BeginErrorReadLine();
@@ -615,9 +597,44 @@ namespace Advocate
                 Message = "Generating rpak.json...";
 
                 // we can just preload our rpak, since it should only contain textures
-                string rpakjson = string.Format("{{\n\"Preload\":\n{{\n\"{0}\":true\n}}\n}}", ModName + ".rpak");
+                string rpakjson = $"{{\n\"Preload\":\n{{\n\"{ModName}.rpak\":true\n}}\n}}";
 
-                File.WriteAllText(modTempFolderPath + "\\mods\\" + AuthorName + "." + ModName + "\\paks\\rpak.json", rpakjson);
+                File.WriteAllText($"{modTempFolderPath}/mods/{AuthorName}.{ModName}/paks/rpak.json", rpakjson);
+
+                // move progress bar
+                ConvertTaskComplete();
+
+                //////////////////////////
+                // create manifest.json //
+                //////////////////////////
+
+                // set the message for the new conversion step
+                Message = "Writing manifest.json...";
+
+                // create the DescriptionHandler for parsing the description
+                DescriptionHandler desc = new()
+                {
+                    Author = AuthorName,
+                    Version = Version,
+                    Name = ModName,
+                    Types = skinTypes.Distinct().ToArray()
+                };
+
+                string manifest = $"{{\n\"name\": \"{ModName.Replace(' ', '_')}\",\n\"version_number\":\"{Version}\",\n\"website_url\":\"https://github.com/ASpoonPlaysGames/Advocate\",\n\"dependencies\":[],\n\"description\":\"{desc.ParseDescription(Properties.Settings.Default.Description)}\"\n}}";
+                File.WriteAllText(modTempFolderPath + "\\manifest.json", manifest);
+
+                // move progress bar
+                ConvertTaskComplete();
+
+                /////////////////////
+                // create mod.json //
+                /////////////////////
+
+                // set the message for the new conversion step
+                Message = "Writing mod.json...";
+
+                string modJson = $"{{\n\"Name\": \"{AuthorName}.{ModName}\",\n\"Description\": \"{desc.ParseDescription(Properties.Settings.Default.Description)}\",\n\"Version\": \"{Version}\",\n\"LoadPriority\": 1,\n}}";
+                File.WriteAllText($"{modTempFolderPath}/mods/{AuthorName}.{ModName}/mod.json", modJson);
 
                 // move progress bar
                 ConvertTaskComplete();
@@ -630,7 +647,7 @@ namespace Advocate
                 Message = "Zipping mod...";
 
                 // create the zip file from the mod temp path
-                ZipFile.CreateFromDirectory(modTempFolderPath, tempFolderPath + "\\" + AuthorName + "." + ModName + ".zip");
+                ZipFile.CreateFromDirectory(modTempFolderPath, $"{tempFolderPath}/{AuthorName}.{ModName}.zip");
 
                 // move progress bar
                 ConvertTaskComplete();
@@ -643,7 +660,7 @@ namespace Advocate
                 Message = "Moving zip to output folder...";
 
                 // move the zip file we created to the output folder
-                File.Move(tempFolderPath + "\\" + AuthorName + "." + ModName + ".zip", Properties.Settings.Default.OutputPath + "\\" + AuthorName + "." + ModName + ".zip", true);
+                File.Move($"{tempFolderPath}/{AuthorName}.{ModName}.zip", $"{Properties.Settings.Default.OutputPath}/{AuthorName}.{ModName}.zip", true);
 
                 // move progress bar
                 ConvertTaskComplete();

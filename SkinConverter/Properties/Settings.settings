@@ -9,7 +9,7 @@
       <Value Profile="(Default)">&lt;select output path&gt;</Value>
     </Setting>
     <Setting Name="Description" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Skin made by #AUTHOR, converted using Advocate</Value>
+      <Value Profile="(Default)">{TYPES} skin made by {AUTHOR}, converted using Advocate</Value>
     </Setting>
   </Settings>
 </SettingsFile>

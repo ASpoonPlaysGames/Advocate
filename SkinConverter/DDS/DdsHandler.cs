@@ -148,7 +148,10 @@ namespace Advocate
 
         public void Save(string path)
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            // create the directory if it exists and path has a parent directory (it always should, but this is just in case)
+            if (!string.IsNullOrEmpty(Path.GetDirectoryName(path)))
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+
             BinaryWriter writer = new(new FileStream(path, FileMode.Create));
             try
             {

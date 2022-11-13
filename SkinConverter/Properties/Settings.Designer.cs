@@ -49,7 +49,7 @@ namespace Advocate.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Skin made by #AUTHOR, converted using Advocate")]
+        [global::System.Configuration.DefaultSettingValueAttribute("{TYPES} skin made by {AUTHOR}, converted using Advocate")]
         public string Description {
             get {
                 return ((string)(this["Description"]));

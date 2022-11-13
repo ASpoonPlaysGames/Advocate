@@ -42,10 +42,13 @@ namespace Advocate
             descHelpHints = new ObservableCollection<HelpHint>();
 
             
-            AddHelpHint("Key:", "Description:");
+            AddHelpHint("Key:", "Description:"); // todo, replace with a proper header
 
-            // add help hints
-            AddHelpHint("#AUTHOR", "The Author Name field");
+            // add help hints here
+            AddHelpHint("{AUTHOR}", "The Author Name field");
+            AddHelpHint("{VERSION}", "The Version field");
+            AddHelpHint("{SKIN}", "The Skin Name field");
+            AddHelpHint("{TYPES}", "The types of skin, separated by '/'  e.g \"CAR/Flatline\"");
 
             DataContext = this;
         }
