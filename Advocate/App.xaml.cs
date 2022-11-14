@@ -63,6 +63,7 @@ namespace Advocate
                 if (openedFilePath == null)
                     throw new Exception("Invalid Usage: No arguments were passed");
 
+                // disctionary containing all known command line args
                 Dictionary<string, string> argDict = new()
                 {
                     { "-author", "" },
@@ -89,8 +90,7 @@ namespace Advocate
                     int i = s.IndexOf('=');
                     if (i == -1)
                     {
-                        // TODO - error handling here
-                        continue;
+                        throw new Exception($"Invalid Usage: Argument '{s}' does not have an associated value! (expected '{s}=value')");
                     }
                     string key = s[..i];
                     string val = s[++i..];
@@ -101,8 +101,7 @@ namespace Advocate
                     }
                     else
                     {
-                        // TODO - error handling here
-                        continue;
+                        throw new Exception($"Invalid Usage: Unknown argument '{s}'");
                     }
                 }
 
@@ -111,18 +110,22 @@ namespace Advocate
                 {
                     if (argDict[s] != "")
                         continue;
-                    throw new Exception($"MISSING ARGUMENT: {s}");
+                    throw new Exception($"Invalid Usage: Missing required argument '{s}'");
                 }
 
                 // create converter
                 Conversion.Converter conv = new(openedFilePath, argDict["-author"], argDict["-name"], argDict["-version"], argDict["-readme"], argDict["-icon"]);
+
                 // event handling
                 conv.ConversionComplete += Console_ConversionMessage;
                 conv.ConversionError += Console_ConversionError;
                 conv.ConversionMessage += Console_ConversionMessage;
                 conv.ConversionProgress += Console_ConversionProgress;
+
                 // convert
                 conv.Convert(argDict["-outputpath"], argDict["-repakpath"], argDict["-desc"]);
+
+                // exit with success exit code
                 Environment.Exit(0);
             }
         }
