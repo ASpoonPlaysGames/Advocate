@@ -485,7 +485,7 @@ namespace Advocate.Conversion
                     Types = skinTypes.Distinct().ToArray()
                 };
 
-                string manifest = $"{{\n\"name\": \"{SkinName.Replace(' ', '_')}\",\n\"version_number\":\"{Version}\",\n\"website_url\":\"https://github.com/ASpoonPlaysGames/Advocate\",\n\"dependencies\":[],\n\"description\":\"{desc.ParseDescription(description)}\"\n}}";
+                string manifest = $"{{\n\"name\": \"{SkinName.Replace(' ', '_')}\",\n\"version_number\":\"{Version}\",\n\"website_url\":\"https://github.com/ASpoonPlaysGames/Advocate\",\n\"dependencies\":[],\n\"description\":\"{desc.FormatDescription(description)}\"\n}}";
                 File.WriteAllText($"{modTempFolderPath}/manifest.json", manifest);
 
                 // move progress bar
@@ -498,7 +498,7 @@ namespace Advocate.Conversion
                 // set the message for the new conversion step
                 OnConversionMessage("Writing mod.json...");
 
-                string modJson = $"{{\n\"Name\": \"{AuthorName}.{SkinName}\",\n\"Description\": \"{desc.ParseDescription(description)}\",\n\"Version\": \"{Version}\",\n\"LoadPriority\": 1,\n}}";
+                string modJson = $"{{\n\"Name\": \"{AuthorName}.{SkinName}\",\n\"Description\": \"{desc.FormatDescription(description)}\",\n\"Version\": \"{Version}\",\n\"LoadPriority\": 1,\n}}";
                 File.WriteAllText($"{modTempFolderPath}/mods/{AuthorName}.{SkinName}/mod.json", modJson);
 
                 // move progress bar
