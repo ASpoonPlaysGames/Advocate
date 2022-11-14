@@ -17,8 +17,8 @@ namespace Advocate
         ///     The Author Name field.
         /// </summary>
         /// <value>
-        ///     The name of the Author of the skin.
-        ///     Defaults to <see cref="string.Empty"/> if not set at init.
+        ///     <para>The name of the Author of the skin.</para>
+        ///     <para>Defaults to <see cref="string.Empty"/> if not set at init.</para>
         /// </value>
         public string Author { get; init; } = string.Empty;
 
@@ -26,8 +26,8 @@ namespace Advocate
         ///     The Version field
         /// </summary>
         /// <value>
-        ///     The Version number of the skin.
-        ///     Defaults to <see cref="string.Empty"/> if not set at init.
+        ///     <para>The Version number of the skin.</para>
+        ///     <para>Defaults to <see cref="string.Empty"/> if not set at init.</para>
         /// </value>
         public string Version { get; init; } = string.Empty;
 
@@ -35,8 +35,8 @@ namespace Advocate
         ///     The Skin Name field
         /// </summary>
         /// <value>
-        ///     The name of the skin.
-        ///     Defaults to <see cref="string.Empty"/> if not set at init.
+        ///     <para>The name of the skin.</para>
+        ///     <para>Defaults to <see cref="string.Empty"/> if not set at init.</para>
         /// </value>
         public string Name { get; init; } = string.Empty;
 
@@ -44,8 +44,8 @@ namespace Advocate
         ///     The types of skin that the package contains, eg CAR, Flatline, R101, etc.
         /// </summary>
         /// <value>
-        ///     The different types of skin contained in the package.
-        ///     Defaults to <see cref="Array.Empty{string}"/> if not set at init.
+        ///     <para>The different types of skin contained in the package.</para>
+        ///     <para>Defaults to <see cref="Array.Empty{string}"/> if not set at init.</para>
         /// </value>
         public string[] Types { get; init; } = Array.Empty<string>();
 

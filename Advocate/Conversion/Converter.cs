@@ -56,24 +56,24 @@ namespace Advocate.Conversion
 		public string Version { get; private set; }
 
 
-		/// <summary>
-		///     The skin's README.md file, as a string.
-		/// </summary>
-		/// <value>
-		///     A string of the skin's README.md file, set at initialisation.
-		///     Defaults to an empty string ("")
-		/// </value>
-		public string? ReadMePath { get; private set; }
+        /// <summary>
+        ///     The skin's README.md file, as a string.
+        /// </summary>
+        /// <value>
+        ///     <para>A string of the skin's README.md file, set at initialisation.</para>
+        ///     <para>Defaults to an empty string ("")</para>
+        /// </value>
+        public string? ReadMePath { get; private set; }
 
-		/// <summary>
-		///     The Icon for the skin.
-		/// </summary>
-		/// <value>
-		///     A Bitmap of the skin's icon, must be 256x256.
-		///     Generated from the first _col texture found in the skin
-		///     if null when <see cref="Convert"/> is called.
-		/// </value>
-		public string? IconPath { get; private set; }
+        /// <summary>
+        ///     The Icon for the skin.
+        /// </summary>
+        /// <value>
+        ///     <para>A Bitmap of the skin's icon, must be 256x256.</para>
+        ///     <para>Generated from the first _col texture found in the skin
+        ///     if null when <see cref="Convert"/> is called.</para>
+        /// </value>
+        public string? IconPath { get; private set; }
 
         /// <summary>
         ///     An event handler for the <see cref="OnConversionComplete(ConversionMessageEventArgs)"/> event.
@@ -204,11 +204,14 @@ namespace Advocate.Conversion
             {
                 throw new ArgumentException("README path doesn't lead to a .md file!");
             }
+            ReadMePath = pReadMePath;
+
             // check that IconPath is valid and leads to a .png file
             if (!string.IsNullOrWhiteSpace(IconPath) && !IconPath.EndsWith(".png"))
             {
                 throw new ArgumentException("Icon path doesn't lead to a .png file!");
             }
+            IconPath = pIconPath;
         }
 
         /// <summary>
@@ -605,11 +608,11 @@ namespace Advocate.Conversion
         }
 
         /// <summary>
-        /// Converts a .dds file to a .png file with dimensions of 256x256 (thunderstore compliant)
+        ///     Converts a .dds file to a .png file with dimensions of 256x256 (thunderstore compliant)
         /// </summary>
         /// <param name="imagePath">The path of the input image (.dds)</param>
         /// <param name="outputPath">The path of the output image (.png)</param>
-        /// <returns></returns>
+        /// <returns>true on success</returns>
         /// <exception cref="NotImplementedException"></exception>
         private static bool DdsToPng(string imagePath, string outputPath)
         {
@@ -873,7 +876,7 @@ namespace Advocate.Conversion
         };
 
         /// <summary>
-        /// Gets the texture path from the skintool name for the texture
+        ///     Gets the texture path from the skintool name for the texture
         /// </summary>
         /// <param name="textureName">The skintool name for the texture</param>
         /// <returns>The texture path for RePak and the game, or an empty string if it couldn't be found</returns>

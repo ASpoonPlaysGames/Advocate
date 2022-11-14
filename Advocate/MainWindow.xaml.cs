@@ -365,8 +365,8 @@ namespace Advocate
         }
 
         /// <summary>
-        ///     Event listener for the <see cref="OnConversionMessage(Conversion.ConversionMessageEventArgs)"/> event.
-        ///     Sets <see cref="Message"/> to the <see cref="Conversion.ConversionMessageEventArgs.Message"/> or an empty string if null.
+        ///     <para>Event listener for the <see cref="OnConversionMessage(Conversion.ConversionMessageEventArgs)"/> event.</para>
+        ///     <para>Sets <see cref="Message"/> to the <see cref="Conversion.ConversionMessageEventArgs.Message"/> or an empty string if null.</para>
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -376,9 +376,9 @@ namespace Advocate
         }
 
         /// <summary>
-        ///     Event listener for the <see cref="OnConversionError(Conversion.ConversionMessageEventArgs)"/> event.
-        ///     Sets <see cref="Message"/> to the <see cref="Conversion.ConversionMessageEventArgs.Message"/> or an empty string if null.
-        ///     Sets <see cref="Status"/> to a failure message, and changes the colour of the conversion button to red.
+        ///     <para>Event listener for the <see cref="OnConversionError(Conversion.ConversionMessageEventArgs)"/> event.</para>
+        ///     <para>Sets <see cref="Message"/> to the <see cref="Conversion.ConversionMessageEventArgs.Message"/> or an empty string if null.</para>
+        ///     <para>Sets <see cref="Status"/> to a failure message, and changes the colour of the conversion button to red.</para>
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -390,9 +390,9 @@ namespace Advocate
         }
 
         /// <summary>
-        ///     Event listener for the <see cref="OnConversionComplete(Conversion.ConversionMessageEventArgs)"/> event.
-        ///     Sets <see cref="Message"/> to the <see cref="Conversion.ConversionMessageEventArgs.Message"/> or an empty string if null.
-        ///     Sets <see cref="Status"/> to a success message, and changes the colour of the conversion button to green.
+        ///     <para>Event listener for the <see cref="OnConversionComplete(Conversion.ConversionMessageEventArgs)"/> event.</para>
+        ///     <para>Sets <see cref="Message"/> to the <see cref="Conversion.ConversionMessageEventArgs.Message"/> or an empty string if null.</para>
+        ///     <para>Sets <see cref="Status"/> to a success message, and changes the colour of the conversion button to green.</para>
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -405,8 +405,8 @@ namespace Advocate
         }
 
         /// <summary>
-        ///     Event listener for the <see cref="OnConversionProgress(Conversion.ConversionProgressEventArgs)"/> event.
-        ///     Sets <see cref="ConvertProgress"/> to <see cref="Conversion.ConversionProgressEventArgs.ConversionPercent"/>
+        ///     <para>Event listener for the <see cref="OnConversionProgress(Conversion.ConversionProgressEventArgs)"/> event.</para>
+        ///     <para>Sets <see cref="ConvertProgress"/> to <see cref="Conversion.ConversionProgressEventArgs.ConversionPercent"/></para>
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
