@@ -1,8 +1,8 @@
 {
   "profiles": {
-    "AdvocateUI": {
+    "Advocate": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\Users\\Jack\\Downloads\\CAR_Damascus.zip\""
+      "commandLineArgs": ""
     }
   }
 }
