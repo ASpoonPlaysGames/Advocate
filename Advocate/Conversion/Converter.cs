@@ -84,6 +84,7 @@ namespace Advocate.Conversion
         ///     from an input string and calls <see cref="OnConversionMessage(ConversionMessageEventArgs)"/>.
         /// </summary>
         /// <param name="message">The message that will be passed to the event listeners.</param>
+        /// <param name="type">The message type, used in formatting and showing in gui.</param>
         protected virtual void OnConversionMessage(string? message, MessageType type = MessageType.Info)
         {
             OnConversionMessage(new ConversionMessageEventArgs(message) { Type = type, ConversionPercent = 100 * (curStep / NUM_CONVERT_STEPS) });
