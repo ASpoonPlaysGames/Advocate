@@ -291,7 +291,7 @@ namespace Advocate
             DataContext = this;
 
             // register event listener for conversion messages
-            MessageReceived += MainWindow_OnConversionMessage;
+            MessageReceived += HandleConversionMessage;
 
             // if we are given a path, set the SkinPath
             if (path != null)
@@ -309,7 +309,7 @@ namespace Advocate
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MainWindow_OnConversionMessage(object? sender, Conversion.ConversionMessageEventArgs e)
+        private void HandleConversionMessage(object? sender, Conversion.ConversionMessageEventArgs e)
         {
             Message = e.Message ?? "";
         }

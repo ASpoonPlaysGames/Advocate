@@ -21,17 +21,17 @@ namespace Advocate.Conversion
         /// <summary>
         ///     <para>Default message type.</para>
         ///     <para>For general purpose messages to the user in gui and console.</para>
-        ///     Shown in gui. See <see cref="MainWindow.MainWindow_OnConversionMessage"/> for implementation.
+        ///     Shown in gui. See <see cref="MainWindow.HandleConversionMessage"/> for implementation.
         /// </summary>
         Info,
         /// <summary>
         ///     <para>Indicates that the skin conversion is complete.</para>
-        ///     Shown in gui. See <see cref="MainWindow.MainWindow_OnConversionComplete"/> for implementation.
+        ///     Shown in gui. See <see cref="MainWindow.HandleConversionMessage"/> for implementation.
         /// </summary>
         Completion,
         /// <summary>
         ///     <para>Indicates an error during skin conversion.</para>
-        ///     Shown in gui. See <see cref="MainWindow.MainWindow_OnConversionError"/> for implementation.
+        ///     Shown in gui. See <see cref="MainWindow.HandleConversionMessage"/> for implementation.
         /// </summary>
         Error
     }
