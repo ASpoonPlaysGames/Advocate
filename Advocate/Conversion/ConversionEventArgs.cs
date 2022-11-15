@@ -35,11 +35,33 @@ namespace Advocate.Conversion
         /// </summary>
         Error
     }
+
+    /// <summary>
+    ///     Holds information about a conversion message,
+    ///     used for logging to the console and updating the gui.
+    /// </summary>
     public class ConversionMessageEventArgs : EventArgs
     {
+        /// <summary>
+        ///     The message to the user. May be null.
+        /// </summary>
         public string? Message { get; init; }
+        /// <summary>
+        ///     The type of message that this is.
+        ///     <para><see cref="MessageType.Debug"/> messages will not be shown in the gui, and will only be logged to the console if compiled in debug</para>
+        /// </summary>
         public MessageType Type { get; init; }
+        /// <summary>
+        ///     How complete the conversion is, represented by a percentage.
+        /// </summary>
+        /// <value>
+        ///     A float value between 0 and 100 (inclusive).
+        /// </value>
         public float ConversionPercent { get; init; }
+        /// <summary>
+        ///     Basic constructor for <see cref="ConversionMessageEventArgs"/>
+        /// </summary>
+        /// <param name="message"></param>
         public ConversionMessageEventArgs(string? message) { Message = message; }
     }
 }
