@@ -143,10 +143,6 @@ namespace Advocate
             };
 
             Console.WriteLine($"[{level}] {e.Message}");
-
-            // log the conversion progress
-            if (e.Type >= Conversion.MessageType.Info)
-                Console.WriteLine($"Conversion Progress: {e.ConversionPercent}%");
         }
 
         [DllImport("Kernel32.dll")]
