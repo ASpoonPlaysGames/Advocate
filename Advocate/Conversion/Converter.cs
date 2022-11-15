@@ -105,7 +105,7 @@ namespace Advocate.Conversion
         private void ConvertTaskComplete(MessageType type = MessageType.Info)
         {
             float percent = 100 * (++curStep / NUM_CONVERT_STEPS);
-            ConversionMessageEventArgs args = new(null) { ConversionPercent = percent, Type = type };
+            ConversionMessageEventArgs args = new($"Conversion Progress: {percent}%") { ConversionPercent = percent, Type = type };
             OnConversionMessage(args);
         }
 
