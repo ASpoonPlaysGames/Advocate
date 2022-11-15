@@ -321,10 +321,8 @@ namespace Advocate
             // update the ConvertProgress
             ConvertProgress = e.Type switch
             {
-                Conversion.MessageType.Info => e.ConversionPercent,
-                Conversion.MessageType.Completion => 100,
+                // error is a special case where we want to set the conversion progress to 0 no matter what
                 Conversion.MessageType.Error => 0,
-                // default, should never be needed rly but i dont like compiler warnings
                 _ => e.ConversionPercent
             };
 
