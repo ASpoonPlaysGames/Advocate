@@ -363,11 +363,18 @@ namespace Advocate
         ///////////////////////////////////////
         private void ConvertButton_Click(object sender, RoutedEventArgs e)
         {
-            // instantiate converter
             try
             {
+                // instantiate converter
                 Conversion.Converter conv = new(SkinPath, AuthorName, ModName, Version, ReadMePath, IconPath);
+
+                // set the status
                 Status = "Converting...";
+                // reset the conversion progress
+                ConvertProgress = 0;
+                // reset the button style
+                ConvertButton.SetResourceReference(StyleProperty, "ProgressButtonPrimary");
+
                 // bubble up message events from the Converter
                 conv.ConversionMessage += MessageReceived;
                 // run conversion in separate thread from the UI
@@ -375,7 +382,7 @@ namespace Advocate
             }
             catch (Exception ex)
             {
-                OnMessageReceived(ex.Message, Conversion.MessageType.Error); 
+                OnMessageReceived(ex.Message, Conversion.MessageType.Error);
             }
         }
 
