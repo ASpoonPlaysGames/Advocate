@@ -126,7 +126,27 @@ namespace Advocate
 
         private void Console_ConversionMessage(object? sender, Conversion.ConversionMessageEventArgs e)
         {
-            Console.WriteLine($"[INFO] {e.Message}");
+#if !DEBUG
+            // break early if message is a debug message and we arent in debug
+            if (e.Type <= Conversion.MessageType.Debug)
+                break;
+#endif
+
+            string level = e.Type switch
+            {
+                Conversion.MessageType.Debug => "DEBUG",
+                Conversion.MessageType.Info => "INFO",
+                Conversion.MessageType.Completion => "INFO", // just use INFO for now, maybe implement something special later?
+                Conversion.MessageType.Error => "ERROR",
+                // throw an error if a value is not supported
+                _ => throw new NotImplementedException($"MessageType value '{e.Type}' is unsupported in Console_ConversionMessage.")
+            };
+
+            Console.WriteLine($"[{level}] {e.Message}");
+
+            // log the conversion progress
+            if (e.Type >= Conversion.MessageType.Info)
+                Console.WriteLine($"Conversion Progress: {e.ConversionPercent}%");
         }
 
         [DllImport("Kernel32.dll")]
