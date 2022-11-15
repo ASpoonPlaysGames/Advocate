@@ -45,7 +45,7 @@ namespace Advocate
         /// </summary>
         /// <value>
         ///     <para>The different types of skin contained in the package.</para>
-        ///     <para>Defaults to <see cref="Array.Empty{string}"/> if not set at init.</para>
+        ///     <para>Defaults to <see cref="Array.Empty"/> if not set at init.</para>
         /// </value>
         public string[] Types { get; init; } = Array.Empty<string>();
 
