@@ -604,6 +604,8 @@ namespace Advocate.Conversion
         // these dictionaries have to be hardcoded because skin tool just hardcodes in offsets afaik
         // maybe eventually use a .csv for this?
 
+#pragma warning disable CS1587 // XML comment is not placed on a valid language element
+
         // weapons
         private readonly Dictionary<string, string> weaponNameToPath = new()
         {
@@ -663,10 +665,10 @@ namespace Advocate.Conversion
             // A-wall
             // phase
             { "PhaseShift_fbody_ilm", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_b_v1_skn01_ilm" },
-            // stim
-            // grapple
-            // pulse
-            // holo
+                              // stim
+                              // grapple
+                              // pulse
+                              // holo
             { "HoloPilot_fbody_col", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_female_b_v1_skn02_col" },
             { "HoloPilot_mbody_col", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_b_v1_skn02_col" },
             { "HoloPilot_mbody_spc", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_b_v1_skn02_spc" },
@@ -830,6 +832,8 @@ namespace Advocate.Conversion
             { "Monarch_Default", @"texture\\models\\titans_r2\\medium_vanguard\\warpaint\\warpaint_01\\t_m_vanguard_prime_warpaint_skin01" },
 
         };
+
+#pragma warning restore CS1587 // XML comment is not placed on a valid language element
 
         /// <summary>
         ///     Gets the texture path from the skintool name for the texture
