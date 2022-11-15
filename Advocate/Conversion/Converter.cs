@@ -555,7 +555,7 @@ namespace Advocate.Conversion
 
             // everything is done and good
             // move progress bar
-            OnConversionComplete("Conversion Complete!");
+            OnConversionMessage("Conversion Complete!", MessageType.Completion);
         }
 
         /// <summary>
