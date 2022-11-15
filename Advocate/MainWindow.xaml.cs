@@ -315,6 +315,7 @@ namespace Advocate
             if (e.Type < Conversion.MessageType.Info)
                 return;
 
+            // update the ConvertProgress
             ConvertProgress = e.Type switch
             {
                 Conversion.MessageType.Info => e.ConversionPercent,
@@ -324,8 +325,10 @@ namespace Advocate
                 _ => e.ConversionPercent
             };
 
+            // Update the conversion message shown to the user, if null then just use an empty string
             Message = e.Message ?? "";
 
+            // Update the status message inside the button
             Status = e.Type switch
             {
                 Conversion.MessageType.Completion => "Complete!",
@@ -334,13 +337,18 @@ namespace Advocate
                 _ => Status
             };
 
+            // determine which style we should set the ConvertButton to
             string style = e.Type switch
             {
+                // this is like a light green
                 Conversion.MessageType.Completion => "ProgressButtonSuccess",
+                // this is a red
                 Conversion.MessageType.Error => "ProgressButtonDanger",
+                // this is the user's system accent colour
                 _ => "ProgressButtonPrimary"
             };
 
+            // update the ConvertButton's style
             ConvertButton.Dispatcher.Invoke(() =>
             {
                 ConvertButton.SetResourceReference(StyleProperty, style);
