@@ -15,6 +15,13 @@ namespace Advocate
     public partial class App : Application
     {
         bool nogui = false;
+
+        /// <summary>
+        ///     Called on App startup, the "entry point" of the program.
+        ///     <para>Creates the <see cref="MainWindow"/> if not running with -nogui</para>
+        /// </summary>
+        /// <param name="e"></param>
+        /// <exception cref="Exception"></exception>
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
