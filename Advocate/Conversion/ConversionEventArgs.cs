@@ -6,9 +6,17 @@ using System.Threading.Tasks;
 
 namespace Advocate.Conversion
 {
+    public enum MessageType
+    {
+        Debug,
+        Info,
+        Completion,
+        Error
+    }
     public class ConversionMessageEventArgs : EventArgs
     {
         public string? Message { get; set; }
+        public MessageType Type { get; set; }
         public ConversionMessageEventArgs(string? message) { Message = message; }
     }
     public class ConversionProgressEventArgs : EventArgs
