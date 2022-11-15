@@ -311,7 +311,40 @@ namespace Advocate
         /// <param name="e"></param>
         private void HandleConversionMessage(object? sender, Conversion.ConversionMessageEventArgs e)
         {
+            // ignore messages that are below MessageType.Info in gui
+            if (e.Type < Conversion.MessageType.Info)
+                return;
+
+            ConvertProgress = e.Type switch
+            {
+                Conversion.MessageType.Info => e.ConversionPercent,
+                Conversion.MessageType.Completion => 100,
+                Conversion.MessageType.Error => 0,
+                // default, should never be needed rly but i dont like compiler warnings
+                _ => e.ConversionPercent
+            };
+
             Message = e.Message ?? "";
+
+            Status = e.Type switch
+            {
+                Conversion.MessageType.Completion => "Complete!",
+                Conversion.MessageType.Error => "Error!",
+                // default to just not changing it
+                _ => Status
+            };
+
+            string style = e.Type switch
+            {
+                Conversion.MessageType.Completion => "ProgressButtonSuccess",
+                Conversion.MessageType.Error => "ProgressButtonDanger",
+                _ => "ProgressButtonPrimary"
+            };
+
+            ConvertButton.Dispatcher.Invoke(() =>
+            {
+                ConvertButton.SetResourceReference(StyleProperty, style);
+            });
         }
 
         ///////////////////////////////////////
