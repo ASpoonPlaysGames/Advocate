@@ -39,11 +39,7 @@ namespace Advocate.Conversion
     {
         public string? Message { get; init; }
         public MessageType Type { get; init; }
-        public ConversionMessageEventArgs(string? message) { Message = message; }
-    }
-    public class ConversionProgressEventArgs : EventArgs
-    {
         public float ConversionPercent { get; init; }
-        public ConversionProgressEventArgs(float conversionPercent) { ConversionPercent = conversionPercent; }
+        public ConversionMessageEventArgs(string? message) { Message = message; }
     }
 }

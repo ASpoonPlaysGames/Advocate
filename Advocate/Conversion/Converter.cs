@@ -76,44 +76,6 @@ namespace Advocate.Conversion
         public string? IconPath { get; private set; }
 
         /// <summary>
-        ///     An event handler for the <see cref="OnConversionComplete(ConversionMessageEventArgs)"/> event.
-        /// </summary>
-        public event EventHandler<ConversionMessageEventArgs> ConversionComplete;
-        /// <summary>
-        ///     Helper function that creates a new <see cref="ConversionMessageEventArgs"/>
-        ///     from an input string and calls <see cref="OnConversionError(ConversionMessageEventArgs)"/>.
-        /// </summary>
-        /// <param name="message">The message that will be passed to the event listeners.</param>
-        protected virtual void OnConversionComplete(string? message) { OnConversionComplete(new ConversionMessageEventArgs(message)); }
-        /// <summary>
-        ///     Event that is called when the conversion fails.
-        /// </summary>
-        /// <param name="e">The event arguments.</param>
-        protected virtual void OnConversionComplete(ConversionMessageEventArgs e)
-        {
-            ConversionError?.Invoke(this, e);
-        }
-
-        /// <summary>
-        ///     An event handler for the <see cref="OnConversionError(ConversionMessageEventArgs)"/> event.
-        /// </summary>
-        public event EventHandler<ConversionMessageEventArgs> ConversionError;
-        /// <summary>
-        ///     Helper function that creates a new <see cref="ConversionMessageEventArgs"/>
-        ///     from an input string and calls <see cref="OnConversionError(ConversionMessageEventArgs)"/>.
-        /// </summary>
-        /// <param name="message">The message that will be passed to the event listeners.</param>
-        protected virtual void OnConversionError(string? message) { OnConversionError(new ConversionMessageEventArgs(message)); }
-        /// <summary>
-        ///     Event that is called when the conversion fails.
-        /// </summary>
-        /// <param name="e">The event arguments.</param>
-        protected virtual void OnConversionError(ConversionMessageEventArgs e)
-        {
-            ConversionError?.Invoke(this, e);
-        }
-
-        /// <summary>
         ///     An event handler for the <see cref="OnConversionMessage(ConversionMessageEventArgs)"/> event.
         /// </summary>
         public event EventHandler<ConversionMessageEventArgs> ConversionMessage;
@@ -122,7 +84,10 @@ namespace Advocate.Conversion
         ///     from an input string and calls <see cref="OnConversionMessage(ConversionMessageEventArgs)"/>.
         /// </summary>
         /// <param name="message">The message that will be passed to the event listeners.</param>
-        protected virtual void OnConversionMessage(string? message) { OnConversionMessage(new ConversionMessageEventArgs(message)); }
+        protected virtual void OnConversionMessage(string? message, MessageType type = MessageType.Info)
+        {
+            OnConversionMessage(new ConversionMessageEventArgs(message) { Type = type, ConversionPercent = (curStep / NUM_CONVERT_STEPS) });
+        }
         /// <summary>
         ///     Event that is called on a generic message received from the conversion.
         /// </summary>
@@ -132,31 +97,19 @@ namespace Advocate.Conversion
             ConversionMessage?.Invoke(this, e);
         }
 
-        /// <summary>
-        ///     An event handler for the <see cref="OnConversionProgressChanged(ConversionProgressEventArgs)"/> event.
-        /// </summary>
-        public event EventHandler<ConversionProgressEventArgs> ConversionProgress;
-        /// <summary>
-        ///     Helper function that creates a new <see cref="ConversionProgressEventArgs"/>
-        ///     from an input string and calls <see cref="OnConversionProgressChanged(ConversionProgressEventArgs)"/>.
-        /// </summary>
-        /// <param name="message">The message that will be passed to the event listeners.</param>
-        protected virtual void OnConversionProgressChanged(float conversionPercent) { OnConversionProgressChanged(new ConversionProgressEventArgs(conversionPercent)); }
-        /// <summary>
-        ///     Event that is called when the progress of the conversion changes.
-        /// </summary>
-        /// <param name="e">The event arguments.</param>
-        protected virtual void OnConversionProgressChanged(ConversionProgressEventArgs e)
+        private void OnConversionError(string message)
         {
-            ConversionProgress?.Invoke(this, e);
+            OnConversionMessage(message, MessageType.Error);
         }
 
-        private void ConvertTaskComplete()
+        private void ConvertTaskComplete(MessageType type = MessageType.Info)
         {
-            OnConversionProgressChanged(100 * (++curStep / NUM_CONVERT_STEPS));
+            float percent = 100 * (++curStep / NUM_CONVERT_STEPS);
+            ConversionMessageEventArgs args = new(null) { ConversionPercent = percent, Type = type };
+            OnConversionMessage(args);
         }
 
-        private const float NUM_CONVERT_STEPS = 13;
+        private const float NUM_CONVERT_STEPS = 13; // INCREMENT THIS WHEN YOU ADD A NEW MESSAGE IDK
         private float curStep = 0;
 
         /// <summary>
@@ -226,8 +179,6 @@ namespace Advocate.Conversion
         /// </summary>
         public void Convert(string outputPath, string repakPath, string description)
         {
-            // move progress bar
-            ConvertTaskComplete();
 
             // initialise various path variables, just because they are useful
 

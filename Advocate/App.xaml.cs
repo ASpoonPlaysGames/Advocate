@@ -48,10 +48,7 @@ namespace Advocate
                 // add event handling if we have a console
                 if (forceConsole)
                 {
-                    window.ConversionComplete += Console_ConversionMessage;
-                    window.ConversionError += Console_ConversionError;
-                    window.ConversionMessage += Console_ConversionMessage;
-                    window.ConversionProgress += Console_ConversionProgress;
+                    window.MessageReceived += Console_ConversionMessage;
                 }
 
                 // show the window
@@ -117,10 +114,7 @@ namespace Advocate
                 Conversion.Converter conv = new(openedFilePath, argDict["-author"], argDict["-name"], argDict["-version"], argDict["-readme"], argDict["-icon"]);
 
                 // event handling
-                conv.ConversionComplete += Console_ConversionMessage;
-                conv.ConversionError += Console_ConversionError;
                 conv.ConversionMessage += Console_ConversionMessage;
-                conv.ConversionProgress += Console_ConversionProgress;
 
                 // convert
                 conv.Convert(argDict["-outputpath"], argDict["-repakpath"], argDict["-desc"]);
@@ -130,22 +124,9 @@ namespace Advocate
             }
         }
 
-        private void Console_ConversionProgress(object? sender, Conversion.ConversionProgressEventArgs e)
-        {
-            Console.WriteLine($"[INFO] Conversion Progress: {(int)(e.ConversionPercent)}%");
-        }
-
         private void Console_ConversionMessage(object? sender, Conversion.ConversionMessageEventArgs e)
         {
             Console.WriteLine($"[INFO] {e.Message}");
-        }
-
-        private void Console_ConversionError(object? sender, Conversion.ConversionMessageEventArgs e)
-        {
-            Console.Error.WriteLine($"[ERROR] {e.Message}");
-            // if we hit an error without a gui, exit
-            if (nogui)
-                Environment.Exit(1);
         }
 
         [DllImport("Kernel32.dll")]

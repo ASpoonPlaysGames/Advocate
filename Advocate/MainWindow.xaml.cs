@@ -155,82 +155,24 @@ namespace Advocate
             get { return convertProgress; }
             set { convertProgress = value; OnPropertyChanged(nameof(ConvertProgress)); }
         }
-        
 
         /// <summary>
-        ///     An event handler for the <see cref="OnConversionComplete(Conversion.ConversionMessageEventArgs)"/> event.
+        ///     An event handler for the <see cref="OnMessageReceived(Conversion.ConversionMessageEventArgs)"/> event.
         /// </summary>
-        public event EventHandler<Conversion.ConversionMessageEventArgs> ConversionComplete;
+        public event EventHandler<Conversion.ConversionMessageEventArgs> MessageReceived;
         /// <summary>
         ///     Helper function that creates a new <see cref="Conversion.ConversionMessageEventArgs"/>
-        ///     from an input string and calls <see cref="OnConversionComplete(Conversion.ConversionMessageEventArgs)"/>.
+        ///     from an input string and calls <see cref="OnMessageReceived(Conversion.ConversionMessageEventArgs)"/>.
         /// </summary>
         /// <param name="message">The message that will be passed to the event listeners.</param>
-        protected virtual void OnConversionComplete(string? message) { OnConversionComplete(new Conversion.ConversionMessageEventArgs(message)); }
-        /// <summary>
-        ///     Event that is called when the conversion is complete.
-        /// </summary>
-        /// <param name="e">The event arguments.</param>
-        protected virtual void OnConversionComplete(Conversion.ConversionMessageEventArgs e)
-        {
-            ConversionComplete?.Invoke(this, e);
-        }
-
-        /// <summary>
-        ///     An event handler for the <see cref="OnConversionError(Conversion.ConversionMessageEventArgs)"/> event.
-        /// </summary>
-        public event EventHandler<Conversion.ConversionMessageEventArgs> ConversionError;
-        /// <summary>
-        ///     Helper function that creates a new <see cref="Conversion.ConversionMessageEventArgs"/>
-        ///     from an input string and calls <see cref="OnConversionError(Conversion.ConversionMessageEventArgs)"/>.
-        /// </summary>
-        /// <param name="message">The message that will be passed to the event listeners.</param>
-        protected virtual void OnConversionError(string? message) { OnConversionError(new Conversion.ConversionMessageEventArgs(message)); }
-        /// <summary>
-        ///     Event that is called when the conversion fails.
-        /// </summary>
-        /// <param name="e">The event arguments.</param>
-        protected virtual void OnConversionError(Conversion.ConversionMessageEventArgs e)
-        {
-            ConversionError?.Invoke(this, e);
-        }
-
-        /// <summary>
-        ///     An event handler for the <see cref="OnConversionMessage(Conversion.ConversionMessageEventArgs)"/> event.
-        /// </summary>
-        public event EventHandler<Conversion.ConversionMessageEventArgs> ConversionMessage;
-        /// <summary>
-        ///     Helper function that creates a new <see cref="Conversion.ConversionMessageEventArgs"/>
-        ///     from an input string and calls <see cref="OnConversionMessage(Conversion.ConversionMessageEventArgs)"/>.
-        /// </summary>
-        /// <param name="message">The message that will be passed to the event listeners.</param>
-        protected virtual void OnConversionMessage(string? message) { OnConversionMessage(new Conversion.ConversionMessageEventArgs(message)); }
+        protected virtual void OnMessageReceived(string? message) { OnMessageReceived(new Conversion.ConversionMessageEventArgs(message)); }
         /// <summary>
         ///     Event that is called on a generic message received from the conversion.
         /// </summary>
         /// <param name="e">The event arguments.</param>
-        protected virtual void OnConversionMessage(Conversion.ConversionMessageEventArgs e)
+        protected virtual void OnMessageReceived(Conversion.ConversionMessageEventArgs e)
         {
-            ConversionMessage?.Invoke(this, e);
-        }
-
-        /// <summary>
-        ///     An event handler for the <see cref="OnConversionProgressChanged(Conversion.ConversionProgressEventArgs)"/> event.
-        /// </summary>
-        public event EventHandler<Conversion.ConversionProgressEventArgs> ConversionProgress;
-        /// <summary>
-        ///     Helper function that creates a new <see cref="Conversion.ConversionProgressEventArgs"/>
-        ///     from an input string and calls <see cref="OnConversionProgressChanged(Conversion.ConversionProgressEventArgs)"/>.
-        /// </summary>
-        /// <param name="message">The message that will be passed to the event listeners.</param>
-        protected virtual void OnConversionProgressChanged(float conversionPercent) { OnConversionProgressChanged(new Conversion.ConversionProgressEventArgs(conversionPercent)); }
-        /// <summary>
-        ///     Event that is called when the progress of the conversion changes.
-        /// </summary>
-        /// <param name="e">The event arguments.</param>
-        protected virtual void OnConversionProgressChanged(Conversion.ConversionProgressEventArgs e)
-        {
-            ConversionProgress?.Invoke(this, e);
+            MessageReceived?.Invoke(this, e);
         }
 
         /// <summary>
@@ -348,11 +290,8 @@ namespace Advocate
             // set the data context for data bindings
             DataContext = this;
 
-            // register event listeners for conversion 
-            ConversionProgress += MainWindow_OnConversionProgress;
-            ConversionComplete += MainWindow_OnConversionComplete;
-            ConversionError += MainWindow_OnConversionError;
-            ConversionMessage += MainWindow_OnConversionMessage;
+            // register event listener for conversion messages
+            MessageReceived += MainWindow_OnConversionMessage;
 
             // if we are given a path, set the SkinPath
             if (path != null)
@@ -365,7 +304,7 @@ namespace Advocate
         }
 
         /// <summary>
-        ///     <para>Event listener for the <see cref="OnConversionMessage(Conversion.ConversionMessageEventArgs)"/> event.</para>
+        ///     <para>Event listener for the <see cref="OnMessageReceived(Conversion.ConversionMessageEventArgs)"/> event.</para>
         ///     <para>Sets <see cref="Message"/> to the <see cref="Conversion.ConversionMessageEventArgs.Message"/> or an empty string if null.</para>
         /// </summary>
         /// <param name="sender"></param>
@@ -374,47 +313,6 @@ namespace Advocate
         {
             Message = e.Message ?? "";
         }
-
-        /// <summary>
-        ///     <para>Event listener for the <see cref="OnConversionError(Conversion.ConversionMessageEventArgs)"/> event.</para>
-        ///     <para>Sets <see cref="Message"/> to the <see cref="Conversion.ConversionMessageEventArgs.Message"/> or an empty string if null.</para>
-        ///     <para>Sets <see cref="Status"/> to a failure message, and changes the colour of the conversion button to red.</para>
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MainWindow_OnConversionError(object? sender, Conversion.ConversionMessageEventArgs e)
-        {
-            Message = e.Message ?? "";
-            Status = "Error!";
-            ConvertButton.Dispatcher.Invoke(() => { ConvertButton.SetResourceReference(StyleProperty, "ProgressButtonDanger"); });
-        }
-
-        /// <summary>
-        ///     <para>Event listener for the <see cref="OnConversionComplete(Conversion.ConversionMessageEventArgs)"/> event.</para>
-        ///     <para>Sets <see cref="Message"/> to the <see cref="Conversion.ConversionMessageEventArgs.Message"/> or an empty string if null.</para>
-        ///     <para>Sets <see cref="Status"/> to a success message, and changes the colour of the conversion button to green.</para>
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MainWindow_OnConversionComplete(object? sender, Conversion.ConversionMessageEventArgs e)
-        {
-            Message = e.Message ?? "";
-            Status = "Complete!";
-            ConvertButton.Dispatcher.Invoke(() => { ConvertButton.SetResourceReference(StyleProperty, "ProgressButtonPrimary"); });
-            ConvertProgress = 0;
-        }
-
-        /// <summary>
-        ///     <para>Event listener for the <see cref="OnConversionProgress(Conversion.ConversionProgressEventArgs)"/> event.</para>
-        ///     <para>Sets <see cref="ConvertProgress"/> to <see cref="Conversion.ConversionProgressEventArgs.ConversionPercent"/></para>
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MainWindow_OnConversionProgress(object? sender, Conversion.ConversionProgressEventArgs e)
-        {
-            ConvertProgress = e.ConversionPercent;
-        }
-
 
         ///////////////////////////////////////
         // BUTTON PRESSES AND OTHER UI STUFF //
@@ -426,17 +324,14 @@ namespace Advocate
             {
                 Conversion.Converter conv = new(SkinPath, AuthorName, ModName, Version, ReadMePath, IconPath);
                 Status = "Converting...";
-                // event handling, for bubbling up events and stuff
-                conv.ConversionMessage += ConversionMessage;
-                conv.ConversionError += ConversionError;
-                conv.ConversionProgress += ConversionProgress;
-                conv.ConversionComplete += ConversionComplete;
+                // bubble up message events from the Converter
+                conv.ConversionMessage += MessageReceived;
                 // run conversion in separate thread from the UI
                 Task.Run(() => { conv.Convert(); });
             }
             catch (Exception ex)
             {
-                OnConversionError(new Conversion.ConversionMessageEventArgs(ex.Message)); 
+                OnMessageReceived(ex.Message); 
             }
         }
 
