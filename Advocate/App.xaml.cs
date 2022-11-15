@@ -150,6 +150,9 @@ namespace Advocate
             };
 
             Console.WriteLine($"[{level}] {e.Message}");
+
+            if (nogui && e.Type == Conversion.MessageType.Error)
+                Environment.Exit(1);
         }
 
         [DllImport("Kernel32.dll")]
