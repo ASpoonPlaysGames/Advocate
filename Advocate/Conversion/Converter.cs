@@ -86,7 +86,7 @@ namespace Advocate.Conversion
         /// <param name="message">The message that will be passed to the event listeners.</param>
         protected virtual void OnConversionMessage(string? message, MessageType type = MessageType.Info)
         {
-            OnConversionMessage(new ConversionMessageEventArgs(message) { Type = type, ConversionPercent = (curStep / NUM_CONVERT_STEPS) });
+            OnConversionMessage(new ConversionMessageEventArgs(message) { Type = type, ConversionPercent = 100 * (curStep / NUM_CONVERT_STEPS) });
         }
         /// <summary>
         ///     Event that is called on a generic message received from the conversion.
