@@ -178,7 +178,7 @@ namespace Advocate.Conversion
             Convert(Properties.Settings.Default.OutputPath, Properties.Settings.Default.RePakPath, Properties.Settings.Default.Description);
         }
         /// <summary>
-        ///		Converts the skin. The converted .zip file will be put at <see cref="outputPath"/>
+        ///		Converts the skin. The converted .zip file will be put at outputPath/>
         /// </summary>
         public void Convert(string outputPath, string repakPath, string description)
         {
