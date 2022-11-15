@@ -553,8 +553,10 @@ namespace Advocate.Conversion
                 return;
             }
 
-            // everything is done and good
-            // move progress bar
+            // everything is done and hopefully good
+            // move progress bar to the end
+            curStep = NUM_CONVERT_STEPS;
+            // Log complete conversion
             OnConversionMessage("Conversion Complete!", MessageType.Completion);
         }
 
