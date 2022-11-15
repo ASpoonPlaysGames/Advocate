@@ -14,7 +14,7 @@ namespace Advocate
     /// </summary>
     public partial class App : Application
     {
-        bool nogui = false;
+        private bool nogui = false;
 
         /// <summary>
         ///     Called on App startup, the "entry point" of the program.
@@ -52,10 +52,10 @@ namespace Advocate
                 if (openedFilePath != null)
                     window.SkinPath = openedFilePath;
 
-                // add event handling if we have a console
+                // add console event listener if we have a console
                 if (forceConsole)
                 {
-                    window.MessageReceived += Console_ConversionMessage;
+                    window.MessageReceived += Console_OnConversionMessage;
                 }
 
                 // show the window
@@ -121,17 +121,18 @@ namespace Advocate
                 Conversion.Converter conv = new(openedFilePath, argDict["-author"], argDict["-name"], argDict["-version"], argDict["-readme"], argDict["-icon"]);
 
                 // event handling
-                conv.ConversionMessage += Console_ConversionMessage;
+                conv.ConversionMessage += Console_OnConversionMessage;
+
 
                 // convert
-                conv.Convert(argDict["-outputpath"], argDict["-repakpath"], argDict["-desc"]);
+                bool sucess = conv.Convert(argDict["-outputpath"], argDict["-repakpath"], argDict["-desc"], nogui);
 
                 // exit with success exit code
                 Environment.Exit(0);
             }
         }
 
-        private void Console_ConversionMessage(object? sender, Conversion.ConversionMessageEventArgs e)
+        private void Console_OnConversionMessage(object? sender, Conversion.ConversionMessageEventArgs e)
         {
 #if !DEBUG
             // break early if message is a debug message and we arent in debug
@@ -150,9 +151,6 @@ namespace Advocate
             };
 
             Console.WriteLine($"[{level}] {e.Message}");
-
-            if (nogui && e.Type == Conversion.MessageType.Error)
-                Environment.Exit(1);
         }
 
         [DllImport("Kernel32.dll")]

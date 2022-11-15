@@ -71,7 +71,7 @@ namespace Advocate.Conversion
         /// <value>
         ///     <para>A Bitmap of the skin's icon, must be 256x256.</para>
         ///     <para>Generated from the first _col texture found in the skin
-        ///     if null when <see cref="Convert(string, string, string)"/> is called.</para>
+        ///     if null when <see cref="Convert(string, string, string, bool)"/> is called.</para>
         /// </value>
         public string? IconPath { get; private set; }
 
@@ -168,21 +168,22 @@ namespace Advocate.Conversion
                 throw new ArgumentException("Icon path doesn't lead to a .png file!");
             }
             IconPath = pIconPath;
+
+            
         }
 
         /// <summary>
         ///		Converts the skin. The converted .zip file will be put at <see cref="Properties.Settings.OutputPath"/>
         /// </summary>
-        public void Convert()
+        public bool Convert(bool nogui = false)
         {
-            Convert(Properties.Settings.Default.OutputPath, Properties.Settings.Default.RePakPath, Properties.Settings.Default.Description);
+            return Convert(Properties.Settings.Default.OutputPath, Properties.Settings.Default.RePakPath, Properties.Settings.Default.Description, nogui);
         }
         /// <summary>
         ///		Converts the skin. The converted .zip file will be put at outputPath/>
         /// </summary>
-        public void Convert(string outputPath, string repakPath, string description)
+        public bool Convert(string outputPath, string repakPath, string description, bool nogui = false)
         {
-
             // initialise various path variables, just because they are useful
 
             // the temp path is appended with the current date and time to prevent duplicates
@@ -190,6 +191,22 @@ namespace Advocate.Conversion
             string skinTempFolderPath = Path.GetFullPath($"{tempFolderPath}/Skin");
             string modTempFolderPath = Path.GetFullPath($"{tempFolderPath}/Mod");
             string repakTempFolderPath = Path.GetFullPath($"{tempFolderPath}/RePak");
+
+            // create our logger
+            Logger logger = new(outputPath);
+            try
+            {
+                logger.CreateLogFile();
+                ConversionMessage += logger.LogFile_ConversionMessage;
+            }
+            catch (Exception ex) when (!nogui)
+            {
+                // create message box showing the full error
+                MessageBoxButton msgButton = MessageBoxButton.OK;
+                MessageBoxImage msgIcon = MessageBoxImage.Error;
+                MessageBox.Show($"Failed to create log file at path: '{logger.LogFilePath}'\nMake sure that the Output Path directory is writable!\n\nDebugging information:\n\n {ex.Message}\n{ex.StackTrace}", "Logging Error", msgButton, msgIcon);
+                return false;
+            }
 
             // try convert stuff, if we get a weird exception, don't crash preferably
             try
@@ -227,7 +244,7 @@ namespace Advocate.Conversion
                 catch (InvalidDataException)
                 {
                     OnConversionError("Unable to unzip skin!");
-                    return;
+                    return false;
                 }
 
                 // move progress bar
@@ -260,13 +277,13 @@ namespace Advocate.Conversion
                     if (skinPaths.Length == 0)
                     {
                         OnConversionError("Couldn't generate icon.png: No Skins found in zip!");
-                        return;
+                        return false;
                     }
                     string[] resolutions = Directory.GetDirectories(skinPaths[0]);
                     if (resolutions.Length == 0)
                     {
                         OnConversionError("Couldn't generate icon.png: No Skins found in zip!");
-                        return;
+                        return false;
                     }
                     // find highest resolution folder
                     int highestRes = 0;
@@ -283,14 +300,14 @@ namespace Advocate.Conversion
                     if (highestRes == 0)
                     {
                         OnConversionError("Couldn't generate icon.png: No valid image resolutions found in zip!");
-                        return;
+                        return false;
                     }
 
                     string[] files = Directory.GetFiles(skinPaths[0] + "\\" + highestRes.ToString());
                     if (files.Length == 0)
                     {
                         OnConversionError("Couldn't generate icon.png: No files in highest resolution folder!");
-                        return;
+                        return false;
                     }
                     // find _col file
                     string colPath = "";
@@ -305,13 +322,13 @@ namespace Advocate.Conversion
                     if (colPath == "")
                     {
                         OnConversionError("Couldn't generate icon.png: No _col texture found in highest resolution folder!");
-                        return;
+                        return false;
                     }
 
                     if (!DdsToPng(colPath, modTempFolderPath + "\\icon.png"))
                     {
                         OnConversionError("Couldn't generate icon.png: Failed to convert dds to png!");
-                        return;
+                        return false;
                     }
                 }
                 else
@@ -323,7 +340,7 @@ namespace Advocate.Conversion
                     if (img.Width != 256 || img.Height != 256)
                     {
                         OnConversionError("Icon must be 256x256!");
-                        return;
+                        return false;
                     }
                     // copy png over
                     File.Copy(IconPath, $"{modTempFolderPath}/icon.png");
@@ -384,7 +401,7 @@ namespace Advocate.Conversion
                                 if (string.IsNullOrWhiteSpace(texturePath))
                                 {
                                     OnConversionError($"Failed to convert texture '{Path.GetFileNameWithoutExtension(texture)}')");
-                                    return;
+                                    return false;
                                 }
 
                                 // avoid duplicate textures in the json
@@ -452,7 +469,7 @@ namespace Advocate.Conversion
                 if (P.ExitCode == 1)
                 {
                     OnConversionError("RePak failed to pack the rpak!");
-                    return;
+                    return false;
                 }
 
                 // move progress bar
@@ -544,7 +561,7 @@ namespace Advocate.Conversion
                 if (Directory.Exists(tempFolderPath))
                     Directory.Delete(tempFolderPath, true);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!nogui)
             {
                 // create message box showing the full error
                 MessageBoxButton msgButton = MessageBoxButton.OK;
@@ -553,7 +570,7 @@ namespace Advocate.Conversion
 
                 // exit out of the conversion
                 OnConversionError("Unknown Error!");
-                return;
+                return true;
             }
 
             // everything is done and hopefully good
@@ -561,6 +578,7 @@ namespace Advocate.Conversion
             curStep = NUM_CONVERT_STEPS;
             // Log complete conversion
             OnConversionMessage("Conversion Complete!", MessageType.Completion);
+            return true;
         }
 
         /// <summary>
