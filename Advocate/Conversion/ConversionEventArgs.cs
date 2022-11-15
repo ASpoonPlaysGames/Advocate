@@ -15,13 +15,13 @@ namespace Advocate.Conversion
     }
     public class ConversionMessageEventArgs : EventArgs
     {
-        public string? Message { get; set; }
-        public MessageType Type { get; set; }
+        public string? Message { get; init; }
+        public MessageType Type { get; init; }
         public ConversionMessageEventArgs(string? message) { Message = message; }
     }
     public class ConversionProgressEventArgs : EventArgs
     {
-        public float ConversionPercent { get; set; }
+        public float ConversionPercent { get; init; }
         public ConversionProgressEventArgs(float conversionPercent) { ConversionPercent = conversionPercent; }
     }
 }
