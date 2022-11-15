@@ -165,7 +165,10 @@ namespace Advocate
         ///     from an input string and calls <see cref="OnMessageReceived(Conversion.ConversionMessageEventArgs)"/>.
         /// </summary>
         /// <param name="message">The message that will be passed to the event listeners.</param>
-        protected virtual void OnMessageReceived(string? message) { OnMessageReceived(new Conversion.ConversionMessageEventArgs(message)); }
+        protected virtual void OnMessageReceived(string? message, Conversion.MessageType type = Conversion.MessageType.Info)
+        {
+            OnMessageReceived(new Conversion.ConversionMessageEventArgs(message) { Type = Conversion.MessageType.Info });
+        }
         /// <summary>
         ///     Event that is called on a generic message received from the conversion.
         /// </summary>
@@ -372,7 +375,7 @@ namespace Advocate
             }
             catch (Exception ex)
             {
-                OnMessageReceived(ex.Message); 
+                OnMessageReceived(ex.Message, Conversion.MessageType.Error); 
             }
         }
 
