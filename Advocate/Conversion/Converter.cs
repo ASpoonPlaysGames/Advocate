@@ -78,7 +78,7 @@ namespace Advocate.Conversion
         /// <summary>
         ///     An event handler for the <see cref="OnConversionMessage(ConversionMessageEventArgs)"/> event.
         /// </summary>
-        public event EventHandler<ConversionMessageEventArgs> ConversionMessage;
+        public event EventHandler<ConversionMessageEventArgs>? ConversionMessage;
         /// <summary>
         ///     Helper function that creates a new <see cref="ConversionMessageEventArgs"/>
         ///     from an input string and calls <see cref="OnConversionMessage(ConversionMessageEventArgs)"/>.
