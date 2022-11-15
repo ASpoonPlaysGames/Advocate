@@ -38,6 +38,9 @@ namespace Advocate
             public string Hint { get; set; }
         }
 
+        /// <summary>
+        ///     A collection of <see cref="HelpHint"/>s, used to generate the content of the <see cref="DescriptionHelpWindow"/>
+        /// </summary>
         public ObservableCollection<HelpHint> DescriptionHelpHints { get; private set; }
 
         /// <summary>
