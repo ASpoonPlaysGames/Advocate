@@ -165,6 +165,7 @@ namespace Advocate
         ///     from an input string and calls <see cref="OnMessageReceived(Conversion.ConversionMessageEventArgs)"/>.
         /// </summary>
         /// <param name="message">The message that will be passed to the event listeners.</param>
+        /// <param name="type">The type of message, used for showing the message in gui and logging.</param>
         protected virtual void OnMessageReceived(string? message, Conversion.MessageType type = Conversion.MessageType.Info)
         {
             OnMessageReceived(new Conversion.ConversionMessageEventArgs(message) { Type = Conversion.MessageType.Info });
