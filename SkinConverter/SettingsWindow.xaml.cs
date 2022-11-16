@@ -28,16 +28,22 @@ namespace Advocate
             LoadSettings();
         }
 
-        public string RePakPath
+        public static string RePakPath
         {
             get { return Properties.Settings.Default.RePakPath; }
             set { Properties.Settings.Default.RePakPath = value; }
         }
 
-        public string OutputPath
+        public static string OutputPath
         {
             get { return Properties.Settings.Default.OutputPath; }
             set { Properties.Settings.Default.OutputPath = value; }
+        }
+
+        public static string Description
+        {
+            get { return Properties.Settings.Default.Description; }
+            set { Properties.Settings.Default.Description = value; }
         }
 
         public void RePakPath_TextBox_TextChanged(object sender, EventArgs e)
@@ -50,10 +56,16 @@ namespace Advocate
             OutputPath = OutputPath_TextBox.Text;
         }
 
+        public void Description_TextBox_TextChanged(object sender, EventArgs e)
+        {
+            Description = Description_TextBox.Text;
+        }
+
         public void LoadSettings()
         {
             RePakPath_TextBox.Text = RePakPath;
             OutputPath_TextBox.Text = OutputPath;
+            Description_TextBox.Text = Description;
         }
 
         private void SelectRePakPathButton_Click(object sender, RoutedEventArgs e)
@@ -70,6 +82,13 @@ namespace Advocate
             var folderDlg = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
             if (folderDlg.ShowDialog() == true)
                 OutputPath_TextBox.Text = folderDlg.SelectedPath;
+        }
+
+        private void DescriptionHelpButton_Click(object sender, RoutedEventArgs e)
+        {
+            // open the help page for description formatting
+            DescriptionHelpWindow descriptionHelp = new();
+            descriptionHelp.Show();
         }
     }
 }
