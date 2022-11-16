@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Advocate.Conversion.JSON
 {
+#pragma warning disable IDE1006 // Naming Styles
     internal class Manifest
     {
-#pragma warning disable IDE1006 // Naming Styles
         public string name { get; set; }
         public string version_number { get; set; }
         public string website_url { get; set; }
