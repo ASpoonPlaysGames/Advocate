@@ -534,8 +534,15 @@ namespace Advocate.Conversion
                 // set the message for the new conversion step
                 OnConversionMessage("Writing mod.json...");
 
-                string modJson = $"{{\n\"Name\": \"{AuthorName}.{SkinName}\",\n\"Description\": \"{desc.FormatDescription(description)}\",\n\"Version\": \"{Version}\",\n\"LoadPriority\": 1\n}}";
-                File.WriteAllText($"{modTempFolderPath}/mods/{AuthorName}.{SkinName}/mod.json", modJson);
+                JSON.Mod mod = new()
+                {
+                    Name = $"{ AuthorName }.{ SkinName }",
+                    Description = desc.FormatDescription(description),
+                    Version = Version,
+                    LoadPriority = 1,
+                };
+
+                File.WriteAllText($"{modTempFolderPath}/mods/{AuthorName}.{SkinName}/mod.json", JsonSerializer.Serialize<JSON.Mod>(mod, jsonOptions));
 
                 // move progress bar
                 ConvertTaskComplete();
