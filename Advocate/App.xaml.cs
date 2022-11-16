@@ -137,7 +137,7 @@ namespace Advocate
 #if !DEBUG
             // break early if message is a debug message and we arent in debug
             if (e.Type <= Conversion.MessageType.Debug)
-                break;
+                return;
 #endif
 
             string level = e.Type switch
