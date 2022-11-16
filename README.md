@@ -6,8 +6,8 @@ This tool's main purpose is to aid skin creators in transitioning towards using 
 
 ## Setup
 
-1. Download and run Advocate.exe (found below)
-2. Download [RePak](https://github.com/r-ex/RePak/releases)
+1. Download [RePak](https://github.com/r-ex/RePak/releases)
+2. Download and run [Advocate](https://github.com/ASpoonPlaysGames/Advocate/releases/latest)
 3. Open the Settings in Advocate
 
 ![image](https://user-images.githubusercontent.com/66967891/190265203-60eb5920-bba4-47bd-beae-3ed855d7cd81.png)
@@ -20,8 +20,12 @@ This tool's main purpose is to aid skin creators in transitioning towards using 
 
 ![image](https://user-images.githubusercontent.com/66967891/190265456-154cb78e-dba5-4fec-aeb0-e325eae3360f.png)
 
+6. (Optional) Edit your Description Template. Click on the ? for details on how to use Description Tags.
 
-## Usage
+![image](https://user-images.githubusercontent.com/66967891/202273770-c1cf5e5c-21bd-4b50-a0fb-197abeaaae69.png)
+
+
+## Usage - UI
 
 1. Create your skin using the Titanfall 2 Skin Tool
 2. Set the Skin Path so that it points to the skin's .zip file
@@ -51,3 +55,22 @@ This tool's main purpose is to aid skin creators in transitioning towards using 
 8. Press the "Convert Skin(s)" button if there are no problems
 
 ![image](https://user-images.githubusercontent.com/66967891/190266363-160282d9-c9b2-4ccb-b0ad-c5d8c6a272ff.png)
+
+9. Find your newly-created mod in your output folder.
+
+## Usage - CLI
+
+Advocate now has a CLI! Below is a table of the different commandline arguments that you can use.
+
+| Argument       | Optional?          | Description                                            | Example                                                |
+| -------------- | ------------------ | ------------------------------------------------------ | ------------------------------------------------------ |
+| `-nogui`       | :heavy_check_mark: | Makes Advocate launch without the gui.                 | `-nogui`                                               |
+| `-author`      | :x:                | Sets the Author of the skin.                           | `"-author=Spoon"`                                      |
+| `-name`        | :x:                | Sets the Name of the skin.                             | `"-name=TestCLISkin"`                                  |
+| `-version`     | :x:                | Sets the Version of the skin.                          | `"-version=1.0.0"`                                     |
+| `-outputpath`  | :x:                | Sets the output directory for the skin.                | `"-outputpath=C:/Users/Spoon/Documents/Advocate"`      |
+| `-repakpath`   | :x:                | Sets the file path where Advocate will look for RePak. | `"-repakpath=C:/Users/Spoon/Documents/RePak.exe"`      |
+| `-desc`        | :x:                | Sets the description template for the skin.            | `"-desc={AUTHOR} made this cool skin for the {TYPES}"` |
+
+
+
