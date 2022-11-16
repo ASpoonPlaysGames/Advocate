@@ -9,6 +9,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
@@ -114,6 +115,12 @@ namespace Advocate.Conversion
 
         private const float NUM_CONVERT_STEPS = 13; // INCREMENT THIS WHEN YOU ADD A NEW MESSAGE IDK
         private float curStep = 0;
+
+        // provides the serialisation options we use for writing json files
+        private static readonly JsonSerializerOptions jsonOptions = new()
+        {
+            WriteIndented = true
+        };
 
         /// <summary>
         ///     Constructor for the Converter class, generates <see cref="ReadMePath"/> and <see cref="IconPath"/> if null.
@@ -506,8 +513,16 @@ namespace Advocate.Conversion
                     Types = skinTypes.Distinct().ToArray()
                 };
 
-                string manifest = $"{{\n\"name\": \"{SkinName.Replace(' ', '_')}\",\n\"version_number\":\"{Version}\",\n\"website_url\":\"https://github.com/ASpoonPlaysGames/Advocate\",\n\"dependencies\":[],\n\"description\":\"{desc.FormatDescription(description)}\"\n}}";
-                File.WriteAllText($"{modTempFolderPath}/manifest.json", manifest);
+                JSON.Manifest manifest = new()
+                {
+                    name = SkinName.Replace(' ', '_'),
+                    version_number = Version,
+                    website_url = "https://github.com/ASpoonPlaysGames/Advocate", // hey i gotta get people to use this somehow
+                    //dependencies = {}, // unneeded as it defaults to an empty array and we dont have any dependencies
+                    description = desc.FormatDescription(description),
+                };
+              
+                File.WriteAllText($"{modTempFolderPath}/manifest.json", JsonSerializer.Serialize<JSON.Manifest>(manifest, jsonOptions ));
 
                 // move progress bar
                 ConvertTaskComplete();
