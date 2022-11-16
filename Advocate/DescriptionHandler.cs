@@ -50,6 +50,59 @@ namespace Advocate
         public string[] Types { get; init; } = Array.Empty<string>();
 
         /// <summary>
+        ///     A dictionary that contains various skin types where the type
+        ///     should be changed for formatting reasons.
+        /// </summary>
+        public static Dictionary<string, string> FullNames = new()
+        {
+            // WEAPONS
+            // pilot weapons
+            { "R201", "R-201" },
+            { "R101", "R-101"},
+            { "HemlokBFR", "Hemlok" },
+            { "V47Flatline", "Flatline" },
+            { "G2A5", "G2" },
+            { "R97", "R-97" },
+            { "LSTAR", "L-STAR" },
+            { "DoubleTake", "Double Take" },
+            { "LongbowDMR", "Longbow DMR" },
+            { "EVA8", "EVA-8" },
+            { "ColdWar", "Cold War" },
+            { "RE45", "RE-45" },
+            { "SmartPistol", "Smart Pistol" },
+            { "WingmanElite", "Wingman Elite" },
+            { "ChargeRifle", "Charge Rifle" },
+            // titan weapons
+            { "BroadSword", "Broadsword" },
+            { "PrimeSword", "Broadsword (Prime)" },
+            { "SwordPuls", "Broadsword (Prime)" }, // copied from PrimeSword since an old skin named it this way before skin tool support
+            { "LeadWall", "Leadwall" },
+            { "PlasmaRailgun", "Plasma Railgun" },
+            { "SplitterRifle", "Splitter Rifle" },
+            { "ThermiteLauncher", "T-203 Thermite Launcher" },
+            { "TrackerCannon", "40mm Tracker Cannon" },
+            { "XO16", "XO-16" },
+            // melee
+            { "Sword", "Pilot Sword" },
+            { "Kunai", "Kunai" },
+
+            // PILOTS
+            { "AWall", "A-Wall" },
+            { "PulseBlade", "Pulse Blade (Pilot)" },
+            { "HoloPilot", "Holo Pilot" },
+            { "PhaseShift", "Phase Shift" },
+
+            // TITANS
+            { "ION", "Ion" },
+            { "PrimeION", "Ion Prime" },
+            { "PrimeTone", "Tone Prime" },
+            { "PrimeNorthstar", "Northstar Prime" },
+            { "PrimeRonin", "Ronin Prime" },
+            { "PrimeScorch", "Scorch Prime" },
+            { "PrimeLegion", "Legion Prime" },
+        };
+
+        /// <summary>
         ///     Formats a description containing keys in the format "{KEY}", replacing each key with information about the skin
         /// </summary>
         /// <param name="toFormat">The string that will be formatted</param>
@@ -78,7 +131,8 @@ namespace Advocate
                 "{AUTHOR}" => Author,
                 "{VERSION}" => Version,
                 "{SKIN}" => Name,
-                "{TYPES}" => string.Join('/', Types),
+                // replaces all strings in the Types array with their corresponding value in FullNames if it exists, and then join them together with / as the delimiter
+                "{TYPES}" => string.Join('/', Types.Select(s => FullNames.ContainsKey(s) ? FullNames[s] : s).ToArray()),
                 // do not replace if it is an unrecognised key
                 _ => key,
             };
