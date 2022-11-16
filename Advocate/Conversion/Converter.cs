@@ -490,9 +490,12 @@ namespace Advocate.Conversion
                 OnConversionMessage("Generating rpak.json...");
 
                 // we can just preload our rpak, since it should only contain textures
-                string rpakjson = $"{{\n\"Preload\":\n{{\n\"{SkinName}.rpak\":true\n}}\n}}";
+                JSON.RPak rpak = new()
+                {
+                    Preload = { { $"{SkinName}.rpak", true } }
+                };
 
-                File.WriteAllText($"{modTempFolderPath}/mods/{AuthorName}.{SkinName}/paks/rpak.json", rpakjson);
+                File.WriteAllText($"{modTempFolderPath}/mods/{AuthorName}.{SkinName}/paks/rpak.json", JsonSerializer.Serialize<JSON.RPak>(rpak, jsonOptions));
 
                 // move progress bar
                 ConvertTaskComplete();
