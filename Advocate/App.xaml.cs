@@ -30,15 +30,18 @@ namespace Advocate
             bool forceConsole = e.Args.Contains("-forceconsole");
 
 #if DEBUG
-            // always create a console if debug
+            // always have a console if debug
             forceConsole = true;
 #endif
 
             // get the file opened with Advocate if applicable
             string? openedFilePath = e.Args.Length != 0 ? e.Args[0] : null;
 
-            // create the console if needed
-            if (nogui || forceConsole)
+            // try to attach to a console from the parent program if it exists
+            AttachConsole(-1);
+
+            // create a console window if we must
+            if (forceConsole && GetConsoleWindow() == IntPtr.Zero)
             {
                 AllocConsole();
             }
@@ -155,5 +158,11 @@ namespace Advocate
 
         [DllImport("Kernel32.dll")]
         static extern void AllocConsole();
+
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("kernel32.dll")]
+        static extern bool AttachConsole(int dwProcessId);
     }
 }
