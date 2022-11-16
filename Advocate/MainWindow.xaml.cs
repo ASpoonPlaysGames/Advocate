@@ -373,15 +373,29 @@ namespace Advocate
                 ConvertProgress = 0;
                 // reset the button style
                 ConvertButton.SetResourceReference(StyleProperty, "ProgressButtonPrimary");
+                // lock the button to try prevent multiple conversion threads running at the same time
+                ConvertButton.IsEnabled = false;
 
                 // bubble up message events from the Converter
                 conv.ConversionMessage += MessageReceived;
                 // run conversion in separate thread from the UI
-                Task.Run(() => { conv.Convert(false); });
+                Task.Run(() =>
+                {
+                    conv.Convert(false);
+                    ConvertButton.Dispatcher.Invoke(() =>
+                    {
+                        // allow the button to be pressed again once conversion is complete
+                        ConvertButton.IsChecked = false;
+                        ConvertButton.IsEnabled = true;
+                    });
+                });
             }
             catch (Exception ex)
             {
                 OnMessageReceived(ex.Message, Conversion.MessageType.Error);
+                // allow the button to be pressed again if conversion fails
+                ConvertButton.IsChecked = false;
+                ConvertButton.IsEnabled = true;
             }
         }
 
