@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Advocate": {
+      "commandName": "Project",
+      "commandLineArgs": ""
+    }
+  }
+}

@@ -1,307 +1,196 @@
-﻿using System;
+﻿using Pfim;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Windows;
-using System.IO.Compression;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
 using System.Runtime.InteropServices;
-using System.Diagnostics;
-using Pfim;
+using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows;
 
-namespace Advocate
+namespace Advocate.Conversion
 {
-    internal class Converter : INotifyPropertyChanged
-    {
-        // property change stuff that i don't really understand tbh
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+	/// <summary>
+	///     Handles skin conversion.
+	/// </summary>
+	internal class Converter
+	{
+		/// <summary>
+		///     The path to the .zip file containing the skin.
+		/// </summary>
+		/// <value>
+		///     A relative or fully qualified path that leads to a .zip file.
+		/// </value>
+		public string ZipPath { get; private set; }
 
-        // variable instantiation
-        private string status = "Loading...";
-        private string message = "";
-        private string skinPath = "";
-        private string readMePath = "";
-        private string iconPath = "";
-        private string authorName = "";
-        private string modName = "";
-        private string version = "";
-        public string Status
-        {
-            get { return status; }
-            private set { status = value; OnPropertyChanged(nameof(Status)); }
-        }
-        public string Message
-        {
-            get { return message; }
-            private set { message = value; OnPropertyChanged(nameof(Message)); }
-        }
-        public string SkinPath
-        {
-            get { return skinPath; }
-            set { skinPath = value; OnPropertyChanged(nameof(SkinPath)); CheckConvertStatus(); }
-        }
-        public string ReadMePath
-        {
-            get { return readMePath; }
-            set { readMePath = value; OnPropertyChanged(nameof(ReadMePath)); CheckConvertStatus(); }
-        }
-        public string IconPath
-        {
-            get { return iconPath; }
-            set { iconPath = value; OnPropertyChanged(nameof(IconPath)); CheckConvertStatus(); }
-        }
-        public string AuthorName
-        {
-            get { return authorName; }
-            set { authorName = value; OnPropertyChanged(nameof(AuthorName)); CheckConvertStatus(); }
-        }
-        public string ModName
-        {
-            get { return modName; }
-            set { modName = value; OnPropertyChanged(nameof(ModName)); CheckConvertStatus(); }
-        }
-        public string Version
-        {
-            get { return version; }
-            set { version = value; OnPropertyChanged(nameof(Version)); CheckConvertStatus(); }
-        }
+		/// <summary>
+		///     The name of the Author of the skin.
+		/// </summary>
+		/// <value>
+		///     A non-zero length string of the Author's name, containing
+		///     only alphanumeric characters, ' ', and '_'.
+		/// </value>
+		public string AuthorName { get; private set; }
 
+		/// <summary>
+		///     The name of the skin.
+		/// </summary>
+		/// <value>
+		///     A non-zero length string of the skin's name, containing
+		///     only alphanumeric characters, ' ', and '_'.
+		/// </value>
+		public string SkinName { get; private set; }
 
-        // conversion progress tracking variables
-        private int currentConvertStep = 0;
-        private const int numConvertSteps = 13;
-        // checking
-        // clearing old file structure if exists
-        // unzipping zip to new folder
-        // creating file structure
-        // creating icon.png
-        // create README.md
-        // create manifest.json
-        // create mod.json
-        // create map.json
-        // move textures to temp folder for packing
-        // pack using RePak.exe
-        // zip up result
-        // move result out of temp folder
+		/// <summary>
+		///     The version number of the skin.
+		/// </summary>
+		/// <value>
+		///     A string of the version number of the skin,
+		///     in the format MAJOR.MINOR.PATCH. <code>Example: 1.3.0</code>
+		/// </value>
+		public string Version { get; private set; }
+
 
         /// <summary>
-        /// The current conversion progress as a percentage
+        ///     The skin's README.md file, as a string.
         /// </summary>
-        public float ConvertProgress
-        {
-            get { return 100 * ((float)currentConvertStep / (float)numConvertSteps); }
-        }
+        /// <value>
+        ///     <para>A string of the skin's README.md file, set at initialisation.</para>
+        ///     <para>Defaults to an empty string ("")</para>
+        /// </value>
+        public string? ReadMePath { get; private set; }
 
         /// <summary>
-        /// Increments the current conversion step, for tracking progress
+        ///     The Icon for the skin.
         /// </summary>
-        private void ConvertTaskComplete()
-        {
-            // increment the currentConvertStep
-            currentConvertStep++;
-            // update progress bar
-            OnPropertyChanged(nameof(ConvertProgress));
-        }
+        /// <value>
+        ///     <para>A Bitmap of the skin's icon, must be 256x256.</para>
+        ///     <para>Generated from the first _col texture found in the skin
+        ///     if null when <see cref="Convert(string, string, string, bool)"/> is called.</para>
+        /// </value>
+        public string? IconPath { get; private set; }
 
         /// <summary>
-        /// Changes a button to the success style and message, for when conversion is complete
+        ///     An event handler for the <see cref="OnConversionMessage(ConversionMessageEventArgs)"/> event.
         /// </summary>
-        /// <param name="button">The button which has it's style changed</param>
-        /// <param name="styleProperty">The style property to change</param>
-        private async void ConversionComplete(HandyControl.Controls.ProgressButton button, DependencyProperty styleProperty)
+        public event EventHandler<ConversionMessageEventArgs>? ConversionMessage;
+        /// <summary>
+        ///     Helper function that creates a new <see cref="ConversionMessageEventArgs"/>
+        ///     from an input string and calls <see cref="OnConversionMessage(ConversionMessageEventArgs)"/>.
+        /// </summary>
+        /// <param name="message">The message that will be passed to the event listeners.</param>
+        /// <param name="type">The message type, used in formatting and showing in gui.</param>
+        protected virtual void OnConversionMessage(string? message, MessageType type = MessageType.Info)
         {
-            // reset the currentConvertStep to 0, so that the progress bar is empty
-            currentConvertStep = 0;
-            // update progress bar
-            OnPropertyChanged(nameof(ConvertProgress));
-            // set message and status to show user that conversion is complete
-            Status = "Complete!";
-            Message = "Converted Successfully!";
-            // change button style, using Invoke due to async
-            button.Dispatcher.Invoke(() =>
+            OnConversionMessage(new ConversionMessageEventArgs(message) { Type = type, ConversionPercent = 100 * (curStep / NUM_CONVERT_STEPS) });
+        }
+        /// <summary>
+        ///     Event that is called on a generic message received from the conversion.
+        /// </summary>
+        /// <param name="e">The event arguments.</param>
+        protected virtual void OnConversionMessage(ConversionMessageEventArgs e)
+        {
+            ConversionMessage?.Invoke(this, e);
+        }
+
+        private void OnConversionError(string message)
+        {
+            OnConversionMessage(message, MessageType.Error);
+        }
+
+        private void ConvertTaskComplete(MessageType type = MessageType.Info)
+        {
+            // calculate how complete the conversion is, incrementing curStep
+            float percent = 100 * (++curStep / NUM_CONVERT_STEPS);
+            // instantiate a ConversionMessageEventArgs and send a conversion message
+            ConversionMessageEventArgs args = new($"Conversion Progress: {percent}%") { ConversionPercent = percent, Type = type };
+            OnConversionMessage(args);
+        }
+
+        private const float NUM_CONVERT_STEPS = 13; // INCREMENT THIS WHEN YOU ADD A NEW MESSAGE IDK
+        private float curStep = 0;
+
+        // provides the serialisation options we use for writing json files
+        private static readonly JsonSerializerOptions jsonOptions = new()
+        {
+            WriteIndented = true
+        };
+
+        /// <summary>
+        ///     Constructor for the Converter class, generates <see cref="ReadMePath"/> and <see cref="IconPath"/> if null.
+        /// </summary>
+        public Converter(string pZipPath, string pAuthorName, string pSkinName, string pVersion, string pReadMePath = "", string pIconPath = "")
+		{
+			// validate pZipPath, must exist and be a .zip file
+			if (!File.Exists(pZipPath))
+			{
+				throw new FileNotFoundException("Couldn't find file at Skin Path!");
+			}
+			if (!pZipPath.EndsWith(".zip"))
             {
-                button.SetResourceReference(styleProperty, "ProgressButtonSuccess");
-            });
-            // wait 10 seconds before resetting back to normal
-            await ChangeStyle_Delayed(button, styleProperty, 10000, "ProgressButtonPrimary");
-            Status = "Convert Skin(s)";
-            // re-check the conversion status
-            CheckConvertStatus();
-        }
+				throw new ArgumentException("Skin Path is invalid!");
+			}
+			ZipPath = pZipPath;
 
-        /// <summary>
-        /// Changes a button to a failure style, and show the reason for doing so for 3 seconds
-        /// </summary>
-        /// <param name="button">The button which has it's style changed</param>
-        /// <param name="styleProperty">The style property to change</param>
-        /// <param name="reason">The reason for failure</param>
-        /// <param name="reset">Whether or not to check the conversion status after the style has reset</param>
-        private async void ConversionFailed(HandyControl.Controls.ProgressButton button, DependencyProperty styleProperty, string reason, bool reset = false)
-        {
-            // reset the currentConvertStep to 0, so that the progress bar is empty
-            currentConvertStep = 0;
-            // update progress bar
-            OnPropertyChanged(nameof(ConvertProgress));
-            // set message and status to show user the error
-            Status = "Failed!";
-            Message = reason;
-            // change button style, using Invoke due to async
-            button.Dispatcher.Invoke(() =>
+			// validate pAuthorName, see AuthorName for more details
+			if (string.IsNullOrEmpty(pAuthorName)) { throw new ArgumentException("Author Name is required!"); }
+			if (Regex.Match(pAuthorName, "[^\\da-zA-Z _]").Success || string.IsNullOrWhiteSpace(pAuthorName))
+			{
+				throw new ArgumentException("Author Name is invalid!");
+			}
+			AuthorName = pAuthorName;
+
+			// validate pSkinName, same as pAuthorName
+			if (string.IsNullOrEmpty(pSkinName)) { throw new ArgumentException("Skin Name is required!"); }
+			if (Regex.Match(pSkinName, "[^\\da-zA-Z _]").Success || string.IsNullOrWhiteSpace(pSkinName))
+			{
+				throw new ArgumentException("Skin Name is invalid!");
+			}
+			SkinName = pSkinName;
+
+			// validate pVersion, must be in the format MAJOR.MINOR.VERSION
+			if (string.IsNullOrEmpty(pVersion)) { throw new ArgumentException("Version is required!"); }
+			if (!Regex.Match(pVersion, "^\\d+.\\d+.\\d+$").Success)
+			{
+				throw new ArgumentException("Version is invalid! (Example: 1.0.0)");
+			}
+			Version = pVersion;
+
+            // check that ReadMePath is valid and leads to a .md file
+            if (!string.IsNullOrWhiteSpace(ReadMePath) && !ReadMePath.EndsWith(".md"))
             {
-                button.SetResourceReference(styleProperty, "ProgressButtonDanger");
-            });
-            // wait 3 seconds before resetting back to normal
-            await ChangeStyle_Delayed(button, styleProperty, 3000, "ProgressButtonPrimary");
-            Status = "Convert Skin(s)";
-            // if needed, check the conversion status again
-            if (reset)
-            {
-                CheckConvertStatus();
+                throw new ArgumentException("README path doesn't lead to a .md file!");
             }
+            ReadMePath = pReadMePath;
+
+            // check that IconPath is valid and leads to a .png file
+            if (!string.IsNullOrWhiteSpace(IconPath) && !IconPath.EndsWith(".png"))
+            {
+                throw new ArgumentException("Icon path doesn't lead to a .png file!");
+            }
+            IconPath = pIconPath;
+
+            
         }
 
         /// <summary>
-        /// Waits a specified amount of time, before changing the style of the button
+        ///		Converts the skin. The converted .zip file will be put at <see cref="Properties.Settings.OutputPath"/>
         /// </summary>
-        /// <param name="button">The button which has it's style changed</param>
-        /// <param name="styleProperty">The style property to change</param>
-        /// <param name="time">How long to wait before changing style, in ms</param>
-        /// <param name="style">The style name</param>
-        /// <returns>A Task to be used in async stuff</returns>
-        public static async Task ChangeStyle_Delayed(HandyControl.Controls.ProgressButton button, DependencyProperty styleProperty, int time, string style)
+        public bool Convert(bool nogui = false)
         {
-            // wait the specified time
-            await Task.Delay(time);
-            // change button style, using Invoke due to async
-            button.Dispatcher.Invoke(() =>
-            {
-                // set the style of the button
-                button.SetResourceReference(styleProperty, style);
-            });
+            return Convert(Properties.Settings.Default.OutputPath, Properties.Settings.Default.RePakPath, Properties.Settings.Default.Description, nogui);
         }
-
         /// <summary>
-        /// Checks the status of the various settings for the conversion
+        ///		Converts the skin. The converted .zip file will be put at outputPath/>
         /// </summary>
-        /// <returns>true if no issues are found</returns>
-        public bool CheckConvertStatus()
+        public bool Convert(string outputPath, string repakPath, string description, bool nogui = false)
         {
-            try
-            {
-                Status = "Convert Skin(s)";
-                // check that RePak path is valid
-                if (!File.Exists(Properties.Settings.Default.RePakPath))
-                {
-                    Message = "Error: RePak path is invalid! (Change in Settings)";
-                    return false;
-                }
-                // i swear to god if people rename RePak.exe and break shit im going to commit war crimes
-                if (!Properties.Settings.Default.RePakPath.EndsWith("RePak.exe"))
-                {
-                    Message = "Error: RePak path does not lead to RePak.exe! (Change in Settings)";
-                    return false;
-                }
-                // check that Output path is valid
-                if (!Directory.Exists(Properties.Settings.Default.OutputPath))
-                {
-                    Message = "Error: Output path is invalid! (Change in Settings)";
-                    return false;
-                }
-                // check that SkinPath is valid and leads to a .zip file
-                if (!File.Exists(SkinPath))
-                {
-                    Message = "Error: Skin path is invalid!";
-                    return false;
-                }
-                if (!SkinPath.EndsWith(".zip"))
-                {
-                    Message = "Error: Skin path doesn't lead to a .zip file!";
-                    return false;
-                }
-                // check that ReadMePath is valid and leads to a .md file
-                if (!string.IsNullOrWhiteSpace(ReadMePath) && !ReadMePath.EndsWith(".md"))
-                {
-                    Message = "Error: README path doesn't lead to a .md file!";
-                    return false;
-                }
-                // check that IconPath is valid and leads to a .png file
-                if (!string.IsNullOrWhiteSpace(IconPath) && !IconPath.EndsWith(".png"))
-                {
-                    Message = "Error: Icon path doesn't lead to a .png file!";
-                    return false;
-                }
-                // check that AuthorName is valid
-                if (AuthorName.Length == 0)
-                {
-                    Message = "Error: Author Name is required!";
-                    return false;
-                }
-                if (Regex.Match(AuthorName, "[^\\da-zA-Z _]").Success)
-                {
-                    Message = "Error: Author Name is invalid!";
-                    return false;
-                }
-                // check that ModName is valid
-                if (ModName.Length == 0)
-                {
-                    Message = "Error: Skin Name is required!";
-                    return false;
-                }
-                if (Regex.Match(ModName, "[^\\da-zA-Z _]").Success)
-                {
-                    Message = "Error: Skin Name is invalid!";
-                    return false;
-                }
-                // check that Version is valid
-                if (Version.Length == 0)
-                {
-                    Message = "Error: Version is required!";
-                    return false;
-                }
-                if (!Regex.Match(Version, "^\\d+.\\d+.\\d+$").Success)
-                {
-                    Message = "Error: Version is invalid! (Example: 1.0.0)";
-                    return false;
-                }
-
-                // everything looks good
-                Message = "Ready!";
-                return true;
-            }
-            catch (Exception ex)
-            {
-                // create message box showing the full error
-                MessageBoxButton msgButton = MessageBoxButton.OK;
-                MessageBoxImage msgIcon = MessageBoxImage.Error;
-                MessageBox.Show($"There was an unhandled error during checking!\n\n{ex.Message}\n\n{ex.StackTrace}", "Conversion Checking Error", msgButton, msgIcon);
-
-                // exit out of the conversion
-                Message = "Unknown Checking Error!";
-                return false;
-            }
-        }
-
-        public void Convert(HandyControl.Controls.ProgressButton button, DependencyProperty styleProperty)
-        {
-            // check the conversion status before converting
-            if (!CheckConvertStatus())
-            {
-                // something is wrong with the setup, just exit
-                ConversionFailed(button, styleProperty, Message);
-                return;
-            }
-            // move progress bar
-            ConvertTaskComplete();
-
             // initialise various path variables, just because they are useful
 
             // the temp path is appended with the current date and time to prevent duplicates
@@ -310,6 +199,22 @@ namespace Advocate
             string modTempFolderPath = Path.GetFullPath($"{tempFolderPath}/Mod");
             string repakTempFolderPath = Path.GetFullPath($"{tempFolderPath}/RePak");
 
+            // create our logger
+            Logger logger = new(outputPath);
+            try
+            {
+                logger.CreateLogFile();
+                ConversionMessage += logger.LogFile_ConversionMessage;
+            }
+            catch (Exception ex) when (!nogui)
+            {
+                // create message box showing the full error
+                MessageBoxButton msgButton = MessageBoxButton.OK;
+                MessageBoxImage msgIcon = MessageBoxImage.Error;
+                MessageBox.Show($"Failed to create log file at path: '{logger.LogFilePath}'\nMake sure that the Output Path directory is writable!\n\nDebugging information:\n\n {ex.Message}\n{ex.StackTrace}", "Logging Error", msgButton, msgIcon);
+                return false;
+            }
+
             // try convert stuff, if we get a weird exception, don't crash preferably
             try
             {
@@ -317,7 +222,7 @@ namespace Advocate
                 // create temp directories //
                 /////////////////////////////
 
-                Message = "Creating temporary directories...";
+                //o.Message = "Creating temporary directories...";
 
                 // directory for unzipped file
                 Directory.CreateDirectory(skinTempFolderPath);
@@ -336,17 +241,17 @@ namespace Advocate
                 ///////////////////////////////
 
                 // set the message for the new conversion step
-                Message = "Unzipping skin...";
+                OnConversionMessage("Unzipping skin...");
 
                 // try to extract the zip, catch any errors and just exit, sometimes we get bad zips, non-zips, etc. etc.
                 try
                 {
-                    ZipFile.ExtractToDirectory(SkinPath, skinTempFolderPath, true);
+                    ZipFile.ExtractToDirectory(ZipPath, skinTempFolderPath, true);
                 }
                 catch (InvalidDataException)
                 {
-                    ConversionFailed(button, styleProperty, "Unable to unzip skin!");
-                    return;
+                    OnConversionError("Unable to unzip skin!");
+                    return false;
                 }
 
                 // move progress bar
@@ -357,10 +262,10 @@ namespace Advocate
                 ////////////////////////////////////
 
                 // set the message for the new conversion step
-                Message = "Creating mod file structure...";
+                OnConversionMessage("Creating mod file structure...");
 
                 // create the bare-bones folder structure for the mod
-                Directory.CreateDirectory($"{modTempFolderPath}/mods/{AuthorName}.{ModName}/paks");
+                Directory.CreateDirectory($"{modTempFolderPath}/mods/{AuthorName}.{SkinName}/paks");
 
                 // move progress bar
                 ConvertTaskComplete();
@@ -373,19 +278,19 @@ namespace Advocate
                 if (string.IsNullOrWhiteSpace(IconPath))
                 {
                     // set the message for the new conversion step
-                    Message = "Generating icon.png...";
+                    OnConversionMessage("Generating icon.png...");
                     // fuck you, im using the col of the first folder i find, shouldve specified an icon path
                     string[] skinPaths = Directory.GetDirectories(skinTempFolderPath);
                     if (skinPaths.Length == 0)
                     {
-                        ConversionFailed(button, styleProperty, "Couldn't generate icon.png: No Skins found in zip!");
-                        return;
+                        OnConversionError("Couldn't generate icon.png: No Skins found in zip!");
+                        return false;
                     }
                     string[] resolutions = Directory.GetDirectories(skinPaths[0]);
                     if (resolutions.Length == 0)
                     {
-                        ConversionFailed(button, styleProperty, "Couldn't generate icon.png: No Skins found in zip!");
-                        return;
+                        OnConversionError("Couldn't generate icon.png: No Skins found in zip!");
+                        return false;
                     }
                     // find highest resolution folder
                     int highestRes = 0;
@@ -401,15 +306,15 @@ namespace Advocate
                     // check that we actually found something
                     if (highestRes == 0)
                     {
-                        ConversionFailed(button, styleProperty, "Couldn't generate icon.png: No valid image resolutions found in zip!");
-                        return;
+                        OnConversionError("Couldn't generate icon.png: No valid image resolutions found in zip!");
+                        return false;
                     }
 
                     string[] files = Directory.GetFiles(skinPaths[0] + "\\" + highestRes.ToString());
                     if (files.Length == 0)
                     {
-                        ConversionFailed(button, styleProperty, "Couldn't generate icon.png: No files in highest resolution folder!");
-                        return;
+                        OnConversionError("Couldn't generate icon.png: No files in highest resolution folder!");
+                        return false;
                     }
                     // find _col file
                     string colPath = "";
@@ -423,26 +328,26 @@ namespace Advocate
                     }
                     if (colPath == "")
                     {
-                        ConversionFailed(button, styleProperty, "Couldn't generate icon.png: No _col texture found in highest resolution folder!");
-                        return;
+                        OnConversionError("Couldn't generate icon.png: No _col texture found in highest resolution folder!");
+                        return false;
                     }
 
                     if (!DdsToPng(colPath, modTempFolderPath + "\\icon.png"))
                     {
-                        ConversionFailed(button, styleProperty, "Couldn't generate icon.png: Failed to convert dds to png!");
-                        return;
+                        OnConversionError("Couldn't generate icon.png: Failed to convert dds to png!");
+                        return false;
                     }
                 }
                 else
                 {
                     // set the message for the new conversion step
-                    Message = "Copying icon.png...";
+                    OnConversionMessage("Copying icon.png...");
                     // check that png is correct size
                     Image img = Image.FromFile(IconPath);
                     if (img.Width != 256 || img.Height != 256)
                     {
-                        ConversionFailed(button, styleProperty, "Icon must be 256x256!");
-                        return;
+                        OnConversionError("Icon must be 256x256!");
+                        return false;
                     }
                     // copy png over
                     File.Copy(IconPath, $"{modTempFolderPath}/icon.png");
@@ -455,21 +360,9 @@ namespace Advocate
                 // create README.md //
                 //////////////////////
 
-                // if the path is an empty/whitespace string, we should be generating a README.md (for now it's just blank)
-                if (string.IsNullOrWhiteSpace(ReadMePath))
-                {
-                    // set the message for the new conversion step
-                    Message = "Generating README.md...";
-                    // todo, maybe add some basic default text here idk
-                    File.WriteAllText($"{modTempFolderPath}/README.md", "");
-                }
-                else
-                {
-                    // set the message for the new conversion step
-                    Message = "Copying README.md...";
-                    // copy the file over to the temp folder
-                    File.Copy(ReadMePath, $"{modTempFolderPath}/README.md");
-                }
+                // set the message for the new conversion step
+                OnConversionMessage("Generating README.md...");
+                File.WriteAllText($"{modTempFolderPath}/README.md", ReadMePath);
 
                 // move progress bar
                 ConvertTaskComplete();
@@ -479,11 +372,11 @@ namespace Advocate
                 //////////////////////////////////////////////////////////////////
 
                 // set the message for the new conversion step
-                Message = "Copying textures...";
+                OnConversionMessage("Copying textures...");
 
                 // this holds a string of json which will be appended to as the map file is constructed, TODO - refactor to use json library?
-                string map = $"{{\n\"name\":\"{ModName}\",\n\"assetsDir\":\"{repakTempFolderPath.Replace('\\', '/')}/assets\",\n\"outputDir\":\"{modTempFolderPath.Replace('\\', '/')}/mods/{AuthorName}.{ModName}/paks\",\n\"version\": 7,\n\"files\":[\n";
-                
+                string map = $"{{\n\"name\":\"{SkinName}\",\n\"assetsDir\":\"{repakTempFolderPath.Replace('\\', '/')}/assets\",\n\"outputDir\":\"{modTempFolderPath.Replace('\\', '/')}/mods/{AuthorName}.{SkinName}/paks\",\n\"version\": 7,\n\"files\":[\n";
+
                 // this tracks the textures that we have already added to the json, so we can avoid duplicates in there
                 List<string> textures = new();
                 // this tracks the different skin types that we have found, for description parsing later
@@ -514,8 +407,8 @@ namespace Advocate
                                 string texturePath = TextureNameToPath(Path.GetFileNameWithoutExtension(texture));
                                 if (string.IsNullOrWhiteSpace(texturePath))
                                 {
-                                    ConversionFailed(button, styleProperty, $"Failed to convert texture '{Path.GetFileNameWithoutExtension(texture)}')");
-                                    return;
+                                    OnConversionError($"Failed to convert texture '{Path.GetFileNameWithoutExtension(texture)}')");
+                                    return false;
                                 }
 
                                 // avoid duplicate textures in the json
@@ -555,7 +448,7 @@ namespace Advocate
                 //////////////////////////
 
                 // set the message for the new conversion step
-                Message = "Packing using RePak...";
+                OnConversionMessage("Packing using RePak...");
 
 
                 // create the process for RePak
@@ -570,7 +463,7 @@ namespace Advocate
                 //P.OutputDataReceived += (sender, args) => sb.AppendLine(args.Data);
                 //P.ErrorDataReceived += (sender, args) => sb.AppendLine(args.Data);
                 //P.StartInfo.UseShellExecute = false;
-                P.StartInfo.FileName = Properties.Settings.Default.RePakPath;
+                P.StartInfo.FileName = repakPath;
                 P.StartInfo.Arguments = $"\"{repakTempFolderPath}\\map.json\"";
                 P.Start();
                 //P.BeginOutputReadLine();
@@ -582,8 +475,8 @@ namespace Advocate
                 // currently, RePak always uses exitcode 1 for failure, if we implement more error codes then I'll probably give a more detailed error here
                 if (P.ExitCode == 1)
                 {
-                    ConversionFailed(button, styleProperty, "RePak failed to pack the rpak!");
-                    return;
+                    OnConversionError("RePak failed to pack the rpak!");
+                    return false;
                 }
 
                 // move progress bar
@@ -594,12 +487,15 @@ namespace Advocate
                 //////////////////////
 
                 // set the message for the new conversion step
-                Message = "Generating rpak.json...";
+                OnConversionMessage("Generating rpak.json...");
 
                 // we can just preload our rpak, since it should only contain textures
-                string rpakjson = $"{{\n\"Preload\":\n{{\n\"{ModName}.rpak\":true\n}}\n}}";
+                JSON.RPak rpak = new()
+                {
+                    Preload = new(){ { $"{SkinName}.rpak", true } }
+                };
 
-                File.WriteAllText($"{modTempFolderPath}/mods/{AuthorName}.{ModName}/paks/rpak.json", rpakjson);
+                File.WriteAllText($"{modTempFolderPath}/mods/{AuthorName}.{SkinName}/paks/rpak.json", JsonSerializer.Serialize<JSON.RPak>(rpak, jsonOptions));
 
                 // move progress bar
                 ConvertTaskComplete();
@@ -609,19 +505,27 @@ namespace Advocate
                 //////////////////////////
 
                 // set the message for the new conversion step
-                Message = "Writing manifest.json...";
+                OnConversionMessage("Writing manifest.json...");
 
                 // create the DescriptionHandler for parsing the description
                 DescriptionHandler desc = new()
                 {
                     Author = AuthorName,
                     Version = Version,
-                    Name = ModName,
+                    Name = SkinName,
                     Types = skinTypes.Distinct().ToArray()
                 };
 
-                string manifest = $"{{\n\"name\": \"{ModName.Replace(' ', '_')}\",\n\"version_number\":\"{Version}\",\n\"website_url\":\"https://github.com/ASpoonPlaysGames/Advocate\",\n\"dependencies\":[],\n\"description\":\"{desc.ParseDescription(Properties.Settings.Default.Description)}\"\n}}";
-                File.WriteAllText($"{modTempFolderPath}/manifest.json", manifest);
+                JSON.Manifest manifest = new()
+                {
+                    name = SkinName.Replace(' ', '_'),
+                    version_number = Version,
+                    website_url = "https://github.com/ASpoonPlaysGames/Advocate", // hey i gotta get people to use this somehow
+                    //dependencies = {}, // unneeded as it defaults to an empty array and we dont have any dependencies
+                    description = desc.FormatDescription(description),
+                };
+              
+                File.WriteAllText($"{modTempFolderPath}/manifest.json", JsonSerializer.Serialize<JSON.Manifest>(manifest, jsonOptions ));
 
                 // move progress bar
                 ConvertTaskComplete();
@@ -631,10 +535,17 @@ namespace Advocate
                 /////////////////////
 
                 // set the message for the new conversion step
-                Message = "Writing mod.json...";
+                OnConversionMessage("Writing mod.json...");
 
-                string modJson = $"{{\n\"Name\": \"{AuthorName}.{ModName}\",\n\"Description\": \"{desc.ParseDescription(Properties.Settings.Default.Description)}\",\n\"Version\": \"{Version}\",\n\"LoadPriority\": 1,\n}}";
-                File.WriteAllText($"{modTempFolderPath}/mods/{AuthorName}.{ModName}/mod.json", modJson);
+                JSON.Mod mod = new()
+                {
+                    Name = $"{ AuthorName }.{ SkinName }",
+                    Description = desc.FormatDescription(description),
+                    Version = Version,
+                    LoadPriority = 1,
+                };
+
+                File.WriteAllText($"{modTempFolderPath}/mods/{AuthorName}.{SkinName}/mod.json", JsonSerializer.Serialize<JSON.Mod>(mod, jsonOptions));
 
                 // move progress bar
                 ConvertTaskComplete();
@@ -644,10 +555,10 @@ namespace Advocate
                 ///////////////////
 
                 // set the message for the new conversion step
-                Message = "Zipping mod...";
+                OnConversionMessage("Zipping mod...");
 
                 // create the zip file from the mod temp path
-                ZipFile.CreateFromDirectory(modTempFolderPath, $"{tempFolderPath}/{AuthorName}.{ModName}.zip");
+                ZipFile.CreateFromDirectory(modTempFolderPath, $"{tempFolderPath}/{AuthorName}.{SkinName}.zip");
 
                 // move progress bar
                 ConvertTaskComplete();
@@ -657,10 +568,10 @@ namespace Advocate
                 ////////////////////////////////////
 
                 // set the message for the new conversion step
-                Message = "Moving zip to output folder...";
+                OnConversionMessage("Moving zip to output folder...");
 
                 // move the zip file we created to the output folder
-                File.Move($"{tempFolderPath}/{AuthorName}.{ModName}.zip", $"{Properties.Settings.Default.OutputPath}/{AuthorName}.{ModName}-{Version}.zip", true);
+                File.Move($"{tempFolderPath}/{AuthorName}.{SkinName}.zip", $"{outputPath}/{AuthorName}.{SkinName}-{Version}.zip", true);
 
                 // move progress bar
                 ConvertTaskComplete();
@@ -669,13 +580,13 @@ namespace Advocate
                 // cleanup //
                 /////////////
 
-                Message = "Cleaning up...";
+                OnConversionMessage("Cleaning up...");
 
                 // delete temp folders
                 if (Directory.Exists(tempFolderPath))
                     Directory.Delete(tempFolderPath, true);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!nogui)
             {
                 // create message box showing the full error
                 MessageBoxButton msgButton = MessageBoxButton.OK;
@@ -683,39 +594,35 @@ namespace Advocate
                 MessageBox.Show($"There was an unhandled error during conversion!\n\n{ex.Message}\n\n{ex.StackTrace}", "Conversion Error", msgButton, msgIcon);
 
                 // exit out of the conversion
-                ConversionFailed(button, styleProperty, "Unknown Error!", true);
-                return;
+                OnConversionError("Unknown Error!");
+                return true;
             }
 
-            // everything is done and good
-            // move progress bar
-            ConversionComplete(button, styleProperty);
+            // everything is done and hopefully good
+            // move progress bar to the end
+            curStep = NUM_CONVERT_STEPS;
+            // Log complete conversion
+            OnConversionMessage("Conversion Complete!", MessageType.Completion);
+            return true;
         }
 
         /// <summary>
-        /// Converts a .dds file to a .png file with dimensions of 256x256 (thunderstore compliant)
+        ///     Converts a .dds file to a .png file with dimensions of 256x256 (thunderstore compliant)
         /// </summary>
         /// <param name="imagePath">The path of the input image (.dds)</param>
         /// <param name="outputPath">The path of the output image (.png)</param>
-        /// <returns></returns>
+        /// <returns>true on success</returns>
         /// <exception cref="NotImplementedException"></exception>
         private static bool DdsToPng(string imagePath, string outputPath)
         {
             // this code is just yoinked from pfim usage example
             using (var image = Pfimage.FromFile(imagePath))
             {
-                PixelFormat format;
-
-                // Convert from Pfim's backend agnostic image format into GDI+'s image format
-                switch (image.Format)
+                var format = image.Format switch
                 {
-                    case Pfim.ImageFormat.Rgba32:
-                        format = PixelFormat.Format32bppArgb;
-                        break;
-                    default:
-                        // see the sample for more details
-                        throw new NotImplementedException();
-                }
+                    Pfim.ImageFormat.Rgba32 => PixelFormat.Format32bppArgb,
+                    _ => throw new NotImplementedException(),// see the sample for more details
+                };
 
                 // Pin pfim's data array so that it doesn't get reaped by GC, unnecessary
                 // in this snippet but useful technique if the data was going to be used in
@@ -739,6 +646,8 @@ namespace Advocate
 
         // these dictionaries have to be hardcoded because skin tool just hardcodes in offsets afaik
         // maybe eventually use a .csv for this?
+
+#pragma warning disable CS1587 // XML comment is not placed on a valid language element
 
         // weapons
         private readonly Dictionary<string, string> weaponNameToPath = new()
@@ -801,10 +710,10 @@ namespace Advocate
             // A-wall
             // phase
             { "PhaseShift_fbody_ilm", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_b_v1_skn01_ilm" },
-            // stim
-            // grapple
-            // pulse
-            // holo
+                              // stim
+                              // grapple
+                              // pulse
+                              // holo
             { "HoloPilot_fbody_col", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_female_b_v1_skn02_col" },
             { "HoloPilot_mbody_col", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_b_v1_skn02_col" },
             { "HoloPilot_mbody_spc", @"texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_b_v1_skn02_spc" },
@@ -969,8 +878,10 @@ namespace Advocate
 
         };
 
+#pragma warning restore CS1587 // XML comment is not placed on a valid language element
+
         /// <summary>
-        /// Gets the texture path from the skintool name for the texture
+        ///     Gets the texture path from the skintool name for the texture
         /// </summary>
         /// <param name="textureName">The skintool name for the texture</param>
         /// <returns>The texture path for RePak and the game, or an empty string if it couldn't be found</returns>
