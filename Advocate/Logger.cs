@@ -8,29 +8,27 @@ using System.Windows;
 
 namespace Advocate
 {
-    internal class Logger
+    public static class Logger
     {
 
-        public readonly string LogFilePath;
-        private bool createdFile = false;
-        private StreamWriter? logWriter;
+        public static string LogFilePath { get; private set; }
+        private static bool createdFile = false;
+        private static StreamWriter? logWriter;
 
-        public Logger(string outputPath)
-        {
-            LogFilePath = $"{outputPath}/advocate-log{DateTime.Now:yyyyMMdd-THHmmss}.txt";
-        }
 
-        public void CreateLogFile()
+        public static void CreateLogFile(string outputPath)
         {
             if (createdFile)
                 return;
+
+            LogFilePath = $"{outputPath}/advocate-log{DateTime.Now:yyyyMMdd-THHmmss}.txt";
 
             logWriter = File.AppendText(LogFilePath);
             logWriter.AutoFlush = true;
             createdFile = true;
         }
-        
-        public void LogFile_ConversionMessage(object? sender, Conversion.ConversionMessageEventArgs e)
+
+        public static void LogFile_ConversionMessage(object? sender, Conversion.ConversionMessageEventArgs e)
         {
             // bonus check for null to prevent compiler warnings
             if (!createdFile || logWriter == null)
@@ -48,7 +46,7 @@ namespace Advocate
 
             // async write to the file
             logWriter.WriteLine($"[{DateTime.Now:HH:mm:ss}] [{level}] {e.Message}");
-            
+
         }
     }
 }
