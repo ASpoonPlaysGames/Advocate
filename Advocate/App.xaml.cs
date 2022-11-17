@@ -128,10 +128,10 @@ namespace Advocate
 
 
                 // convert
-                bool sucess = conv.Convert(argDict["-outputpath"], argDict["-repakpath"], argDict["-desc"], nogui);
+                bool success = conv.Convert(argDict["-outputpath"], argDict["-repakpath"], argDict["-desc"], nogui);
 
-                // exit with success exit code
-                Environment.Exit(0);
+                // exit
+                Environment.Exit(success ? 0 : 1);
             }
         }
 
