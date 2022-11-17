@@ -46,6 +46,13 @@ namespace Advocate
                 AllocConsole();
             }
 
+            // if we have a console, use it
+            if (GetConsoleWindow() != IntPtr.Zero)
+            {
+                Logging.Logger.LogReceived += Console_OnConversionMessage;
+                Logging.Logger.Debug($"Advocate is currently running with a console");
+            }
+
             if (!nogui)
             {
                 // create our window
@@ -54,12 +61,6 @@ namespace Advocate
                 // set SkinPath as soon as we make the window if it is in the command line args
                 if (openedFilePath != null)
                     window.SkinPath = openedFilePath;
-
-                // add console event listener if we have a console
-                if (forceConsole)
-                {
-                    Logging.Logger.LogReceived += Console_OnConversionMessage;
-                }
 
                 // show the window
                 window.ShowDialog();
@@ -122,10 +123,6 @@ namespace Advocate
 
                 // create converter
                 Conversion.Converter conv = new(openedFilePath, argDict["-author"], argDict["-name"], argDict["-version"], argDict["-readme"], argDict["-icon"]);
-
-                // event handling
-                Logging.Logger.LogReceived += Console_OnConversionMessage;
-
 
                 // convert
                 bool success = conv.Convert(argDict["-outputpath"], argDict["-repakpath"], argDict["-desc"], nogui);
