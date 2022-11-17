@@ -48,10 +48,7 @@ namespace Advocate
 
             // if we have a console, use it
             if (GetConsoleWindow() != IntPtr.Zero)
-            {
                 Logging.Logger.LogReceived += Console_OnConversionMessage;
-                Logging.Logger.Debug($"Advocate is currently running with a console");
-            }
 
             if (!nogui)
             {
