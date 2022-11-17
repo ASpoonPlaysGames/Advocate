@@ -198,20 +198,17 @@ namespace Advocate.Conversion
             string skinTempFolderPath = Path.GetFullPath($"{tempFolderPath}/Skin");
             string modTempFolderPath = Path.GetFullPath($"{tempFolderPath}/Mod");
             string repakTempFolderPath = Path.GetFullPath($"{tempFolderPath}/RePak");
-
-            // create our logger
-            Logger logger = new(outputPath);
             try
             {
-                logger.CreateLogFile();
-                ConversionMessage += logger.LogFile_ConversionMessage;
+                Logger.CreateLogFile(outputPath);
+                ConversionMessage += Logger.LogFile_ConversionMessage;
             }
             catch (Exception ex) when (!nogui)
             {
                 // create message box showing the full error
                 MessageBoxButton msgButton = MessageBoxButton.OK;
                 MessageBoxImage msgIcon = MessageBoxImage.Error;
-                MessageBox.Show($"Failed to create log file at path: '{logger.LogFilePath}'\nMake sure that the Output Path directory is writable!\n\nDebugging information:\n\n {ex.Message}\n{ex.StackTrace}", "Logging Error", msgButton, msgIcon);
+                MessageBox.Show($"Failed to create log file at path: '{Logger.LogFilePath}'\nMake sure that the Output Path directory is writable!\n\nDebugging information:\n\n {ex.Message}\n{ex.StackTrace}", "Logging Error", msgButton, msgIcon);
                 return false;
             }
 
@@ -414,6 +411,7 @@ namespace Advocate.Conversion
                                 // avoid duplicate textures in the json
                                 if (!textures.Contains(texturePath))
                                 {
+                                    OnConversionMessage($"Adding non-duplicate texturePath '{texturePath}' to textures", MessageType.Debug);
                                     // dont add a comma on the first one
                                     if (!isFirst)
                                         map += ",\n";
@@ -422,6 +420,10 @@ namespace Advocate.Conversion
                                     textures.Add(texturePath);
                                     // add texture to skinTypes for tracking which skins are in the package
                                     skinTypes.Add(Path.GetFileNameWithoutExtension(texture).Split("_")[0]);
+                                }
+                                else
+                                {
+                                    OnConversionMessage($"Skipping duplicate texturePath '{texturePath}'", MessageType.Debug);
                                 }
                                 isFirst = false;
 
