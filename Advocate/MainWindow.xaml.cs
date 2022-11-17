@@ -433,31 +433,37 @@ namespace Advocate
         private void ReadMePath_TextBox_TextChanged(object sender, RoutedEventArgs e)
         {
             ReadMePath = ReadMePath_TextBox.Text;
+            Logging.Logger.Debug($"ReadMePath changed to '{ReadMePath}'");
         }
 
         private void SkinPath_TextBox_TextChanged(object sender, RoutedEventArgs e)
         {
             SkinPath = SkinPath_TextBox.Text;
+            Logging.Logger.Debug($"SkinPath changed to '{SkinPath}'");
         }
 
         private void IconPath_TextBox_TextChanged(object sender, RoutedEventArgs e)
         {
             IconPath = IconPath_TextBox.Text;
+            Logging.Logger.Debug($"IconPath changed to '{IconPath}'");
         }
 
         private void Author_TextBox_TextChanged(object sender, RoutedEventArgs e)
         {
             AuthorName = Author_TextBox.Text;
+            Logging.Logger.Debug($"AuthorName changed to '{AuthorName}'");
         }
 
         private void SkinName_TextBox_TextChanged(object sender, RoutedEventArgs e)
         {
             ModName = SkinName_TextBox.Text;
+            Logging.Logger.Debug($"ModName changed to '{ModName}'");
         }
 
         private void Version_TextBox_TextChanged(object sender, RoutedEventArgs e)
         {
             Version = Version_TextBox.Text;
+            Logging.Logger.Debug($"Version changed to '{Version}'");
         }
     }
 }
