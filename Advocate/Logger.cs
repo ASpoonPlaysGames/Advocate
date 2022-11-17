@@ -12,26 +12,26 @@ namespace Advocate
     {
 
         public static string LogFilePath { get; private set; }
-        private static bool createdFile = false;
         private static StreamWriter? logWriter;
 
 
         public static void CreateLogFile(string outputPath)
         {
-            if (createdFile)
-                return;
+            if (logWriter != null)
+                logWriter.Close();
 
             LogFilePath = $"{outputPath}/advocate-log{DateTime.Now:yyyyMMdd-THHmmss}.txt";
 
             logWriter = File.AppendText(LogFilePath);
             logWriter.AutoFlush = true;
-            createdFile = true;
         }
 
-        public static void LogFile_ConversionMessage(object? sender, Conversion.ConversionMessageEventArgs e)
+        public static EventHandler<Conversion.ConversionMessageEventArgs> ConversionMessage = OnMessage;
+
+        private static void OnMessage(object? sender, Conversion.ConversionMessageEventArgs e)
         {
             // bonus check for null to prevent compiler warnings
-            if (!createdFile || logWriter == null)
+            if (logWriter == null)
                 throw new Exception("Tried to log to file without calling CreateLogFile first!");
 
             string level = e.Type switch
