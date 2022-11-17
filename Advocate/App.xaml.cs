@@ -58,7 +58,7 @@ namespace Advocate
                 // add console event listener if we have a console
                 if (forceConsole)
                 {
-                    window.MessageReceived += Console_OnConversionMessage;
+                    Logging.Logger.LogReceived += Console_OnConversionMessage;
                 }
 
                 // show the window
@@ -124,7 +124,7 @@ namespace Advocate
                 Conversion.Converter conv = new(openedFilePath, argDict["-author"], argDict["-name"], argDict["-version"], argDict["-readme"], argDict["-icon"]);
 
                 // event handling
-                conv.ConversionMessage += Console_OnConversionMessage;
+                Logging.Logger.LogReceived += Console_OnConversionMessage;
 
 
                 // convert
@@ -135,25 +135,25 @@ namespace Advocate
             }
         }
 
-        private void Console_OnConversionMessage(object? sender, Conversion.ConversionMessageEventArgs e)
+        private void Console_OnConversionMessage(object? sender, Logging.LoggingEventArgs e)
         {
 #if !DEBUG
             // break early if message is a debug message and we arent in debug
-            if (e.Type <= Conversion.MessageType.Debug)
+            if (e.Type <= Logging.MessageType.Debug)
                 return;
 #endif
 
             string level = e.Type switch
             {
-                Conversion.MessageType.Debug => "DEBUG",
-                Conversion.MessageType.Info => "INFO",
-                Conversion.MessageType.Completion => "INFO", // just use INFO for now, maybe implement something special later?
-                Conversion.MessageType.Error => "ERROR",
+                Logging.MessageType.Debug => "DEBUG",
+                Logging.MessageType.Info => "INFO",
+                Logging.MessageType.Completion => "INFO", // just use INFO for now, maybe implement something special later?
+                Logging.MessageType.Error => "ERROR",
                 // throw an error if a value is not supported
                 _ => throw new NotImplementedException($"MessageType value '{e.Type}' is unsupported in Console_ConversionMessage.")
             };
 
-            Console.WriteLine($"[{level}] {e.Message}");
+            Console.WriteLine($"[{level}]{(e.ConversionPercent == null ? " " : $" [{(int)e.ConversionPercent,3}%]")} {e.Message}");
         }
 
         [DllImport("Kernel32.dll")]

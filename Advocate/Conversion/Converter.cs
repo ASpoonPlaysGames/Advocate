@@ -76,45 +76,19 @@ namespace Advocate.Conversion
         /// </value>
         public string? IconPath { get; private set; }
 
-        /// <summary>
-        ///     An event handler for the <see cref="OnConversionMessage(ConversionMessageEventArgs)"/> event.
-        /// </summary>
-        public event EventHandler<ConversionMessageEventArgs>? ConversionMessage;
-        /// <summary>
-        ///     Helper function that creates a new <see cref="ConversionMessageEventArgs"/>
-        ///     from an input string and calls <see cref="OnConversionMessage(ConversionMessageEventArgs)"/>.
-        /// </summary>
-        /// <param name="message">The message that will be passed to the event listeners.</param>
-        /// <param name="type">The message type, used in formatting and showing in gui.</param>
-        protected virtual void OnConversionMessage(string? message, MessageType type = MessageType.Info)
-        {
-            OnConversionMessage(new ConversionMessageEventArgs(message) { Type = type, ConversionPercent = 100 * (curStep / NUM_CONVERT_STEPS) });
-        }
-        /// <summary>
-        ///     Event that is called on a generic message received from the conversion.
-        /// </summary>
-        /// <param name="e">The event arguments.</param>
-        protected virtual void OnConversionMessage(ConversionMessageEventArgs e)
-        {
-            ConversionMessage?.Invoke(this, e);
-        }
-
-        private void OnConversionError(string message)
-        {
-            OnConversionMessage(message, MessageType.Error);
-        }
-
-        private void ConvertTaskComplete(MessageType type = MessageType.Info)
-        {
-            // calculate how complete the conversion is, incrementing curStep
-            float percent = 100 * (++curStep / NUM_CONVERT_STEPS);
-            // instantiate a ConversionMessageEventArgs and send a conversion message
-            ConversionMessageEventArgs args = new($"Conversion Progress: {percent}%") { ConversionPercent = percent, Type = type };
-            OnConversionMessage(args);
-        }
+        public float ConvertProgress { get { return 100 * curStep / NUM_CONVERT_STEPS; } }
 
         private const float NUM_CONVERT_STEPS = 13; // INCREMENT THIS WHEN YOU ADD A NEW MESSAGE IDK
         private float curStep = 0;
+
+        // just here for better readability
+        private void ConvertTaskComplete() { curStep++; }
+
+        // helper functions for some nicer logging
+        private void Debug(string message) { Logging.Logger.Debug(message, ConvertProgress); }
+        private void Info(string message) { Logging.Logger.Info(message, ConvertProgress); }
+        private void Completion(string message) { Logging.Logger.Completion(message, ConvertProgress); }
+        private void Error(string message) { Logging.Logger.Error(message, ConvertProgress); }
 
         // provides the serialisation options we use for writing json files
         private static readonly JsonSerializerOptions jsonOptions = new()
@@ -200,15 +174,14 @@ namespace Advocate.Conversion
             string repakTempFolderPath = Path.GetFullPath($"{tempFolderPath}/RePak");
             try
             {
-                Logger.CreateLogFile(outputPath);
-                ConversionMessage += Logger.LogFile_ConversionMessage;
+                Logging.Logger.CreateLogFile(outputPath);
             }
             catch (Exception ex) when (!nogui)
             {
                 // create message box showing the full error
                 MessageBoxButton msgButton = MessageBoxButton.OK;
                 MessageBoxImage msgIcon = MessageBoxImage.Error;
-                MessageBox.Show($"Failed to create log file at path: '{Logger.LogFilePath}'\nMake sure that the Output Path directory is writable!\n\nDebugging information:\n\n {ex.Message}\n{ex.StackTrace}", "Logging Error", msgButton, msgIcon);
+                MessageBox.Show($"Failed to create log file at path: '{Logging.Logger.LogFilePath}'\nMake sure that the Output Path directory is writable!\n\nDebugging information:\n\n {ex.Message}\n{ex.StackTrace}", "Logging Error", msgButton, msgIcon);
                 return false;
             }
 
@@ -219,7 +192,7 @@ namespace Advocate.Conversion
                 // create temp directories //
                 /////////////////////////////
 
-                //o.Message = "Creating temporary directories...";
+                Info("Creating temporary directories...");
 
                 // directory for unzipped file
                 Directory.CreateDirectory(skinTempFolderPath);
@@ -238,7 +211,7 @@ namespace Advocate.Conversion
                 ///////////////////////////////
 
                 // set the message for the new conversion step
-                OnConversionMessage("Unzipping skin...");
+                Info("Unzipping skin...");
 
                 // try to extract the zip, catch any errors and just exit, sometimes we get bad zips, non-zips, etc. etc.
                 try
@@ -247,7 +220,7 @@ namespace Advocate.Conversion
                 }
                 catch (InvalidDataException)
                 {
-                    OnConversionError("Unable to unzip skin!");
+                    Error("Unable to unzip skin!");
                     return false;
                 }
 
@@ -259,7 +232,7 @@ namespace Advocate.Conversion
                 ////////////////////////////////////
 
                 // set the message for the new conversion step
-                OnConversionMessage("Creating mod file structure...");
+                Info("Creating mod file structure...");
 
                 // create the bare-bones folder structure for the mod
                 Directory.CreateDirectory($"{modTempFolderPath}/mods/{AuthorName}.{SkinName}/paks");
@@ -275,18 +248,18 @@ namespace Advocate.Conversion
                 if (string.IsNullOrWhiteSpace(IconPath))
                 {
                     // set the message for the new conversion step
-                    OnConversionMessage("Generating icon.png...");
+                    Info("Generating icon.png...");
                     // fuck you, im using the col of the first folder i find, shouldve specified an icon path
                     string[] skinPaths = Directory.GetDirectories(skinTempFolderPath);
                     if (skinPaths.Length == 0)
                     {
-                        OnConversionError("Couldn't generate icon.png: No Skins found in zip!");
+                        Error("Couldn't generate icon.png: No Skins found in zip!");
                         return false;
                     }
                     string[] resolutions = Directory.GetDirectories(skinPaths[0]);
                     if (resolutions.Length == 0)
                     {
-                        OnConversionError("Couldn't generate icon.png: No Skins found in zip!");
+                        Error("Couldn't generate icon.png: No Skins found in zip!");
                         return false;
                     }
                     // find highest resolution folder
@@ -303,14 +276,14 @@ namespace Advocate.Conversion
                     // check that we actually found something
                     if (highestRes == 0)
                     {
-                        OnConversionError("Couldn't generate icon.png: No valid image resolutions found in zip!");
+                        Error("Couldn't generate icon.png: No valid image resolutions found in zip!");
                         return false;
                     }
 
                     string[] files = Directory.GetFiles(skinPaths[0] + "\\" + highestRes.ToString());
                     if (files.Length == 0)
                     {
-                        OnConversionError("Couldn't generate icon.png: No files in highest resolution folder!");
+                        Error("Couldn't generate icon.png: No files in highest resolution folder!");
                         return false;
                     }
                     // find _col file
@@ -325,25 +298,25 @@ namespace Advocate.Conversion
                     }
                     if (colPath == "")
                     {
-                        OnConversionError("Couldn't generate icon.png: No _col texture found in highest resolution folder!");
+                        Error("Couldn't generate icon.png: No _col texture found in highest resolution folder!");
                         return false;
                     }
 
                     if (!DdsToPng(colPath, modTempFolderPath + "\\icon.png"))
                     {
-                        OnConversionError("Couldn't generate icon.png: Failed to convert dds to png!");
+                        Error("Couldn't generate icon.png: Failed to convert dds to png!");
                         return false;
                     }
                 }
                 else
                 {
                     // set the message for the new conversion step
-                    OnConversionMessage("Copying icon.png...");
+                    Info("Copying icon.png...");
                     // check that png is correct size
                     Image img = Image.FromFile(IconPath);
                     if (img.Width != 256 || img.Height != 256)
                     {
-                        OnConversionError("Icon must be 256x256!");
+                        Error("Icon must be 256x256!");
                         return false;
                     }
                     // copy png over
@@ -358,7 +331,7 @@ namespace Advocate.Conversion
                 //////////////////////
 
                 // set the message for the new conversion step
-                OnConversionMessage("Generating README.md...");
+                Info("Generating README.md...");
                 File.WriteAllText($"{modTempFolderPath}/README.md", ReadMePath);
 
                 // move progress bar
@@ -369,7 +342,7 @@ namespace Advocate.Conversion
                 //////////////////////////////////////////////////////////////////
 
                 // set the message for the new conversion step
-                OnConversionMessage("Copying textures...");
+                Info("Copying textures...");
 
                 // this holds a string of json which will be appended to as the map file is constructed, TODO - refactor to use json library?
                 string map = $"{{\n\"name\":\"{SkinName}\",\n\"assetsDir\":\"{repakTempFolderPath.Replace('\\', '/')}/assets\",\n\"outputDir\":\"{modTempFolderPath.Replace('\\', '/')}/mods/{AuthorName}.{SkinName}/paks\",\n\"version\": 7,\n\"files\":[\n";
@@ -404,14 +377,14 @@ namespace Advocate.Conversion
                                 string texturePath = TextureNameToPath(Path.GetFileNameWithoutExtension(texture));
                                 if (string.IsNullOrWhiteSpace(texturePath))
                                 {
-                                    OnConversionError($"Failed to convert texture '{Path.GetFileNameWithoutExtension(texture)}')");
+                                    Error($"Failed to convert texture '{Path.GetFileNameWithoutExtension(texture)}')");
                                     return false;
                                 }
 
                                 // avoid duplicate textures in the json
                                 if (!textures.Contains(texturePath))
                                 {
-                                    OnConversionMessage($"Adding non-duplicate texturePath '{texturePath}' to textures", MessageType.Debug);
+                                    Debug($"Adding non-duplicate texturePath '{texturePath}' to textures");
                                     // dont add a comma on the first one
                                     if (!isFirst)
                                         map += ",\n";
@@ -423,7 +396,7 @@ namespace Advocate.Conversion
                                 }
                                 else
                                 {
-                                    OnConversionMessage($"Skipping duplicate texturePath '{texturePath}'", MessageType.Debug);
+                                    Debug($"Skipping duplicate texturePath '{texturePath}'");
                                 }
                                 isFirst = false;
 
@@ -450,7 +423,7 @@ namespace Advocate.Conversion
                 //////////////////////////
 
                 // set the message for the new conversion step
-                OnConversionMessage("Packing using RePak...");
+                Info("Packing using RePak...");
 
 
                 // create the process for RePak
@@ -477,7 +450,7 @@ namespace Advocate.Conversion
                 // currently, RePak always uses exitcode 1 for failure, if we implement more error codes then I'll probably give a more detailed error here
                 if (P.ExitCode == 1)
                 {
-                    OnConversionError("RePak failed to pack the rpak!");
+                    Error("RePak failed to pack the rpak!");
                     return false;
                 }
 
@@ -489,7 +462,7 @@ namespace Advocate.Conversion
                 //////////////////////
 
                 // set the message for the new conversion step
-                OnConversionMessage("Generating rpak.json...");
+                Info("Generating rpak.json...");
 
                 // we can just preload our rpak, since it should only contain textures
                 JSON.RPak rpak = new()
@@ -507,7 +480,7 @@ namespace Advocate.Conversion
                 //////////////////////////
 
                 // set the message for the new conversion step
-                OnConversionMessage("Writing manifest.json...");
+                Info("Writing manifest.json...");
 
                 // create the DescriptionHandler for parsing the description
                 DescriptionHandler desc = new()
@@ -537,7 +510,7 @@ namespace Advocate.Conversion
                 /////////////////////
 
                 // set the message for the new conversion step
-                OnConversionMessage("Writing mod.json...");
+                Info("Writing mod.json...");
 
                 JSON.Mod mod = new()
                 {
@@ -557,7 +530,7 @@ namespace Advocate.Conversion
                 ///////////////////
 
                 // set the message for the new conversion step
-                OnConversionMessage("Zipping mod...");
+                Info("Zipping mod...");
 
                 // create the zip file from the mod temp path
                 ZipFile.CreateFromDirectory(modTempFolderPath, $"{tempFolderPath}/{AuthorName}.{SkinName}.zip");
@@ -570,7 +543,7 @@ namespace Advocate.Conversion
                 ////////////////////////////////////
 
                 // set the message for the new conversion step
-                OnConversionMessage("Moving zip to output folder...");
+                Info("Moving zip to output folder...");
 
                 // move the zip file we created to the output folder
                 File.Move($"{tempFolderPath}/{AuthorName}.{SkinName}.zip", $"{outputPath}/{AuthorName}.{SkinName}-{Version}.zip", true);
@@ -582,7 +555,7 @@ namespace Advocate.Conversion
                 // cleanup //
                 /////////////
 
-                OnConversionMessage("Cleaning up...");
+                Info("Cleaning up...");
 
                 // delete temp folders
                 if (Directory.Exists(tempFolderPath))
@@ -596,7 +569,7 @@ namespace Advocate.Conversion
                 MessageBox.Show($"There was an unhandled error during conversion!\n\n{ex.Message}\n\n{ex.StackTrace}", "Conversion Error", msgButton, msgIcon);
 
                 // exit out of the conversion
-                OnConversionError("Unknown Error!");
+                Error("Unknown Error!");
                 return true;
             }
 
@@ -604,7 +577,7 @@ namespace Advocate.Conversion
             // move progress bar to the end
             curStep = NUM_CONVERT_STEPS;
             // Log complete conversion
-            OnConversionMessage("Conversion Complete!", MessageType.Completion);
+            Completion("Conversion Complete!");
             return true;
         }
 
