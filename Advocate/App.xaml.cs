@@ -36,6 +36,10 @@ namespace Advocate
 
             // get the file opened with Advocate if applicable
             string? openedFilePath = e.Args.Length != 0 ? e.Args[0] : null;
+            if (openedFilePath != null)
+            {
+                Logging.Logger.Debug($"Found target file in commandline arguments: '{openedFilePath}'");
+            }
 
             // try to attach to a console from the parent program if it exists
             AttachConsole(-1);
@@ -102,6 +106,7 @@ namespace Advocate
 
                     if (argDict.ContainsKey(key))
                     {
+                        Logging.Logger.Debug($"Found key '{key}' in commandline arguments with value {val}");
                         argDict[key] = val;
                     }
                     else
