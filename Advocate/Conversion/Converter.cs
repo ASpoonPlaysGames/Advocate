@@ -64,7 +64,7 @@ namespace Advocate.Conversion
         ///     <para>A string of the skin's README.md file, set at initialisation.</para>
         ///     <para>Defaults to an empty string ("")</para>
         /// </value>
-        public string? ReadMePath { get; private set; }
+        public string ReadMePath { get; private set; }
 
         /// <summary>
         ///     The Icon for the skin.
@@ -136,15 +136,15 @@ namespace Advocate.Conversion
 			}
 			Version = pVersion;
 
-            // check that ReadMePath is valid and leads to a .md file
-            if (!string.IsNullOrWhiteSpace(ReadMePath) && !ReadMePath.EndsWith(".md"))
+            // check that pReadMePath is valid and leads to a .md file
+            if (!string.IsNullOrWhiteSpace(pReadMePath) && !pReadMePath.EndsWith(".md"))
             {
                 throw new ArgumentException("README path doesn't lead to a .md file!");
             }
             ReadMePath = pReadMePath;
 
-            // check that IconPath is valid and leads to a .png file
-            if (!string.IsNullOrWhiteSpace(IconPath) && !IconPath.EndsWith(".png"))
+            // check that pIconPath is valid and leads to a .png file
+            if (!string.IsNullOrWhiteSpace(pIconPath) && !pIconPath.EndsWith(".png"))
             {
                 throw new ArgumentException("Icon path doesn't lead to a .png file!");
             }
@@ -332,7 +332,10 @@ namespace Advocate.Conversion
 
                 // set the message for the new conversion step
                 Info("Generating README.md...");
-                File.WriteAllText($"{modTempFolderPath}/README.md", ReadMePath);
+                if (ReadMePath == "")
+                    File.WriteAllText($"{modTempFolderPath}/README.md", "");
+                else
+                    File.Copy(ReadMePath, $"{modTempFolderPath}/README.md");
 
                 // move progress bar
                 ConvertTaskComplete();
