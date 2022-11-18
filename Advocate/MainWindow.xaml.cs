@@ -292,7 +292,7 @@ namespace Advocate
 
         /// <summary>
         ///     <para>Event listener for the <see cref="Logging.Logger.LogReceived"/> event.</para>
-        ///     <para>Sets <see cref="Message"/> to the <see cref="Conversion.ConversionMessageEventArgs.Message"/> or an empty string if null.</para>
+        ///     <para>Sets <see cref="Message"/> to the <see cref="Logging.LoggingEventArgs.Message"/> or an empty string if null.</para>
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
