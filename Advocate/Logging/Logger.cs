@@ -9,7 +9,7 @@ using System.Windows;
 namespace Advocate.Logging
 {
     /// <summary>
-    ///     Handles Logging, use CreateLogFile to 
+    ///     Handles Logging, use <see<see cref="Logger.CreateLogFile" to write logs to a file.
     /// </summary>
     public static class Logger
     {
@@ -22,7 +22,7 @@ namespace Advocate.Logging
         
         /// <summary>
         ///     Creates a log file at <paramref name="outputPath"/>.
-        ///     <para>The <see cref="Logger"/> can only be writing to a single log file at once</para>
+        ///     <para>The <see cref="Logger"/> can only be writing to a single log file at once.</para>
         /// </summary>
         /// <param name="outputPath"></param>
         public static void CreateLogFile(string outputPath)
