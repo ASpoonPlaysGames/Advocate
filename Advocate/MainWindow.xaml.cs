@@ -286,7 +286,7 @@ namespace Advocate
 
         private void OnClosed(object sender, EventArgs e)
         {
-            // register event listener for conversion messages
+            // close event listener for conversion messages to allow GC to destroy the MainWindow object
             Logging.Logger.LogReceived -= HandleConversionMessage;
         }
 

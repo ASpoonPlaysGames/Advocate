@@ -119,9 +119,9 @@ namespace Advocate
                     break;
                 case "ATI2":
                     Logging.Logger.Debug($"DDS file is using ATI2, changing to BC5U");
+                    pixel_FourCC = new char[4] { 'B', 'C', '5', 'U' };
                     goto case "BC5U";
                 case "BC5U":
-                    pixel_FourCC = new char[4] { 'B', 'C', '5', 'U' };
                     if ((flags & 0x000A0000) != 0x000A0000)
                         flags |= 0x000A0000;
                     break;

@@ -57,7 +57,7 @@ namespace Advocate.Logging
         ///     How complete the conversion is, represented by a percentage.
         /// </summary>
         /// <value>
-        ///     A float value between 0 and 100 (inclusive).
+        ///     A float value between 0 and 100 (inclusive), or null to signify no change.
         /// </value>
         public float? ConversionPercent { get; init; }
 
