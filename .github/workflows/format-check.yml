@@ -1,4 +1,5 @@
 name: dotnet format
+run-name: idk dude is this required?
 
 on:
   push:
