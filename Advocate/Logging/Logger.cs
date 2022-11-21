@@ -9,7 +9,7 @@ using System.Windows;
 namespace Advocate.Logging
 {
 	/// <summary>
-	///     Handles Logging, use <see<see cref="Logger.CreateLogFile" to write logs to a file.
+	///     Handles Logging, use <see cref="Logger.CreateLogFile"></see> to write logs to a file.
 	/// </summary>
 	public static class Logger
 	{
