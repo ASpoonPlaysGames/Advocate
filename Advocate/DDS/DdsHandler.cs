@@ -46,8 +46,8 @@ namespace Advocate
 		// other variables
 		bool isDX10;
 		byte[] data; // just everything else thats not in the header
-		
-		
+
+
 		public DdsHandler(string path)
 		{
 			BinaryReader reader = new(new FileStream(path, FileMode.Open));
