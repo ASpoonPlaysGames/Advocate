@@ -1,15 +1,6 @@
 name: format-check
 
-on:
-  push:
-    paths:
-      - "**.cs"
-      - ".editorconfig"
-      - "**.yml"
-  pull_request:
-    paths:
-      - "**.cs"
-      - ".editorconfig"
+on: [push, pull_request]
 
 jobs:
   check-format:
