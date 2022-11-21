@@ -536,7 +536,7 @@ namespace Advocate.Conversion
 
 				JSON.Mod mod = new()
 				{
-					Name = $"{ AuthorName }.{ SkinName }",
+					Name = $"{AuthorName}.{SkinName}",
 					Description = desc.FormatDescription(description),
 					Version = Version,
 					LoadPriority = 1,
