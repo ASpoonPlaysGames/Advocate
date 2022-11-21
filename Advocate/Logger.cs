@@ -29,7 +29,7 @@ namespace Advocate
 			logWriter.AutoFlush = true;
 			createdFile = true;
 		}
-		
+
 		public void LogFile_ConversionMessage(object? sender, Conversion.ConversionMessageEventArgs e)
 		{
 			// bonus check for null to prevent compiler warnings
