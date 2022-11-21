@@ -29,13 +29,10 @@ jobs:
 
       - name: Get diffs
         shell: bash
-        id: diff
         run: |
           git diff "$GITHUB_SHA" > format-diff
-          echo ::set-output name=format-diff::$(cat format-diff)
-
-      - name: Test output
-        run: echo ${{ steps.vars.outputs.format-diff }}
+          cat format-diff
+          
   
       - name: Result
         if: steps.format.outputs.has-changes == 'true'
