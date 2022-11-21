@@ -26,4 +26,4 @@ jobs:
       - name: Get formatting diffs
         run: |
           git diff
-          git diff-index --quiet
+          
