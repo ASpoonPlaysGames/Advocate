@@ -175,8 +175,6 @@ namespace Advocate.Conversion
 				throw new ArgumentException("Icon path doesn't lead to a .png file!");
 			}
 			IconPath = pIconPath;
-
-			
 		}
 
 		/// <summary>
