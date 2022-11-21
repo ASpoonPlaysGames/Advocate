@@ -1,0 +1,29 @@
+name: format-check
+
+on: pull_request
+
+jobs:
+  check-format:
+    runs-on: windows-latest
+
+    # this is a comment
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Install dotnet-format tool
+        run: dotnet tool install -g dotnet-format
+        
+      - name: Run dotnet format
+        run:
+          dotnet format
+
+      - name: Check for diffs
+        run: |
+          git diff
+          git diff-index --quiet
