@@ -433,7 +433,7 @@ namespace Advocate
 			}
 		}
 
-		
+
 		private void SelectIconFileButton_Click(object sender, RoutedEventArgs e)
 		{
 			OpenFileDialog openFileDialog = new()
