@@ -20,4 +20,10 @@ jobs:
         
       - name: Run dotnet format
         run: dotnet format 'Advocate.sln' --verbosity diagnostic --verify-no-changes
+
+      - name: Print SHA
+        run: echo "$GITHUB_SHA"
+
+      - name: Get diffs
+        run: git diff "$GITHUB_SHA"
   
