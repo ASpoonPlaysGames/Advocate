@@ -26,6 +26,8 @@ jobs:
         continue-on-error: true 
         run: dotnet format 'Advocate.sln' --verbosity diagnostic --verify-no-changes
 
+      - run: git status
+
       - name: Get diffs
         shell: bash
         run: git diff
