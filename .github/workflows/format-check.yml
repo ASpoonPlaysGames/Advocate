@@ -34,5 +34,5 @@ jobs:
       - name: Result
         if: steps.format.outputs.has-changes == 'true'
         run: |
-          cat format-diff
+          cat Advocate.sln
           exit 1
