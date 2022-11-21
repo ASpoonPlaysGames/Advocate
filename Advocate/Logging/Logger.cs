@@ -19,7 +19,7 @@ namespace Advocate.Logging
 		public static string LogFilePath { get; private set; } = "";
 
 		private static StreamWriter? logWriter;
-		
+
 		/// <summary>
 		///     Creates a log file at <paramref name="outputPath"/>.
 		///     <para>The <see cref="Logger"/> can only be writing to a single log file at once.</para>

@@ -89,7 +89,7 @@ namespace Advocate
 					Logging.Logger.Debug($"DDS file at path '{path}' is using DX10");
 					dxgiFormat = (DXGI_FORMAT)reader.ReadUInt32();
 					resourceDimension = (DX10ResourceDimension)reader.ReadUInt32();
-					miscFlags = reader.ReadUInt32(); 
+					miscFlags = reader.ReadUInt32();
 					arraySize = reader.ReadUInt32();
 					alphaMode = (DX10AlphaMode)reader.ReadUInt32();
 				}
