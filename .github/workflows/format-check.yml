@@ -5,6 +5,10 @@ on:
     paths:
       - "**.cs"
       - ".editorconfig"
+  pull_request:
+    paths:
+      - "**.cs"
+      - ".editorconfig"
 
 jobs:
   check-format:
