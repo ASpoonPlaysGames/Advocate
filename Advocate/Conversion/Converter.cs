@@ -519,7 +519,6 @@ namespace Advocate.Conversion
 					name = SkinName.Replace(' ', '_'),
 					version_number = Version,
 					website_url = "https://github.com/ASpoonPlaysGames/Advocate", // hey i gotta get people to use this somehow
-					//dependencies = {}, // unneeded as it defaults to an empty array and we dont have any dependencies
 					description = desc.FormatDescription(description),
 				};
 			  
