@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
@@ -24,6 +26,7 @@ jobs:
         run: dotnet format 'Advocate.sln' --verbosity diagnostic --verify-no-changes
 
       - name: Get diffs
+        shell: bash
         run: git diff b2754a9af0edf2e61482fdb5d330afbeee88fa5d
   
       
