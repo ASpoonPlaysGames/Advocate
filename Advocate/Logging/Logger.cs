@@ -45,8 +45,7 @@ namespace Advocate.Logging
 		{
 			// bonus check for null to prevent compiler warnings
 			if (logWriter == null)
-				// this is no longer fatal, because console logging exists
-				return; //throw new Exception("Tried to log to file without calling CreateLogFile first!");
+				return; // this is no longer fatal, because console logging exists
 
 			string level = e.Type switch
 			{
