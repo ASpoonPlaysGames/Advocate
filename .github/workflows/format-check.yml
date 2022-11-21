@@ -28,7 +28,7 @@ jobs:
       - name: Get diffs
         shell: bash
         run: |
-          git diff "$GITHUB_SHA"
+          git diff $GITHUB_SHA
           
   
       - name: Result
