@@ -514,6 +514,7 @@ namespace Advocate.Conversion
 					Types = skinTypes.Distinct().ToArray()
 				};
 
+				// create the manifest for the mod, don't give it any dependencies for now
 				JSON.Manifest manifest = new()
 				{
 					name = SkinName.Replace(' ', '_'),
