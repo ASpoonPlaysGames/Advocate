@@ -582,7 +582,7 @@ namespace Advocate.Conversion
 
 				// exit out of the conversion
 				Error("Unknown Error!");
-				return true;
+				return false;
 			}
 
 			// everything is done and hopefully good
