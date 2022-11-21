@@ -29,10 +29,16 @@ jobs:
 
       - name: Get diffs
         shell: bash
+        id: diff
         run: |
           git diff "$GITHUB_SHA" > format-diff
-          cat format-diff
+          echo ::set-output name=format-diff::$(cat format-diff)
+
+      - name: Test output
+        run: echo ${{ steps.vars.outputs.format-diff }}
   
-      - name: Return result from dotnet-format
+      - name: Result
         if: steps.format.outputs.has-changes == 'true'
-        run: exit 1
+        run: |
+          cat format-diff
+          exit 1
