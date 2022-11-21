@@ -48,7 +48,7 @@ namespace Advocate
 
 			// async write to the file
 			logWriter.WriteLine($"[{DateTime.Now:HH:mm:ss}] [{level}] {e.Message}");
-			
+
 		}
 	}
 }
