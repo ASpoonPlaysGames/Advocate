@@ -6,6 +6,7 @@ jobs:
   check-format:
     runs-on: windows-latest
 
+    # this is a comment
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -27,6 +28,6 @@ jobs:
 
       - name: Get diffs
         shell: bash
-        run: git diff b2754a9af0edf2e61482fdb5d330afbeee88fa5d
+        run: git diff
   
       
