@@ -81,7 +81,7 @@ namespace Advocate
 
 			// instantiate DescriptionHelpHints
 			DescriptionHelpHints = new ObservableCollection<HelpHint>();
-			
+
 			AddHelpHint("Key:", "Description:"); // todo, replace with a proper header
 
 			// add help hints here - changes made here should be mirrored in DescriptionHandler.cs
