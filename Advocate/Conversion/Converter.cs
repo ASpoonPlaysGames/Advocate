@@ -584,7 +584,7 @@ namespace Advocate.Conversion
 
 				// delete temp folders
 				if (Directory.Exists(tempFolderPath))
-					Directory.Delete(tempFolderPath, true);
+					Directory.Delete(tempFolderPath, true); // if we get an exception here, I'm not too sure how i want to handle it
 			}
 
 			// everything is done and hopefully good
