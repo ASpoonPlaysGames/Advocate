@@ -20,7 +20,7 @@ jobs:
         
       - name: Run dotnet format
         id: format
-        uses: xt0rted/dotnet-format@v1.0.2
+        uses: xt0rted/dotnet-format@v1.2.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           action: "fix"
