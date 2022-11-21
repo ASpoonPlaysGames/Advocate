@@ -23,7 +23,7 @@ jobs:
         run:
           dotnet format
 
-      - name: Get formatting diffs
+      - name: Check for diffs
         run: |
           git diff
           git diff-index --quiet
