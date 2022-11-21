@@ -292,11 +292,11 @@ namespace Advocate
 
 		/// <summary>
 		///     <para>Event listener for the <see cref="Logging.Logger.LogReceived"/> event.</para>
-		///     <para>Sets <see cref="Message"/> to the <see cref="Logging.LoggingEventArgs.Message"/> or an empty string if null.</para>
+		///     <para>Sets <see cref="Message"/> to the <see cref="Logging.LogMessageEventArgs.Message"/> or an empty string if null.</para>
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void HandleConversionMessage(object? sender, Logging.LoggingEventArgs e)
+		private void HandleConversionMessage(object? sender, Logging.LogMessageEventArgs e)
 		{
 			// ignore messages that are below MessageType.Info in gui
 			if (e.Type < Logging.MessageType.Info)

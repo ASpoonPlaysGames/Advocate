@@ -138,7 +138,7 @@ namespace Advocate
 			}
 		}
 
-		private void Console_OnConversionMessage(object? sender, Logging.LoggingEventArgs e)
+		private void Console_OnConversionMessage(object? sender, Logging.LogMessageEventArgs e)
 		{
 #if !DEBUG
 			// break early if message is a debug message and we arent in debug

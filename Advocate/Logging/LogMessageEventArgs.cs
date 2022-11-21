@@ -40,7 +40,7 @@ namespace Advocate.Logging
 	///     Holds information about a conversion message,
 	///     used for logging to the console and updating the gui.
 	/// </summary>
-	public class LoggingEventArgs : EventArgs
+	public class LogMessageEventArgs : EventArgs
 	{
 		/// <summary>
 		///     The message to the user. May be null.
@@ -62,10 +62,10 @@ namespace Advocate.Logging
 		public float? ConversionPercent { get; init; }
 
 		/// <summary>
-		///     Basic constructor for <see cref="LoggingEventArgs"/>
+		///     Basic constructor for <see cref="LogMessageEventArgs"/>
 		/// </summary>
 		/// <param name="message"></param>
 		/// <param name="type"></param>
-		public LoggingEventArgs(string message, MessageType type) { Message = message; Type = type; }
+		public LogMessageEventArgs(string message, MessageType type) { Message = message; Type = type; }
 	}
 }
