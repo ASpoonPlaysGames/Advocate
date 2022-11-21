@@ -20,12 +20,18 @@ jobs:
         run: dotnet tool install -g dotnet-format
         
       - name: Run dotnet format
-        id: format 
-        # so I run this twice because I have to, --verify-no-changes returns a non-zero exit code if changes would be made,
-        # but doesn't actually make them, meanwhile without it it always returns 0,
-        # however, the formatting in the logging is absolutely awful with --verify-no-changes
-        run: |
+        run:
           dotnet format
-          dotnet format --verify-no-changes -v q
+      
+      - name: Check if there are changes
+        id: changes
+        uses: UnicornGlobal/has-changes-action@v1.0.11
+      # You can now access a variable indicating if there have been changes
+      - name: Show formatting issues
+        if: steps.changes.outputs.changed == 1
+        run: |
+          git diff
+          exit 1
+
   
       
