@@ -24,14 +24,11 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           action: "fix"
-          only-changed-files: true
-          folder: "."
 
       - name: Get diffs
         shell: bash
         run: |
-          git diff "$GITHUB_SHA" > format-diff
-          cat format-diff
+          git diff "$GITHUB_SHA"
           
   
       - name: Result
