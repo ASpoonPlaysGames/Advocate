@@ -22,10 +22,5 @@ jobs:
       - name: Run dotnet format
         run:
           dotnet format
-      
-      # this is awful but without --verify-no-changes it always returns exit code 0
-      # and with --verify-no-changes it logs them in a shit way
-      - name: Return status
-        run:
-          dotnet format --verify-no-changes -v q
+
       
