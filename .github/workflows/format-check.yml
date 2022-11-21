@@ -24,10 +24,9 @@ jobs:
       - name: Run dotnet format
         id: format
         continue-on-error: true 
-        run: dotnet format
-
-      - name: Get diffs
-        shell: bash
-        run: git diff
+        # so I run this twice because I have to, --verify-no-changes returns a non-zero exit code if changes would be made,
+        # but doesn't actually make them, meanwhile without it it always returns 0,
+        run: |
+          dotnet format --verify-no-changes
   
       
