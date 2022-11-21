@@ -18,4 +18,13 @@ jobs:
       - name: Install dotnet-format
         run: dotnet tool install -g dotnet-format --version 3.3.111304
         
-       
+       name: Run dotnet format
+        id: format
+        uses: xt0rted/dotnet-format@v1.0.2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          action: "fix"
+          only-changed-files: true
+          folder: "."
+
+      
