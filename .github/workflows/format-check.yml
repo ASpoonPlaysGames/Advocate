@@ -1,4 +1,4 @@
-name: dotnet format
+name: format-check
 run-name: idk dude is this required?
 
 on:
