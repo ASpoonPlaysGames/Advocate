@@ -562,16 +562,6 @@ namespace Advocate.Conversion
 
 				// move progress bar
 				ConvertTaskComplete();
-
-				/////////////
-				// cleanup //
-				/////////////
-
-				Info("Cleaning up...");
-
-				// delete temp folders
-				if (Directory.Exists(tempFolderPath))
-					Directory.Delete(tempFolderPath, true);
 			}
 			catch (Exception ex) when (!nogui)
 			{
@@ -583,6 +573,18 @@ namespace Advocate.Conversion
 				// exit out of the conversion
 				Error("Unknown Error!");
 				return false;
+			}
+			finally
+			{
+				/////////////
+				// cleanup //
+				/////////////
+
+				Info("Cleaning up...");
+
+				// delete temp folders
+				if (Directory.Exists(tempFolderPath))
+					Directory.Delete(tempFolderPath, true);
 			}
 
 			// everything is done and hopefully good
