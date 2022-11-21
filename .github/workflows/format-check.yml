@@ -18,7 +18,7 @@ jobs:
       - name: Install dotnet-format
         run: dotnet tool install -g dotnet-format --version 3.3.111304
         
-       name: Run dotnet format
+      - name: Run dotnet format
         id: format
         uses: xt0rted/dotnet-format@v1.0.2
         with:
@@ -27,4 +27,12 @@ jobs:
           only-changed-files: true
           folder: "."
 
-      
+      - name: Get diffs
+        shell: bash
+        run: |
+          git diff "$GITHUB_SHA" > format-diff
+          cat format-diff
+  
+      - name: Return result from dotnet-format
+        if: steps.format.outputs.has-changes == 'true'
+        run: exit 1
