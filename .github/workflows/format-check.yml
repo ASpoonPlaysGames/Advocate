@@ -23,11 +23,8 @@ jobs:
         
       - name: Run dotnet format
         id: format
-        uses: xt0rted/dotnet-format@v1.0.1
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          action: "fix"
-          folder: "."
+        continue-on-error: true 
+        run: dotnet format 'Advocate.sln' --verbosity diagnostic
 
       - run: git status
 
