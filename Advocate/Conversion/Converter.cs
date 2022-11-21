@@ -521,8 +521,8 @@ namespace Advocate.Conversion
 					website_url = "https://github.com/ASpoonPlaysGames/Advocate", // hey i gotta get people to use this somehow
 					description = desc.FormatDescription(description),
 				};
-			  
-				File.WriteAllText($"{modTempFolderPath}/manifest.json", JsonSerializer.Serialize<JSON.Manifest>(manifest, jsonOptions ));
+
+				File.WriteAllText($"{modTempFolderPath}/manifest.json", JsonSerializer.Serialize<JSON.Manifest>(manifest, jsonOptions));
 
 				// move progress bar
 				ConvertTaskComplete();
