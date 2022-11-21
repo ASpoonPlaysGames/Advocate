@@ -1,0 +1,12 @@
+name: format-check
+
+on:
+  push:
+    paths:
+      - "**.cs"
+      - ".editorconfig"
+  pull_request:
+    paths:
+      - "**.cs"
+      - ".editorconfig"
+
