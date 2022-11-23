@@ -64,7 +64,7 @@ namespace Advocate.Conversion
 		///     <para>A string of the skin's README.md file, set at initialisation.</para>
 		///     <para>Defaults to an empty string ("")</para>
 		/// </value>
-		public string? ReadMePath { get; private set; }
+		public string ReadMePath { get; private set; }
 
 		/// <summary>
 		///     The Icon for the skin.
@@ -76,45 +76,19 @@ namespace Advocate.Conversion
 		/// </value>
 		public string? IconPath { get; private set; }
 
-		/// <summary>
-		///     An event handler for the <see cref="OnConversionMessage(ConversionMessageEventArgs)"/> event.
-		/// </summary>
-		public event EventHandler<ConversionMessageEventArgs>? ConversionMessage;
-		/// <summary>
-		///     Helper function that creates a new <see cref="ConversionMessageEventArgs"/>
-		///     from an input string and calls <see cref="OnConversionMessage(ConversionMessageEventArgs)"/>.
-		/// </summary>
-		/// <param name="message">The message that will be passed to the event listeners.</param>
-		/// <param name="type">The message type, used in formatting and showing in gui.</param>
-		protected virtual void OnConversionMessage(string? message, MessageType type = MessageType.Info)
-		{
-			OnConversionMessage(new ConversionMessageEventArgs(message) { Type = type, ConversionPercent = 100 * (curStep / NUM_CONVERT_STEPS) });
-		}
-		/// <summary>
-		///     Event that is called on a generic message received from the conversion.
-		/// </summary>
-		/// <param name="e">The event arguments.</param>
-		protected virtual void OnConversionMessage(ConversionMessageEventArgs e)
-		{
-			ConversionMessage?.Invoke(this, e);
-		}
-
-		private void OnConversionError(string message)
-		{
-			OnConversionMessage(message, MessageType.Error);
-		}
-
-		private void ConvertTaskComplete(MessageType type = MessageType.Info)
-		{
-			// calculate how complete the conversion is, incrementing curStep
-			float percent = 100 * (++curStep / NUM_CONVERT_STEPS);
-			// instantiate a ConversionMessageEventArgs and send a conversion message
-			ConversionMessageEventArgs args = new($"Conversion Progress: {percent}%") { ConversionPercent = percent, Type = type };
-			OnConversionMessage(args);
-		}
+		public float ConvertProgress { get { return 100 * curStep / NUM_CONVERT_STEPS; } }
 
 		private const float NUM_CONVERT_STEPS = 13; // INCREMENT THIS WHEN YOU ADD A NEW MESSAGE IDK
 		private float curStep = 0;
+
+		// just here for better readability
+		private void ConvertTaskComplete() { curStep++; }
+
+		// helper functions for some nicer logging
+		private void Debug(string message) { Logging.Logger.Debug(message, ConvertProgress); }
+		private void Info(string message) { Logging.Logger.Info(message, ConvertProgress); }
+		private void Completion(string message) { Logging.Logger.Completion(message, ConvertProgress); }
+		private void Error(string message) { Logging.Logger.Error(message, ConvertProgress); }
 
 		// provides the serialisation options we use for writing json files
 		private static readonly JsonSerializerOptions jsonOptions = new()
@@ -162,15 +136,15 @@ namespace Advocate.Conversion
 			}
 			Version = pVersion;
 
-			// check that ReadMePath is valid and leads to a .md file
-			if (!string.IsNullOrWhiteSpace(ReadMePath) && !ReadMePath.EndsWith(".md"))
+			// check that pReadMePath is valid and leads to a .md file
+			if (!string.IsNullOrWhiteSpace(pReadMePath) && !pReadMePath.EndsWith(".md"))
 			{
 				throw new ArgumentException("README path doesn't lead to a .md file!");
 			}
 			ReadMePath = pReadMePath;
 
-			// check that IconPath is valid and leads to a .png file
-			if (!string.IsNullOrWhiteSpace(IconPath) && !IconPath.EndsWith(".png"))
+			// check that pIconPath is valid and leads to a .png file
+			if (!string.IsNullOrWhiteSpace(pIconPath) && !pIconPath.EndsWith(".png"))
 			{
 				throw new ArgumentException("Icon path doesn't lead to a .png file!");
 			}
@@ -196,20 +170,16 @@ namespace Advocate.Conversion
 			string skinTempFolderPath = Path.GetFullPath($"{tempFolderPath}/Skin");
 			string modTempFolderPath = Path.GetFullPath($"{tempFolderPath}/Mod");
 			string repakTempFolderPath = Path.GetFullPath($"{tempFolderPath}/RePak");
-
-			// create our logger
-			Logger logger = new(outputPath);
 			try
 			{
-				logger.CreateLogFile();
-				ConversionMessage += logger.LogFile_ConversionMessage;
+				Logging.Logger.CreateLogFile(outputPath);
 			}
 			catch (Exception ex) when (!nogui)
 			{
 				// create message box showing the full error
 				MessageBoxButton msgButton = MessageBoxButton.OK;
 				MessageBoxImage msgIcon = MessageBoxImage.Error;
-				MessageBox.Show($"Failed to create log file at path: '{logger.LogFilePath}'\nMake sure that the Output Path directory is writable!\n\nDebugging information:\n\n {ex.Message}\n{ex.StackTrace}", "Logging Error", msgButton, msgIcon);
+				MessageBox.Show($"Failed to create log file at path: '{Logging.Logger.LogFilePath}'\nMake sure that the Output Path directory is writable!\n\nDebugging information:\n\n {ex.Message}\n{ex.StackTrace}", "Logging Error", msgButton, msgIcon);
 				return false;
 			}
 
@@ -239,7 +209,7 @@ namespace Advocate.Conversion
 				///////////////////////////////
 
 				// set the message for the new conversion step
-				OnConversionMessage("Unzipping skin...");
+				Info("Unzipping skin...");
 
 				// try to extract the zip, catch any errors and just exit, sometimes we get bad zips, non-zips, etc. etc.
 				try
@@ -248,7 +218,7 @@ namespace Advocate.Conversion
 				}
 				catch (InvalidDataException)
 				{
-					OnConversionError("Unable to unzip skin!");
+					Error("Unable to unzip skin!");
 					return false;
 				}
 
@@ -260,7 +230,7 @@ namespace Advocate.Conversion
 				////////////////////////////////////
 
 				// set the message for the new conversion step
-				OnConversionMessage("Creating mod file structure...");
+				Info("Creating mod file structure...");
 
 				// create the bare-bones folder structure for the mod
 				Directory.CreateDirectory($"{modTempFolderPath}/mods/{AuthorName}.{SkinName}/paks");
@@ -276,18 +246,18 @@ namespace Advocate.Conversion
 				if (string.IsNullOrWhiteSpace(IconPath))
 				{
 					// set the message for the new conversion step
-					OnConversionMessage("Generating icon.png...");
+					Info("Generating icon.png...");
 					// fuck you, im using the col of the first folder i find, shouldve specified an icon path
 					string[] skinPaths = Directory.GetDirectories(skinTempFolderPath);
 					if (skinPaths.Length == 0)
 					{
-						OnConversionError("Couldn't generate icon.png: No Skins found in zip!");
+						Error("Couldn't generate icon.png: No Skins found in zip!");
 						return false;
 					}
 					string[] resolutions = Directory.GetDirectories(skinPaths[0]);
 					if (resolutions.Length == 0)
 					{
-						OnConversionError("Couldn't generate icon.png: No Skins found in zip!");
+						Error("Couldn't generate icon.png: No Skins found in zip!");
 						return false;
 					}
 					// find highest resolution folder
@@ -304,14 +274,14 @@ namespace Advocate.Conversion
 					// check that we actually found something
 					if (highestRes == 0)
 					{
-						OnConversionError("Couldn't generate icon.png: No valid image resolutions found in zip!");
+						Error("Couldn't generate icon.png: No valid image resolutions found in zip!");
 						return false;
 					}
 
 					string[] files = Directory.GetFiles(skinPaths[0] + "\\" + highestRes.ToString());
 					if (files.Length == 0)
 					{
-						OnConversionError("Couldn't generate icon.png: No files in highest resolution folder!");
+						Error("Couldn't generate icon.png: No files in highest resolution folder!");
 						return false;
 					}
 					// find _col file
@@ -326,25 +296,25 @@ namespace Advocate.Conversion
 					}
 					if (colPath == "")
 					{
-						OnConversionError("Couldn't generate icon.png: No _col texture found in highest resolution folder!");
+						Error("Couldn't generate icon.png: No _col texture found in highest resolution folder!");
 						return false;
 					}
 
 					if (!DdsToPng(colPath, modTempFolderPath + "\\icon.png"))
 					{
-						OnConversionError("Couldn't generate icon.png: Failed to convert dds to png!");
+						Error("Couldn't generate icon.png: Failed to convert dds to png!");
 						return false;
 					}
 				}
 				else
 				{
 					// set the message for the new conversion step
-					OnConversionMessage("Copying icon.png...");
+					Info("Copying icon.png...");
 					// check that png is correct size
 					Image img = Image.FromFile(IconPath);
 					if (img.Width != 256 || img.Height != 256)
 					{
-						OnConversionError("Icon must be 256x256!");
+						Error("Icon must be 256x256!");
 						return false;
 					}
 					// copy png over
@@ -359,7 +329,7 @@ namespace Advocate.Conversion
 				//////////////////////
 
 				// set the message for the new conversion step
-				OnConversionMessage("Generating README.md...");
+				Info("Generating README.md...");
 				File.WriteAllText($"{modTempFolderPath}/README.md", ReadMePath);
 
 				// move progress bar
@@ -370,7 +340,7 @@ namespace Advocate.Conversion
 				//////////////////////////////////////////////////////////////////
 
 				// set the message for the new conversion step
-				OnConversionMessage("Copying textures...");
+				Info("Copying textures...");
 
 				// this holds a string of json which will be appended to as the map file is constructed, TODO - refactor to use json library?
 				string map = $"{{\n\"name\":\"{SkinName}\",\n\"assetsDir\":\"{repakTempFolderPath.Replace('\\', '/')}/assets\",\n\"outputDir\":\"{modTempFolderPath.Replace('\\', '/')}/mods/{AuthorName}.{SkinName}/paks\",\n\"version\": 7,\n\"files\":[\n";
@@ -394,6 +364,7 @@ namespace Advocate.Conversion
 						}
 					}
 
+
 					foreach (string resolution in parsedDirs.OrderBy(path => int.Parse(Path.GetFileName(path))))
 					{
 						if (int.TryParse(Path.GetFileName(resolution), out int res))
@@ -405,7 +376,7 @@ namespace Advocate.Conversion
 								string texturePath = TextureNameToPath(Path.GetFileNameWithoutExtension(texture));
 								if (string.IsNullOrWhiteSpace(texturePath))
 								{
-									OnConversionError($"Failed to convert texture '{Path.GetFileNameWithoutExtension(texture)}')");
+									Error($"Failed to convert texture '{Path.GetFileNameWithoutExtension(texture)}')");
 									return false;
 								}
 
@@ -418,8 +389,16 @@ namespace Advocate.Conversion
 									map += $"{{\n\"$type\":\"txtr\",\n\"path\":\"{texturePath}\",\n\"disableStreaming\":true,\n\"saveDebugName\":true\n}}";
 									// add texturePath to tracked textures
 									textures.Add(texturePath);
+									map += ",\n";
+									map += $"{{\n\"$type\":\"txtr\",\n\"path\":\"{texturePath}\",\n\"disableStreaming\":true,\n\"saveDebugName\":true\n}}";
+									// add texturePath to tracked textures
+									textures.Add(texturePath);
 									// add texture to skinTypes for tracking which skins are in the package
 									skinTypes.Add(Path.GetFileNameWithoutExtension(texture).Split("_")[0]);
+								}
+								else
+								{
+									Debug($"Skipping duplicate texturePath '{texturePath}'");
 								}
 								isFirst = false;
 
@@ -446,7 +425,7 @@ namespace Advocate.Conversion
 				//////////////////////////
 
 				// set the message for the new conversion step
-				OnConversionMessage("Packing using RePak...");
+				Info("Packing using RePak...");
 
 
 				// create the process for RePak
@@ -465,19 +444,20 @@ namespace Advocate.Conversion
 				P.StartInfo.Arguments = $"\"{repakTempFolderPath}\\map.json\"";
 				P.Start();
 				//P.BeginOutputReadLine();
-				//P.BeginErrorReadLine();
-
-				// wait for RePak to finish
+				//P.StartInfo.RedirectStandardError = true;
+				//P.OutputDataReceived += (sender, args) => sb.AppendLine(args.Data);
+				//P.ErrorDataReceived += (sender, args) => sb.AppendLine(args.Data);
+				//P.StartInfo.UseShellExecute = false;
+				P.StartInfo.FileName = repakPath;
+				P.StartInfo.Arguments = $"\"{repakTempFolderPath}\\map.json\"";
 				P.WaitForExit();
 
 				// currently, RePak always uses exitcode 1 for failure, if we implement more error codes then I'll probably give a more detailed error here
 				if (P.ExitCode == 1)
 				{
-					OnConversionError("RePak failed to pack the rpak!");
+					Error("RePak failed to pack the rpak!");
 					return false;
 				}
-
-				// move progress bar
 				ConvertTaskComplete();
 
 				//////////////////////
@@ -485,7 +465,7 @@ namespace Advocate.Conversion
 				//////////////////////
 
 				// set the message for the new conversion step
-				OnConversionMessage("Generating rpak.json...");
+				Info("Generating rpak.json...");
 
 				// we can just preload our rpak, since it should only contain textures
 				JSON.RPak rpak = new()
@@ -501,9 +481,14 @@ namespace Advocate.Conversion
 				//////////////////////////
 				// create manifest.json //
 				//////////////////////////
+				ConvertTaskComplete();
+
+				//////////////////////////
+				// create manifest.json //
+				//////////////////////////
 
 				// set the message for the new conversion step
-				OnConversionMessage("Writing manifest.json...");
+				Info("Writing manifest.json...");
 
 				// create the DescriptionHandler for parsing the description
 				DescriptionHandler desc = new()
@@ -514,7 +499,6 @@ namespace Advocate.Conversion
 					Types = skinTypes.Distinct().ToArray()
 				};
 
-				// create the manifest for the mod, don't give it any dependencies for now
 				JSON.Manifest manifest = new()
 				{
 					name = SkinName.Replace(' ', '_'),
@@ -529,11 +513,16 @@ namespace Advocate.Conversion
 				ConvertTaskComplete();
 
 				/////////////////////
+
+				// move progress bar
+				ConvertTaskComplete();
+
+				/////////////////////
 				// create mod.json //
 				/////////////////////
 
 				// set the message for the new conversion step
-				OnConversionMessage("Writing mod.json...");
+				Info("Writing mod.json...");
 
 				JSON.Mod mod = new()
 				{
@@ -553,7 +542,7 @@ namespace Advocate.Conversion
 				///////////////////
 
 				// set the message for the new conversion step
-				OnConversionMessage("Zipping mod...");
+				Info("Zipping mod...");
 
 				// create the zip file from the mod temp path
 				ZipFile.CreateFromDirectory(modTempFolderPath, $"{tempFolderPath}/{AuthorName}.{SkinName}.zip");
@@ -566,23 +555,13 @@ namespace Advocate.Conversion
 				////////////////////////////////////
 
 				// set the message for the new conversion step
-				OnConversionMessage("Moving zip to output folder...");
+				Info("Moving zip to output folder...");
 
 				// move the zip file we created to the output folder
 				File.Move($"{tempFolderPath}/{AuthorName}.{SkinName}.zip", $"{outputPath}/{AuthorName}.{SkinName}-{Version}.zip", true);
 
 				// move progress bar
 				ConvertTaskComplete();
-
-				/////////////
-				// cleanup //
-				/////////////
-
-				OnConversionMessage("Cleaning up...");
-
-				// delete temp folders
-				if (Directory.Exists(tempFolderPath))
-					Directory.Delete(tempFolderPath, true);
 			}
 			catch (Exception ex) when (!nogui)
 			{
@@ -592,15 +571,27 @@ namespace Advocate.Conversion
 				MessageBox.Show($"There was an unhandled error during conversion!\n\n{ex.Message}\n\n{ex.StackTrace}", "Conversion Error", msgButton, msgIcon);
 
 				// exit out of the conversion
-				OnConversionError("Unknown Error!");
-				return true;
+				Error("Unknown Error!");
+				return false;
+			}
+			finally
+			{
+				/////////////
+				// cleanup //
+				/////////////
+
+				Info("Cleaning up...");
+
+				// delete temp folders
+				if (Directory.Exists(tempFolderPath))
+					Directory.Delete(tempFolderPath, true); // if we get an exception here, I'm not too sure how i want to handle it
 			}
 
 			// everything is done and hopefully good
 			// move progress bar to the end
 			curStep = NUM_CONVERT_STEPS;
 			// Log complete conversion
-			OnConversionMessage("Conversion Complete!", MessageType.Completion);
+			Completion("Conversion Complete!");
 			return true;
 		}
 

@@ -50,6 +50,7 @@ namespace Advocate
 
 		public DdsHandler(string path)
 		{
+			Logging.Logger.Debug($"Handling DDS file at path '{path}'");
 			BinaryReader reader = new(new FileStream(path, FileMode.Open));
 			try
 			{
@@ -85,6 +86,7 @@ namespace Advocate
 				isDX10 = new string(pixel_FourCC) == "DX10";
 				if (isDX10)
 				{
+					Logging.Logger.Debug($"DDS file at path '{path}' is using DX10");
 					dxgiFormat = (DXGI_FORMAT)reader.ReadUInt32();
 					resourceDimension = (DX10ResourceDimension)reader.ReadUInt32();
 					miscFlags = reader.ReadUInt32();
@@ -105,7 +107,10 @@ namespace Advocate
 			string str_fourCC = new(pixel_FourCC);
 			// this is required by the game (and legion) to read things properly, but sometimes it isn't set
 			if (pitchOrLinearSize == 0)
+			{
+				Logging.Logger.Debug($"DDS file did not have pitchOrLinearSize set, setting to {data.Length}");
 				pitchOrLinearSize = (uint)data.Length;
+			}
 
 			switch (str_fourCC)
 			{
@@ -113,8 +118,10 @@ namespace Advocate
 					ToDX10(DXGI_FORMAT.DXGI_FORMAT_BC1_UNORM_SRGB);
 					break;
 				case "ATI2":
-				case "BC5U":
+					Logging.Logger.Debug($"DDS file is using ATI2, changing to BC5U");
 					pixel_FourCC = new char[4] { 'B', 'C', '5', 'U' };
+					goto case "BC5U";
+				case "BC5U":
 					if ((flags & 0x000A0000) != 0x000A0000)
 						flags |= 0x000A0000;
 					break;
@@ -128,9 +135,11 @@ namespace Advocate
 						caps |= 0x00000008;
 					break;
 				case "DX10":
+					// do nothing, but do support the fourCC
 					break;
 
 				default:
+					Logging.Logger.Debug($"DDS file is using {str_fourCC}, which is unsupported.");
 					throw new NotImplementedException("DDS fourCC not supported: " + str_fourCC);
 			}
 		}

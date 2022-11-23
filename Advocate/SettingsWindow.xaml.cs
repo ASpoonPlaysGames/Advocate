@@ -37,7 +37,7 @@ namespace Advocate
 		public static string RePakPath
 		{
 			get { return Properties.Settings.Default.RePakPath; }
-			set { Properties.Settings.Default.RePakPath = value; }
+			set { Properties.Settings.Default.RePakPath = value; Logging.Logger.Debug($"RePakPath changed to {value}"); }
 		}
 		/// <summary>
 		///     Holds the path to the user's output folder, where we put converted mods.
@@ -45,7 +45,7 @@ namespace Advocate
 		public static string OutputPath
 		{
 			get { return Properties.Settings.Default.OutputPath; }
-			set { Properties.Settings.Default.OutputPath = value; }
+			set { Properties.Settings.Default.OutputPath = value; Logging.Logger.Debug($"OutputPath changed to {value}"); }
 		}
 		/// <summary>
 		///     Holds a non-formatted version of the user's description, used as a template to generate descriptions.
@@ -53,7 +53,7 @@ namespace Advocate
 		public static string Description
 		{
 			get { return Properties.Settings.Default.Description; }
-			set { Properties.Settings.Default.Description = value; }
+			set { Properties.Settings.Default.Description = value; Logging.Logger.Debug($"Description changed to {value}"); }
 		}
 
 		/// <summary>

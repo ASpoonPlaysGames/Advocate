@@ -157,29 +157,6 @@ namespace Advocate
 		}
 
 		/// <summary>
-		///     An event handler for the <see cref="OnMessageReceived(Conversion.ConversionMessageEventArgs)"/> event.
-		/// </summary>
-		public event EventHandler<Conversion.ConversionMessageEventArgs> MessageReceived;
-		/// <summary>
-		///     Helper function that creates a new <see cref="Conversion.ConversionMessageEventArgs"/>
-		///     from an input string and calls <see cref="OnMessageReceived(Conversion.ConversionMessageEventArgs)"/>.
-		/// </summary>
-		/// <param name="message">The message that will be passed to the event listeners.</param>
-		/// <param name="type">The type of message, used for showing the message in gui and logging.</param>
-		protected virtual void OnMessageReceived(string? message, Conversion.MessageType type = Conversion.MessageType.Info)
-		{
-			OnMessageReceived(new Conversion.ConversionMessageEventArgs(message) { Type = Conversion.MessageType.Info });
-		}
-		/// <summary>
-		///     Event that is called on a generic message received from the conversion.
-		/// </summary>
-		/// <param name="e">The event arguments.</param>
-		protected virtual void OnMessageReceived(Conversion.ConversionMessageEventArgs e)
-		{
-			MessageReceived?.Invoke(this, e);
-		}
-
-		/// <summary>
 		///     Checks the status of the various settings for the conversion.
 		/// </summary>
 		/// <returns>true if no issues are found.</returns>
@@ -295,7 +272,7 @@ namespace Advocate
 			DataContext = this;
 
 			// register event listener for conversion messages
-			MessageReceived += HandleConversionMessage;
+			Logging.Logger.LogReceived += HandleConversionMessage;
 
 			// if we are given a path, set the SkinPath
 			if (path != null)
@@ -307,24 +284,31 @@ namespace Advocate
 			CheckConvertStatus();
 		}
 
+		private void OnClosed(object sender, EventArgs e)
+		{
+			// close event listener for conversion messages to allow GC to destroy the MainWindow object
+			Logging.Logger.LogReceived -= HandleConversionMessage;
+		}
+
 		/// <summary>
-		///     <para>Event listener for the <see cref="OnMessageReceived(Conversion.ConversionMessageEventArgs)"/> event.</para>
-		///     <para>Sets <see cref="Message"/> to the <see cref="Conversion.ConversionMessageEventArgs.Message"/> or an empty string if null.</para>
+		///     <para>Event listener for the <see cref="Logging.Logger.LogReceived"/> event.</para>
+		///     <para>Sets <see cref="Message"/> to the <see cref="Logging.LogMessageEventArgs.Message"/> or an empty string if null.</para>
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void HandleConversionMessage(object? sender, Conversion.ConversionMessageEventArgs e)
+		private void HandleConversionMessage(object? sender, Logging.LogMessageEventArgs e)
 		{
 			// ignore messages that are below MessageType.Info in gui
-			if (e.Type < Conversion.MessageType.Info)
+			if (e.Type < Logging.MessageType.Info)
 				return;
 
 			// update the ConvertProgress
 			ConvertProgress = e.Type switch
 			{
 				// error is a special case where we want to set the conversion progress to 0 no matter what
-				Conversion.MessageType.Error => 0,
-				_ => e.ConversionPercent
+				Logging.MessageType.Error => 0,
+				// default to just using the percentage we were given, or not changing it at all if we are given null
+				_ => e.ConversionPercent ?? ConvertProgress
 			};
 
 			// Update the conversion message shown to the user, if null then just use an empty string
@@ -333,8 +317,8 @@ namespace Advocate
 			// Update the status message inside the button
 			Status = e.Type switch
 			{
-				Conversion.MessageType.Completion => "Complete!",
-				Conversion.MessageType.Error => "Error!",
+				Logging.MessageType.Completion => "Complete!",
+				Logging.MessageType.Error => "Error!",
 				// default to just not changing it
 				_ => Status
 			};
@@ -343,9 +327,9 @@ namespace Advocate
 			string style = e.Type switch
 			{
 				// this is like a light green
-				Conversion.MessageType.Completion => "ProgressButtonSuccess",
+				Logging.MessageType.Completion => "ProgressButtonSuccess",
 				// this is a red
-				Conversion.MessageType.Error => "ProgressButtonDanger",
+				Logging.MessageType.Error => "ProgressButtonDanger",
 				// this is the user's system accent colour
 				_ => "ProgressButtonPrimary"
 			};
@@ -376,8 +360,6 @@ namespace Advocate
 				// lock the button to try prevent multiple conversion threads running at the same time
 				ConvertButton.IsEnabled = false;
 
-				// bubble up message events from the Converter
-				conv.ConversionMessage += MessageReceived;
 				// run conversion in separate thread from the UI
 				Task.Run(() =>
 				{
@@ -392,7 +374,7 @@ namespace Advocate
 			}
 			catch (Exception ex)
 			{
-				OnMessageReceived(ex.Message, Conversion.MessageType.Error);
+				Logging.Logger.Error(ex.Message);
 				// allow the button to be pressed again if conversion fails
 				ConvertButton.IsChecked = false;
 				ConvertButton.IsEnabled = true;
@@ -451,31 +433,37 @@ namespace Advocate
 		private void ReadMePath_TextBox_TextChanged(object sender, RoutedEventArgs e)
 		{
 			ReadMePath = ReadMePath_TextBox.Text;
+			Logging.Logger.Debug($"ReadMePath changed to '{ReadMePath}'");
 		}
 
 		private void SkinPath_TextBox_TextChanged(object sender, RoutedEventArgs e)
 		{
 			SkinPath = SkinPath_TextBox.Text;
+			Logging.Logger.Debug($"SkinPath changed to '{SkinPath}'");
 		}
 
 		private void IconPath_TextBox_TextChanged(object sender, RoutedEventArgs e)
 		{
 			IconPath = IconPath_TextBox.Text;
+			Logging.Logger.Debug($"IconPath changed to '{IconPath}'");
 		}
 
 		private void Author_TextBox_TextChanged(object sender, RoutedEventArgs e)
 		{
 			AuthorName = Author_TextBox.Text;
+			Logging.Logger.Debug($"AuthorName changed to '{AuthorName}'");
 		}
 
 		private void SkinName_TextBox_TextChanged(object sender, RoutedEventArgs e)
 		{
 			ModName = SkinName_TextBox.Text;
+			Logging.Logger.Debug($"ModName changed to '{ModName}'");
 		}
 
 		private void Version_TextBox_TextChanged(object sender, RoutedEventArgs e)
 		{
 			Version = Version_TextBox.Text;
+			Logging.Logger.Debug($"Version changed to '{Version}'");
 		}
 	}
 }
