@@ -10,8 +10,6 @@ This tool's main purpose is to aid skin creators in transitioning towards using 
 2. Download and run [Advocate](https://github.com/ASpoonPlaysGames/Advocate/releases/latest)
 3. Open the Settings in Advocate
 
-![image](https://user-images.githubusercontent.com/66967891/190265203-60eb5920-bba4-47bd-beae-3ed855d7cd81.png)
-
 4. Set the RePak Path so that it points to RePak.exe
 
 ![image](https://user-images.githubusercontent.com/66967891/190265432-36054dbd-d5bf-48f2-92ff-307a4cd4eb8b.png)
