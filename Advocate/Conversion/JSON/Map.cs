@@ -43,7 +43,7 @@ namespace Advocate.Conversion.JSON
 	internal class TextureAsset
 	{
 		[JsonPropertyName("$type")]
-		public const string Type = "txtr";
+		public string Type { get; } = "txtr";
 
 		[JsonPropertyName("path")]
 		public string Path { get; init; } = "";
