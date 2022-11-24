@@ -183,6 +183,23 @@ namespace Advocate.Conversion
 				return false;
 			}
 
+			try
+			{
+				/////////////
+				// cleanup //
+				/////////////
+
+				Info("Cleaning up...");
+
+				// delete temp folders from previous conversions maybe
+				if (Directory.Exists($"{Path.GetTempPath()}/Advocate"))
+					Directory.Delete($"{Path.GetTempPath()}/Advocate", true);
+			}
+			catch (Exception e)
+			{
+				Debug($"Cleanup failed! there is now some random files in your temp folder i guess?\n Exception: {e.Message}");
+			}
+
 			// try convert stuff, if we get a weird exception, don't crash preferably
 			try
 			{
