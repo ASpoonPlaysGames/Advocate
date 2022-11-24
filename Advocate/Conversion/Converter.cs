@@ -419,7 +419,7 @@ namespace Advocate.Conversion
 						}
 					}
 				}
-				
+
 				// write the map json
 				File.WriteAllText($"{repakTempFolderPath}/map.json", JsonSerializer.Serialize<JSON.Map>(map, jsonOptions));
 
