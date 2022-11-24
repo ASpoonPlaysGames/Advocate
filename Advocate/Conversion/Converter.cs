@@ -359,7 +359,7 @@ namespace Advocate.Conversion
 				// set the message for the new conversion step
 				Info("Copying textures...");
 
-				JSON.Map map = new(SkinName, repakTempFolderPath.Replace('\\', '/'), $"{modTempFolderPath.Replace('\\', '/')}/mods/{AuthorName}.{SkinName}/paks");
+				JSON.Map map = new(SkinName, $"{repakTempFolderPath}/assets", $"{modTempFolderPath}/mods/{AuthorName}.{SkinName}/paks");
 
 				// this tracks the textures that we have already added to the json, so we can avoid duplicates in there
 				List<string> textures = new();
@@ -579,18 +579,6 @@ namespace Advocate.Conversion
 				// exit out of the conversion
 				Error("Unknown Error!");
 				return false;
-			}
-			finally
-			{
-				/////////////
-				// cleanup //
-				/////////////
-
-				Info("Cleaning up...");
-
-				// delete temp folders
-				if (Directory.Exists(tempFolderPath))
-					Directory.Delete(tempFolderPath, true); // if we get an exception here, I'm not too sure how i want to handle it
 			}
 
 			// everything is done and hopefully good
