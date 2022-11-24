@@ -11,13 +11,13 @@ namespace Advocate.Conversion.JSON
 	internal class Map
 	{
 		[JsonPropertyName("name")]
-		public string Name;
+		public string Name { get; init; }
 
 		[JsonPropertyName("assetsDir")]
-		public string AssetsDir;
+		public string AssetsDir { get; init; }
 
 		[JsonPropertyName("outputDir")]
-		public string OutputDir;
+		public string OutputDir { get; init; }
 
 		[JsonPropertyName("version")]
 		public int Version { get; init; } = 7; // defaults to 7 (titanfall 2)
@@ -35,7 +35,7 @@ namespace Advocate.Conversion.JSON
 
 		public void AddTextureAsset(string path, string? starpakPath = null)
 		{
-			TextureAsset asset = new TextureAsset() { Path = path, DisableStreaming = starpakPath == null };
+			TextureAsset asset = new() { Path = path, DisableStreaming = starpakPath == null };
 			Files.Add(asset);
 		}
 	}
@@ -50,5 +50,8 @@ namespace Advocate.Conversion.JSON
 
 		[JsonPropertyName("disableStreaming")]
 		public bool DisableStreaming { get; init; } = true;
+
+		[JsonPropertyName("saveDebugName")]
+		public bool SaveDebugName { get; init; } = true;
 	}
 }
