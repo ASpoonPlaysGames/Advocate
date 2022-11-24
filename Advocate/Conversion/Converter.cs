@@ -342,15 +342,13 @@ namespace Advocate.Conversion
 				// set the message for the new conversion step
 				Info("Copying textures...");
 
-				// this holds a string of json which will be appended to as the map file is constructed, TODO - refactor to use json library?
-				string map = $"{{\n\"name\":\"{SkinName}\",\n\"assetsDir\":\"{repakTempFolderPath.Replace('\\', '/')}/assets\",\n\"outputDir\":\"{modTempFolderPath.Replace('\\', '/')}/mods/{AuthorName}.{SkinName}/paks\",\n\"version\": 7,\n\"files\":[\n";
+				JSON.Map map = new(SkinName, repakTempFolderPath.Replace('\\', '/'), $"{modTempFolderPath.Replace('\\', '/')}/mods/{AuthorName}.{SkinName}/paks");
 
 				// this tracks the textures that we have already added to the json, so we can avoid duplicates in there
 				List<string> textures = new();
 				// this tracks the different skin types that we have found, for description parsing later
 				List<string> skinTypes = new();
 
-				bool isFirst = true;
 				foreach (string skinPath in Directory.GetDirectories(skinTempFolderPath))
 				{
 					// some skins have random files and folders in here, like images and stuff, so I have to do sorting in an annoying way
@@ -383,14 +381,7 @@ namespace Advocate.Conversion
 								// avoid duplicate textures in the json
 								if (!textures.Contains(texturePath))
 								{
-									// dont add a comma on the first one
-									if (!isFirst)
-										map += ",\n";
-									map += $"{{\n\"$type\":\"txtr\",\n\"path\":\"{texturePath}\",\n\"disableStreaming\":true,\n\"saveDebugName\":true\n}}";
-									// add texturePath to tracked textures
-									textures.Add(texturePath);
-									map += ",\n";
-									map += $"{{\n\"$type\":\"txtr\",\n\"path\":\"{texturePath}\",\n\"disableStreaming\":true,\n\"saveDebugName\":true\n}}";
+									map.AddTextureAsset(texturePath);
 									// add texturePath to tracked textures
 									textures.Add(texturePath);
 									// add texture to skinTypes for tracking which skins are in the package
@@ -400,7 +391,6 @@ namespace Advocate.Conversion
 								{
 									Debug($"Skipping duplicate texturePath '{texturePath}'");
 								}
-								isFirst = false;
 
 								// instantiate dds handler, pass it the texture path
 								DdsHandler handler = new(texture);
@@ -412,10 +402,9 @@ namespace Advocate.Conversion
 						}
 					}
 				}
-
-				// end the json
-				map += "\n]\n}";
-				File.WriteAllText($"{repakTempFolderPath}/map.json", map);
+				
+				// write the map json
+				File.WriteAllText($"{repakTempFolderPath}/map.json", JsonSerializer.Serialize<JSON.Map>(map, jsonOptions));
 
 				// move progress bar
 				ConvertTaskComplete();
