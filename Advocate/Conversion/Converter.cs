@@ -396,15 +396,27 @@ namespace Advocate.Conversion
 					BinaryReader reader = new(new FileStream(path, FileMode.Open));
 					ddsImages[fileName].LoadImage(reader);
 					reader.Close();
+
+					// add texture to skinTypes for tracking which skins are in the package
+					string type = Path.GetFileNameWithoutExtension(path).Split("_")[0];
+					if (!skinTypes.Contains(type))
+					{
+						skinTypes.Add(type);
+					}
 				}
 
 				foreach (KeyValuePair<string, DDS.Manager> pair in ddsImages)
 				{
-					string filename = $"{repakTempFolderPath}/assets/{TextureNameToPath(pair.Key)}.dds";
+					string texturePath = TextureNameToPath(pair.Key);
+					string filename = $"{repakTempFolderPath}/assets/{texturePath}.dds";
 					Directory.CreateDirectory(Path.GetDirectoryName(filename));
 					BinaryWriter writer = new(new FileStream(filename, FileMode.Create));
 					pair.Value.SaveImage(writer);
 					writer.Close();
+					map.AddTextureAsset(texturePath);
+					// add texturePath to tracked textures
+					textures.Add(texturePath);
+					
 				}
 
 				// write the map json
