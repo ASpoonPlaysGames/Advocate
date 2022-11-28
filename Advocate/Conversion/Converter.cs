@@ -393,10 +393,11 @@ namespace Advocate.Conversion
 					if (pair.Value.HasMissingMips())
 					{
 						Debug($"Texture being saved to '{filePath}' has missing mip levels");
-						Info("Generating MipMaps...");
+						Info($"Generating MipMaps... ({pair.Key})");
 						pair.Value.GenerateMissingMips();
 					}
 
+					Info("Saving texture...");
 					pair.Value.SaveImage(writer);
 					
 					// close the writer

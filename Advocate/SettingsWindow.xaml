@@ -59,6 +59,20 @@
                     Grid.Column="1" 
                     Grid.Row="2"
                     Height="40" Click="SelectOutputPathButton_Click"/>
+
+            <Label Content="Texconv Path:" Margin="5,5,5,45" Height="40" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                        Grid.Column="0"
+                        Grid.Row="3" 
+                   Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
+            <hc:TextBox x:Name="TexconvPath_TextBox" TextWrapping="Wrap" TextChanged="TexconvPath_TextBox_TextChanged" Margin="5,5,5,5" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                    Grid.Column="0"
+                    Grid.Row="3"
+                    Height="40"/>
+
+            <Button x:Name="SelectTexconvPathButton" Content="Browse" HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Bottom" 
+                    Grid.Column="1" 
+                    Grid.Row="3"
+                    Height="40" Click="SelectTexconvPathButton_Click"/>
         </Grid>
         <Grid Margin="10,10,10,10" Grid.Column="1" Grid.Row="0" >
             <Grid.RowDefinitions>

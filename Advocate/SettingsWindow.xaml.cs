@@ -55,6 +55,15 @@ namespace Advocate
 			get { return Properties.Settings.Default.Description; }
 			set { Properties.Settings.Default.Description = value; Logging.Logger.Debug($"Description changed to {value}"); }
 		}
+		/// <summary>
+		///     Holds the path to texconv.exe. (hopefully)
+		/// </summary>
+		public static string TexconvPath
+		{
+			get { return Properties.Settings.Default.TexconvPath; }
+			set { Properties.Settings.Default.TexconvPath = value; Logging.Logger.Debug($"TexconvPath changed to {value}"); }
+		}
+		
 
 		/// <summary>
 		///     Updates <see cref="RePakPath"/>
@@ -77,6 +86,16 @@ namespace Advocate
 		}
 
 		/// <summary>
+		///     Updates <see cref="TexconvPath"/>
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		public void TexconvPath_TextBox_TextChanged(object sender, EventArgs e)
+		{
+			TexconvPath = TexconvPath_TextBox.Text;
+		}
+
+		/// <summary>
 		///     Updates <see cref="Description"/>
 		/// </summary>
 		/// <param name="sender"></param>
@@ -94,6 +113,7 @@ namespace Advocate
 			RePakPath_TextBox.Text = RePakPath;
 			OutputPath_TextBox.Text = OutputPath;
 			Description_TextBox.Text = Description;
+			TexconvPath_TextBox.Text = TexconvPath;
 		}
 
 		private void SelectRePakPathButton_Click(object sender, RoutedEventArgs e)
@@ -102,6 +122,14 @@ namespace Advocate
 			openFileDialog.Filter = "RePak.exe|*RePak.exe|All Files|*.*";
 			if (openFileDialog.ShowDialog() == true)
 				RePakPath_TextBox.Text = openFileDialog.FileName;
+		}
+
+		private void SelectTexconvPathButton_Click(object sender, RoutedEventArgs e)
+		{
+			OpenFileDialog openFileDialog = new();
+			openFileDialog.Filter = "texconv.exe|*texconv.exe|All Files|*.*";
+			if (openFileDialog.ShowDialog() == true)
+				TexconvPath_TextBox.Text = openFileDialog.FileName;
 		}
 
 		private void SelectOutputPathButton_Click(object sender, RoutedEventArgs e)

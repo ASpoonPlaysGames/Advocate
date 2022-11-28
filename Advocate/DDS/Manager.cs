@@ -194,7 +194,7 @@ namespace Advocate.DDS
 
 			// convert the dds into a dds with mipmaps using texconv
 			Process proc = new();
-			proc.StartInfo.FileName = @"C:\Users\Jack\Downloads\texconv.exe";
+			proc.StartInfo.FileName = Properties.Settings.Default.TexconvPath;
 			proc.StartInfo.Arguments = $"-f {format} -nologo -m 0 -bc d -o {temp3} -y {temp2}\\{temp}";
 			proc.Start();
 			proc.WaitForExit();
