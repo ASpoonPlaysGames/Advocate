@@ -151,6 +151,9 @@ namespace Advocate.Conversion
 			IconPath = pIconPath;
 		}
 
+		// the temp path is appended with the current date and time to prevent duplicates
+		public static string tempFolderPath = Path.GetFullPath($"{Path.GetTempPath()}/Advocate/{DateTime.Now:yyyyMMdd-THHmmss}");
+
 		/// <summary>
 		///		Converts the skin. The converted .zip file will be put at <see cref="Properties.Settings.OutputPath"/>
 		/// </summary>
@@ -165,8 +168,6 @@ namespace Advocate.Conversion
 		{
 			// initialise various path variables, just because they are useful
 
-			// the temp path is appended with the current date and time to prevent duplicates
-			string tempFolderPath = $"{Path.GetTempPath()}/Advocate/{DateTime.Now:yyyyMMdd-THHmmss}";
 			string skinTempFolderPath = Path.GetFullPath($"{tempFolderPath}/Skin");
 			string modTempFolderPath = Path.GetFullPath($"{tempFolderPath}/Mod");
 			string repakTempFolderPath = Path.GetFullPath($"{tempFolderPath}/RePak");
@@ -320,7 +321,7 @@ namespace Advocate.Conversion
 				//////////////////////////////////////////////////////////////////
 
 				// set the message for the new conversion step
-				Info("Copying textures...");
+				Info("Converting textures...");
 
 				JSON.Map map = new(SkinName, $"{repakTempFolderPath}/assets", $"{modTempFolderPath}/mods/{AuthorName}.{SkinName}/paks");
 
@@ -387,7 +388,17 @@ namespace Advocate.Conversion
 
 					// create writer and save the image
 					BinaryWriter writer = new(new FileStream(filePath, FileMode.Create));
+
+					// generate missing mips
+					if (pair.Value.HasMissingMips())
+					{
+						Debug($"Texture being saved to '{filePath}' has missing mip levels");
+						Info("Generating MipMaps...");
+						pair.Value.GenerateMissingMips();
+					}
+
 					pair.Value.SaveImage(writer);
+					
 					// close the writer
 					writer.Close();
 

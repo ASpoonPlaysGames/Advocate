@@ -20,7 +20,7 @@ namespace Advocate.DDS
 		public int PitchOrLinearSize { get { return (int)pitchOrLinearSize; } set { pitchOrLinearSize = (uint)value; } }
 		public int MipMapCount { get { return (int)mipMapCount; } set { mipMapCount = (uint)value; } }
 
-		public string FourCC { get { return pixel_FourCC.ToString(); } }
+		public string FourCC { get { return new string(pixel_FourCC); } }
 		public bool isDX10 { get; private set; }
 		public DXGI_FORMAT DXGIFormat { get { return dxgiFormat; } }
 
