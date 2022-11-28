@@ -22,6 +22,7 @@ namespace Advocate.DDS
 
 		public string FourCC { get { return pixel_FourCC.ToString(); } }
 		public bool isDX10 { get; private set; }
+		public DXGI_FORMAT DXGIFormat { get { return dxgiFormat; } }
 
 		// dds file structure
 		char[] magic = new char[4];
@@ -60,6 +61,10 @@ namespace Advocate.DDS
 		{
 			// read magic
 			magic = reader.ReadChars(4);
+			if (new string(magic) != "DDS ")
+			{
+				throw new Exception("File is not a valid DDS file!");
+			}
 			// read header
 			size = reader.ReadUInt32();
 			flags = reader.ReadUInt32();
@@ -86,6 +91,7 @@ namespace Advocate.DDS
 			isDX10 = new string(pixel_FourCC) == "DX10";
 			if (isDX10)
 			{
+				Logging.Logger.Debug("DDS file is using DX10");
 				dxgiFormat = (DXGI_FORMAT)reader.ReadUInt32();
 				resourceDimension = (DX10ResourceDimension)reader.ReadUInt32();
 				miscFlags = reader.ReadUInt32();

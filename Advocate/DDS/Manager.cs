@@ -21,10 +21,9 @@ namespace Advocate.DDS
 		// the key is the number of pixels in the mip level (width * height)
 		private SortedList<int, byte[]> mipmaps = new();
 
-		private Header lastHeader;
+		public int MipMapCount { get { return mipmaps.Count; } }
 
-		// used to check for mismatching fourCC
-		//private string pixel_FourCC;
+		private Header lastHeader;
 
 		public void LoadImage(BinaryReader reader)
 		{
@@ -34,6 +33,20 @@ namespace Advocate.DDS
 			if (lastHeader == null || hdr.Width * hdr.Height > lastHeader.Width * lastHeader.Height)
 			{
 				lastHeader = hdr;
+			}
+
+			// if the fourCC does not match up, skip this image
+			if (lastHeader.FourCC != hdr.FourCC)
+			{
+				Logging.Logger.Debug($"fourCC ({hdr.FourCC}) for added image does not match existing images ({lastHeader.FourCC})");
+				return;
+			}
+			// if the DXGI format does not match up, also skip this image
+			if (lastHeader.isDX10 == hdr.isDX10 && lastHeader.DXGIFormat != hdr.DXGIFormat)
+			{
+				Logging.Logger.Debug($"{lastHeader.isDX10} != {hdr.isDX10} or {lastHeader.DXGIFormat} == {hdr.DXGIFormat}");
+				Logging.Logger.Debug($"DXGI format for added image ({hdr.DXGIFormat}) does not match existing images ({lastHeader.DXGIFormat})");
+				return;
 			}
 
 			// read the image data into mipmaps dictionary
@@ -52,8 +65,6 @@ namespace Advocate.DDS
 				mipmaps[numPixels] = reader.ReadBytes(actualSize);
 				Logging.Logger.Debug($"Found mip level:\n Width: {width} Height: {height}");
 			}
-
-
 		}
 
 		public void SaveImage(BinaryWriter writer)
@@ -61,15 +72,15 @@ namespace Advocate.DDS
 			// edit the header to work
 			lastHeader.PitchOrLinearSize = mipmaps.Values.Last().Length;
 			lastHeader.MipMapCount = mipmaps.Count;
-			// make sure that the mipmap flag is set
-			if (lastHeader.MipMapCount > 0)
+			// make sure that the mipmap flag is set if we have more than 1 mip level
+			if (lastHeader.MipMapCount > 1)
 			{
 				lastHeader.Flags |= 0x20000;
 			}
 
 			// write the header
 			lastHeader.Save(writer);
-			// write the image data
+			// write the image data (bigger mips first so iterate backwards)
 			for (int i = mipmaps.Count - 1; i >= 0; --i)
 			{
 				writer.Write(mipmaps.Values[i]);

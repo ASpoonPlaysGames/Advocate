@@ -259,65 +259,28 @@ namespace Advocate.Conversion
 				// create icon.png //
 				/////////////////////
 
-				// if IconPath is an empty string, we try and generate the icon from a _col texture (thunderstore requires an icon)
+				// if IconPath is an empty string, we try and generate the icon from a _col texture or a _spc texture (thunderstore requires an icon)
 				if (string.IsNullOrWhiteSpace(IconPath))
 				{
 					// set the message for the new conversion step
 					Info("Generating icon.png...");
-					// fuck you, im using the col of the first folder i find, shouldve specified an icon path
-					string[] skinPaths = Directory.GetDirectories(skinTempFolderPath);
-					if (skinPaths.Length == 0)
+
+					// find all DDS _col files within the zip folder
+					List<string> validImages = new();
+					validImages.AddRange(Directory.GetFiles(skinTempFolderPath, "*_col.dds", SearchOption.AllDirectories));
+					
+					// if there arent any _col textures, try use _spc textures
+					if (validImages.Count == 0)
 					{
-						Error("Couldn't generate icon.png: No Skins found in zip!");
-						return false;
-					}
-					string[] resolutions = Directory.GetDirectories(skinPaths[0]);
-					if (resolutions.Length == 0)
-					{
-						Error("Couldn't generate icon.png: No Skins found in zip!");
-						return false;
-					}
-					// find highest resolution folder
-					int highestRes = 0;
-					foreach (string resolution in resolutions)
-					{
-						string? thing = Path.GetFileName(resolution);
-						// check if higher than highestRes and a power of 2
-						if (int.TryParse(thing, out int res) && res > highestRes && (highestRes & (highestRes - 1)) == 0)
+						validImages.AddRange(Directory.GetFiles(skinTempFolderPath, "*_spc.dds", SearchOption.AllDirectories));
+						if (validImages.Count == 0)
 						{
-							highestRes = res;
+							Error("Couldn't generate icon.png: no _col or _spc textures found!");
+							return false;
 						}
 					}
-					// check that we actually found something
-					if (highestRes == 0)
-					{
-						Error("Couldn't generate icon.png: No valid image resolutions found in zip!");
-						return false;
-					}
 
-					string[] files = Directory.GetFiles(skinPaths[0] + "\\" + highestRes.ToString());
-					if (files.Length == 0)
-					{
-						Error("Couldn't generate icon.png: No files in highest resolution folder!");
-						return false;
-					}
-					// find _col file
-					string colPath = "";
-					foreach (string file in files)
-					{
-						if (file.EndsWith("_col.dds"))
-						{
-							colPath = file;
-							break;
-						}
-					}
-					if (colPath == "")
-					{
-						Error("Couldn't generate icon.png: No _col texture found in highest resolution folder!");
-						return false;
-					}
-
-					if (!DdsToPng(colPath, modTempFolderPath + "\\icon.png"))
+					if (!DdsToPng(validImages[0], modTempFolderPath + "\\icon.png"))
 					{
 						Error("Couldn't generate icon.png: Failed to convert dds to png!");
 						return false;
@@ -368,7 +331,7 @@ namespace Advocate.Conversion
 
 				// this keeps track of the different DDS files we are handling and combining
 				// the key is the texture name (example: CAR_Default_col)
-				Dictionary<string, DDS.Manager> ddsImages = new();
+				Dictionary<string, DDS.Manager> ddsManagers = new();
 				/* The plan here is to:
 				 * 1. find all textures, and put them into arrays/lists of mip sizes (where 2^index == image width/height)
 				 * 2. take each dds, and rip the image data directly from it, putting them together to create as many mip levels as we can
@@ -383,40 +346,56 @@ namespace Advocate.Conversion
 				 */
 
 				// find all DDS files within the zip folder
-				string[] test = Directory.GetFiles(skinTempFolderPath, "*.dds", SearchOption.AllDirectories);
+				string[] ddsImages = Directory.GetFiles(skinTempFolderPath, "*.dds", SearchOption.AllDirectories);
 
 				// add all of the files to their respective DDS Managers
-				foreach (string path in test)
+				foreach (string path in ddsImages)
 				{
-					string fileName = Path.GetFileNameWithoutExtension(path);
-					if (!ddsImages.ContainsKey(fileName))
+					string filename = Path.GetFileNameWithoutExtension(path);
+
+					// create a new DDS.Manager if needed
+					if (!ddsManagers.ContainsKey(filename))
 					{
-						ddsImages.Add(fileName, new DDS.Manager());
+						Debug($"Found new texture type '{filename}', creating Manager.");
+						ddsManagers.Add(filename, new DDS.Manager());
 					}
+
+					// read the dds file into the Manager
+					Debug($"Adding new image for texture type '{filename}' from path '{path}'");
 					BinaryReader reader = new(new FileStream(path, FileMode.Open));
-					ddsImages[fileName].LoadImage(reader);
+					ddsManagers[filename].LoadImage(reader);
 					reader.Close();
 
 					// add texture to skinTypes for tracking which skins are in the package
 					string type = Path.GetFileNameWithoutExtension(path).Split("_")[0];
 					if (!skinTypes.Contains(type))
 					{
+						Debug($"Found new skin type for description handling ({type})");
 						skinTypes.Add(type);
 					}
 				}
 
-				foreach (KeyValuePair<string, DDS.Manager> pair in ddsImages)
+				// save all dds images
+				foreach (KeyValuePair<string, DDS.Manager> pair in ddsManagers)
 				{
 					string texturePath = TextureNameToPath(pair.Key);
-					string filename = $"{repakTempFolderPath}/assets/{texturePath}.dds";
-					Directory.CreateDirectory(Path.GetDirectoryName(filename));
-					BinaryWriter writer = new(new FileStream(filename, FileMode.Create));
+					string filePath = $"{repakTempFolderPath}/assets/{texturePath}.dds";
+					// writer doesnt create directories, so do it beforehand
+					Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+					Debug($"Saving texture (with {pair.Value.MipMapCount} mips) to path '{filePath}'");
+
+					// create writer and save the image
+					BinaryWriter writer = new(new FileStream(filePath, FileMode.Create));
 					pair.Value.SaveImage(writer);
+					// close the writer
 					writer.Close();
+
+					// add asset to map file
 					map.AddTextureAsset(texturePath);
+
 					// add texturePath to tracked textures
 					textures.Add(texturePath);
-					
 				}
 
 				// write the map json
