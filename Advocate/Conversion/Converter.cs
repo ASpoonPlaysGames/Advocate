@@ -78,7 +78,7 @@ namespace Advocate.Conversion
 
 		public float ConvertProgress { get { return 100 * curStep / NUM_CONVERT_STEPS; } }
 
-		private const float NUM_CONVERT_STEPS = 13; // INCREMENT THIS WHEN YOU ADD A NEW MESSAGE IDK
+		private const float NUM_CONVERT_STEPS = 14; // INCREMENT THIS WHEN YOU ADD A NEW MESSAGE IDK
 		private float curStep = 0;
 
 		// just here for better readability
@@ -350,67 +350,45 @@ namespace Advocate.Conversion
 				// this tracks the different skin types that we have found, for description parsing later
 				List<string> skinTypes = new();
 
-				bool isFirst = true;
-				foreach (string skinPath in Directory.GetDirectories(skinTempFolderPath))
+				// this keeps track of the different DDS files we are handling and combining
+				// the key is the texture name (example: CAR_Default_col)
+				Dictionary<string, DDS.Manager> ddsImages = new();
+				/* The plan here is to:
+				 * 1. find all textures, and put them into arrays/lists of mip sizes (where 2^index == image width/height)
+				 * 2. take each dds, and rip the image data directly from it, putting them together to create as many mip levels as we can
+				 * 3. create the lower level mips from the highest resolution image that we have
+				 * (decompression and recompression harms image quality so we want to avoid this wherever we can)
+				 * 4. put the raw image data for the mips into one dds file
+				 * 
+				 * ASSUMPTIONS:
+				 * 1. the lower resolution images use the same compression format as the highest resolution image
+				 * if this is not the case, log, and skip the lower level image (this means we have to generate more mip levels, which is bad)
+				 * 
+				 */
+
+				// find all DDS files within the zip folder
+				string[] test = Directory.GetFiles(skinTempFolderPath, "*.dds", SearchOption.AllDirectories);
+
+				// add all of the files to their respective DDS Managers
+				foreach (string path in test)
 				{
-					// some skins have random files and folders in here, like images and stuff, so I have to do sorting in an annoying way
-					List<string> parsedDirs = new();
-					foreach (string dir in Directory.GetDirectories(skinPath))
+					string fileName = Path.GetFileNameWithoutExtension(path);
+					if (!ddsImages.ContainsKey(fileName))
 					{
-						// only add to the list of dirs if we manage to parse the value
-						if (int.TryParse(Path.GetFileName(dir), out int val))
-						{
-							parsedDirs.Add(dir);
-						}
+						ddsImages.Add(fileName, new DDS.Manager());
 					}
+					BinaryReader reader = new(new FileStream(path, FileMode.Open));
+					ddsImages[fileName].LoadImage(reader);
+					reader.Close();
+				}
 
-
-					foreach (string resolution in parsedDirs.OrderBy(path => int.Parse(Path.GetFileName(path))))
-					{
-						if (int.TryParse(Path.GetFileName(resolution), out int res))
-						{
-							foreach (string texture in Directory.GetFiles(resolution))
-							{
-								// move texture to temp folder for packing
-								// convert from skin tool syntax to actual texture path, gotta be hardcoded because pain
-								string texturePath = TextureNameToPath(Path.GetFileNameWithoutExtension(texture));
-								if (string.IsNullOrWhiteSpace(texturePath))
-								{
-									Error($"Failed to convert texture '{Path.GetFileNameWithoutExtension(texture)}')");
-									return false;
-								}
-
-								// avoid duplicate textures in the json
-								if (!textures.Contains(texturePath))
-								{
-									// dont add a comma on the first one
-									if (!isFirst)
-										map += ",\n";
-									map += $"{{\n\"$type\":\"txtr\",\n\"path\":\"{texturePath}\",\n\"disableStreaming\":true,\n\"saveDebugName\":true\n}}";
-									// add texturePath to tracked textures
-									textures.Add(texturePath);
-									map += ",\n";
-									map += $"{{\n\"$type\":\"txtr\",\n\"path\":\"{texturePath}\",\n\"disableStreaming\":true,\n\"saveDebugName\":true\n}}";
-									// add texturePath to tracked textures
-									textures.Add(texturePath);
-									// add texture to skinTypes for tracking which skins are in the package
-									skinTypes.Add(Path.GetFileNameWithoutExtension(texture).Split("_")[0]);
-								}
-								else
-								{
-									Debug($"Skipping duplicate texturePath '{texturePath}'");
-								}
-								isFirst = false;
-
-								// instantiate dds handler, pass it the texture path
-								DdsHandler handler = new(texture);
-								// convert the dds image to one that works with RePak
-								handler.Convert();
-								// save the file where RePak expects it to be
-								handler.Save($"{repakTempFolderPath}/assets/{texturePath}.dds");
-							}
-						}
-					}
+				foreach (KeyValuePair<string, DDS.Manager> pair in ddsImages)
+				{
+					string filename = $"{repakTempFolderPath}/assets/{TextureNameToPath(pair.Key)}.dds";
+					Directory.CreateDirectory(Path.GetDirectoryName(filename));
+					BinaryWriter writer = new(new FileStream(filename, FileMode.Create));
+					pair.Value.SaveImage(writer);
+					writer.Close();
 				}
 
 				// end the json
