@@ -21,16 +21,16 @@ namespace Advocate.Logging
 		private static StreamWriter? logWriter;
 
 		/// <summary>
-		///     Creates a log file at <paramref name="outputPath"/>.
+		///     Creates a log file at <paramref name="logPath"/>.
 		///     <para>The <see cref="Logger"/> can only be writing to a single log file at once.</para>
 		/// </summary>
-		/// <param name="outputPath"></param>
-		public static void CreateLogFile(string outputPath)
+		/// <param name="logPath"></param>
+		public static void CreateLogFile(string logPath)
 		{
 			if (logWriter != null)
 				logWriter.Close();
 
-			LogFilePath = $"{outputPath}/advocate-log{DateTime.Now:yyyyMMdd-THHmmss}.txt";
+			LogFilePath = $"{logPath}.txt";
 
 			logWriter = File.AppendText(LogFilePath);
 			logWriter.AutoFlush = true;

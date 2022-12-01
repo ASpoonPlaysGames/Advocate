@@ -173,7 +173,7 @@ namespace Advocate.Conversion
 			string repakTempFolderPath = Path.GetFullPath($"{tempFolderPath}/RePak");
 			try
 			{
-				Logging.Logger.CreateLogFile(outputPath);
+				Logging.Logger.CreateLogFile($"{outputPath}/{AuthorName}.{SkinName}-{Version}");
 			}
 			catch (Exception ex) when (!nogui)
 			{
