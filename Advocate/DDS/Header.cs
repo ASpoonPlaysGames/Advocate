@@ -186,6 +186,8 @@ namespace Advocate.DDS
 			}
 		}
 	}
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	public enum DXGI_FORMAT : uint
 	{
 		DXGI_FORMAT_UNKNOWN,
@@ -310,7 +312,7 @@ namespace Advocate.DDS
 		DXGI_FORMAT_FORCE_UINT,
 	};
 
-	enum DX10ResourceDimension : uint
+	public enum DX10ResourceDimension : uint
 	{
 		Unknown = 0,
 		Buffer = 1,
@@ -319,7 +321,7 @@ namespace Advocate.DDS
 		Texture3D = 4,
 	};
 
-	enum DX10AlphaMode : uint
+	public enum DX10AlphaMode : uint
 	{
 		Unknown = 0,
 		Straight = 1,
@@ -327,5 +329,6 @@ namespace Advocate.DDS
 		Opaque = 3,
 		Custom = 4,
 	};
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 }
 
