@@ -193,11 +193,18 @@ namespace Advocate.DDS
 			}
 
 			// convert the dds into a dds with mipmaps using texconv
+			StringBuilder sb = new();
 			Process proc = new();
+			proc.StartInfo.RedirectStandardOutput = true;
+			proc.StartInfo.RedirectStandardError = true;
+			proc.OutputDataReceived += (sender, args) => sb.AppendLine(args.Data);
+			proc.ErrorDataReceived += (sender, args) => sb.AppendLine(args.Data);
 			proc.StartInfo.FileName = Properties.Settings.Default.TexconvPath;
 			proc.StartInfo.Arguments = $"-f {format} -nologo -m 0 -bc d -o {temp3} -y {temp2}\\{temp}";
 			proc.Start();
 			proc.WaitForExit();
+
+			Logging.Logger.Debug(sb.ToString());
 
 			BinaryReader reader = new(new FileStream($"{temp3}\\{temp}", FileMode.Open));
 			LoadImage(reader);
