@@ -177,6 +177,18 @@ namespace Advocate
 					Message = "Error: RePak path does not lead to RePak.exe! (Change in Settings)";
 					return false;
 				}
+				// check that texconv path is valid
+				if (!File.Exists(Properties.Settings.Default.TexconvPath))
+				{
+					Message = "Error: texconv path is invalid! (Change in Settings)";
+					return false;
+				}
+				// i swear to god if people rename texconv.exe and break shit im going to commit war crimes
+				if (!Properties.Settings.Default.RePakPath.EndsWith("texconv.exe"))
+				{
+					Message = "Error: texconv path does not lead to texconv.exe! (Change in Settings)";
+					return false;
+				}
 				// check that Output path is valid
 				if (!Directory.Exists(Properties.Settings.Default.OutputPath))
 				{
@@ -234,7 +246,7 @@ namespace Advocate
 					Message = "Error: Version is required!";
 					return false;
 				}
-				if (!Regex.Match(Version, "^\\d+.\\d+.\\d+$").Success)
+				if (!Regex.Match(Version, "^\\d+\\.\\d+\\.\\d+$").Success)
 				{
 					Message = "Error: Version is invalid! (Example: 1.0.0)";
 					return false;
