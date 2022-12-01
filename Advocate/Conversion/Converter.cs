@@ -436,6 +436,7 @@ namespace Advocate.Conversion
 				P.OutputDataReceived += (sender, args) => sb.AppendLine(args.Data);
 				P.ErrorDataReceived += (sender, args) => sb.AppendLine(args.Data);
 				P.StartInfo.UseShellExecute = false;
+				P.StartInfo.CreateNoWindow = true;
 				P.StartInfo.FileName = repakPath;
 				P.StartInfo.Arguments = $"\"{repakTempFolderPath}\\map.json\"";
 				P.Start();
