@@ -178,11 +178,11 @@ namespace Advocate.DDS
 			// write dx10 header if needed
 			if (isDX10)
 			{
-				writer.Write((UInt32)dxgiFormat);
-				writer.Write((UInt32)resourceDimension);
+				writer.Write((uint)dxgiFormat);
+				writer.Write((uint)resourceDimension);
 				writer.Write(miscFlags);
 				writer.Write(arraySize);
-				writer.Write((UInt32)alphaMode);
+				writer.Write((uint)alphaMode);
 			}
 		}
 	}
