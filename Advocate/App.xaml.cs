@@ -86,6 +86,7 @@ namespace Advocate
 					{ "-icon", "" },
 					{ "-outputpath", "" },
 					{ "-repakpath", "" },
+					{ "-texconvpath", ""},
 					{ "-desc", "" },
 				};
 
@@ -120,7 +121,7 @@ namespace Advocate
 				}
 
 				// check for required args
-				foreach (string s in new string[] { "-author", "-name", "-version", "-repakpath", "-desc", "-outputpath" })
+				foreach (string s in new string[] { "-author", "-name", "-version", "-repakpath", "-desc", "-outputpath", "-texconvpath" })
 				{
 					if (argDict[s] != "")
 						continue;
@@ -131,7 +132,7 @@ namespace Advocate
 				Conversion.Converter conv = new(openedFilePath, argDict["-author"], argDict["-name"], argDict["-version"], argDict["-readme"], argDict["-icon"]);
 
 				// convert
-				bool success = conv.Convert(argDict["-outputpath"], argDict["-repakpath"], argDict["-desc"], nogui);
+				bool success = conv.Convert(argDict["-outputpath"], argDict["-repakpath"], argDict["-texconvpath"], argDict["-desc"], nogui);
 
 				// exit
 				Environment.Exit(success ? 0 : 1);

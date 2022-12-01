@@ -159,12 +159,12 @@ namespace Advocate.Conversion
 		/// </summary>
 		public bool Convert(bool nogui = false)
 		{
-			return Convert(Properties.Settings.Default.OutputPath, Properties.Settings.Default.RePakPath, Properties.Settings.Default.Description, nogui);
+			return Convert(Properties.Settings.Default.OutputPath, Properties.Settings.Default.RePakPath, Properties.Settings.Default.TexconvPath, Properties.Settings.Default.Description, nogui);
 		}
 		/// <summary>
 		///		Converts the skin. The converted .zip file will be put at outputPath/>
 		/// </summary>
-		public bool Convert(string outputPath, string repakPath, string description, bool nogui = false)
+		public bool Convert(string outputPath, string repakPath, string texconvPath, string description, bool nogui = false)
 		{
 			// initialise various path variables, just because they are useful
 
@@ -394,7 +394,7 @@ namespace Advocate.Conversion
 					{
 						Debug($"Texture being saved to '{filePath}' has missing mip levels");
 						Info($"Generating MipMaps... ({pair.Key})");
-						pair.Value.GenerateMissingMips();
+						pair.Value.GenerateMissingMips(texconvPath);
 					}
 
 					Info("Saving texture...");

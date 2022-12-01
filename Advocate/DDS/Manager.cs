@@ -153,7 +153,7 @@ namespace Advocate.DDS
 			return ret;
 		}
 
-		public void GenerateMissingMips()
+		public void GenerateMissingMips(string texconvPath)
 		{
 			// find which mips we need to generate
 			List<int> missing = GetMissingMips();
@@ -201,7 +201,7 @@ namespace Advocate.DDS
 			proc.ErrorDataReceived += (sender, args) => sb.AppendLine(args.Data);
 			proc.StartInfo.UseShellExecute = false;
 			proc.StartInfo.CreateNoWindow = true;
-			proc.StartInfo.FileName = Properties.Settings.Default.TexconvPath;
+			proc.StartInfo.FileName = texconvPath;
 			proc.StartInfo.Arguments = $"-f {format} -nologo -m 0 -bc d -o {temp3} -y {temp2}\\{temp}";
 			proc.Start();
 			proc.WaitForExit();
