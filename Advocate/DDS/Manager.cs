@@ -98,7 +98,6 @@ namespace Advocate.DDS
 			{
 				writer.Write(mipmaps.Values[i]);
 			}
-			
 		}
 
 		public void SaveImage_NoMipMaps(BinaryWriter writer)
@@ -116,7 +115,6 @@ namespace Advocate.DDS
 			lastHeader.Save(writer);
 			// write the image data (only the biggest mip)
 			writer.Write(mipmaps.Values.Last());
-
 		}
 
 		public bool HasMissingMips()

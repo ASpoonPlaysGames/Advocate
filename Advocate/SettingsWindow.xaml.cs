@@ -63,7 +63,7 @@ namespace Advocate
 			get { return Properties.Settings.Default.TexconvPath; }
 			set { Properties.Settings.Default.TexconvPath = value; Logging.Logger.Debug($"TexconvPath changed to {value}"); }
 		}
-		
+
 
 		/// <summary>
 		///     Updates <see cref="RePakPath"/>

@@ -269,7 +269,7 @@ namespace Advocate.Conversion
 					// find all DDS _col files within the zip folder
 					List<string> validImages = new();
 					validImages.AddRange(Directory.GetFiles(skinTempFolderPath, "*_col.dds", SearchOption.AllDirectories));
-					
+
 					// if there arent any _col textures, try use _spc textures
 					if (validImages.Count == 0)
 					{
@@ -399,7 +399,7 @@ namespace Advocate.Conversion
 
 					Info("Saving texture...");
 					pair.Value.SaveImage(writer);
-					
+
 					// close the writer
 					writer.Close();
 
