@@ -184,7 +184,7 @@ namespace Advocate
 					return false;
 				}
 				// i swear to god if people rename texconv.exe and break shit im going to commit war crimes
-				if (!Properties.Settings.Default.RePakPath.EndsWith("texconv.exe"))
+				if (!Properties.Settings.Default.TexconvPath.EndsWith("texconv.exe"))
 				{
 					Message = "Error: texconv path does not lead to texconv.exe! (Change in Settings)";
 					return false;
