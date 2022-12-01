@@ -1,4 +1,4 @@
-### **Advocate requires that you install [RePak](https://github.com/r-ex/RePak/releases) to function**
+### **Advocate requires that you install [RePak](https://github.com/r-ex/RePak/releases) and [texconv](https://github.com/microsoft/DirectXTex/releases/latest) to function**
 
 # Advocate Skin Converter
 
@@ -7,18 +7,23 @@ This tool's main purpose is to aid skin creators in transitioning towards using 
 ## Setup
 
 1. Download [RePak](https://github.com/r-ex/RePak/releases)
-2. Download and run [Advocate](https://github.com/ASpoonPlaysGames/Advocate/releases/latest)
-3. Open the Settings in Advocate
+2. Download [texconv.exe](https://github.com/microsoft/DirectXTex/releases/latest)
+3. Download and run [Advocate](https://github.com/ASpoonPlaysGames/Advocate/releases/latest)
+4. Open the Settings in Advocate
 
-4. Set the RePak Path so that it points to RePak.exe
+5. Set the RePak Path so that it points to RePak.exe
 
 ![image](https://user-images.githubusercontent.com/66967891/190265432-36054dbd-d5bf-48f2-92ff-307a4cd4eb8b.png)
 
-5. Set the Output Path so that it points to a folder. **This is where the skins will be put when they are converted**
+6. Set the Output Path so that it points to a folder. **This is where the skins will be put when they are converted**
 
 ![image](https://user-images.githubusercontent.com/66967891/190265456-154cb78e-dba5-4fec-aeb0-e325eae3360f.png)
 
-6. (Optional) Edit your Description Template. Click on the ? for details on how to use Description Tags.
+7. Set the Texconv Path so that it points to texconv.exe.
+
+![image](https://user-images.githubusercontent.com/66967891/205183563-5d1dfc94-f4f9-4db8-b711-b6ab83d7d3db.png)
+
+8. (Optional) Edit your Description Template. Click on the ? for details on how to use Description Tags.
 
 ![image](https://user-images.githubusercontent.com/66967891/202273770-c1cf5e5c-21bd-4b50-a0fb-197abeaaae69.png)
 
@@ -60,15 +65,16 @@ This tool's main purpose is to aid skin creators in transitioning towards using 
 
 Advocate now has a CLI! Below is a table of the different commandline arguments that you can use.
 
-| Argument       | Optional?          | Description                                            | Example                                                |
-| -------------- | ------------------ | ------------------------------------------------------ | ------------------------------------------------------ |
-| `-nogui`       | :heavy_check_mark: | Makes Advocate launch without the gui.                 | `-nogui`                                               |
-| `-author`      | :x:                | Sets the Author of the skin.                           | `"-author=Spoon"`                                      |
-| `-name`        | :x:                | Sets the Name of the skin.                             | `"-name=TestCLISkin"`                                  |
-| `-version`     | :x:                | Sets the Version of the skin.                          | `"-version=1.0.0"`                                     |
-| `-outputpath`  | :x:                | Sets the output directory for the skin.                | `"-outputpath=C:/Users/Spoon/Documents/Advocate"`      |
-| `-repakpath`   | :x:                | Sets the file path where Advocate will look for RePak. | `"-repakpath=C:/Users/Spoon/Documents/RePak.exe"`      |
-| `-desc`        | :x:                | Sets the description template for the skin.            | `"-desc={AUTHOR} made this cool skin for the {TYPES}"` |
+| Argument       | Optional?          | Description                                              | Example                                                |
+| -------------- | ------------------ | -------------------------------------------------------- | ------------------------------------------------------ |
+| `-nogui`       | :heavy_check_mark: | Makes Advocate launch without the gui.                   | `-nogui`                                               |
+| `-author`      | :x:                | Sets the Author of the skin.                             | `"-author=Spoon"`                                      |
+| `-name`        | :x:                | Sets the Name of the skin.                               | `"-name=TestCLISkin"`                                  |
+| `-version`     | :x:                | Sets the Version of the skin.                            | `"-version=1.0.0"`                                     |
+| `-outputpath`  | :x:                | Sets the output directory for the skin.                  | `"-outputpath=C:/Users/Spoon/Documents/Advocate"`      |
+| `-repakpath`   | :x:                | Sets the file path where Advocate will look for RePak.   | `"-repakpath=C:/Users/Spoon/Documents/RePak.exe"`      |
+| `-texconvpath` | :x:                | Sets the file path where Advocate will look for texconv. | `"-texconvpath=C:/Users/Spoon/Documents/texconv.exe"`  |
+| `-desc`        | :x:                | Sets the description template for the skin.              | `"-desc={AUTHOR} made this cool skin for the {TYPES}"` |
 
 
 

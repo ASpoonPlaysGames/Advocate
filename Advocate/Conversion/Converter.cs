@@ -78,7 +78,7 @@ namespace Advocate.Conversion
 
 		public float ConvertProgress { get { return 100 * curStep / NUM_CONVERT_STEPS; } }
 
-		private const float NUM_CONVERT_STEPS = 13; // INCREMENT THIS WHEN YOU ADD A NEW MESSAGE IDK
+		private const float NUM_CONVERT_STEPS = 14; // INCREMENT THIS WHEN YOU ADD A NEW MESSAGE IDK
 		private float curStep = 0;
 
 		// just here for better readability
@@ -151,28 +151,29 @@ namespace Advocate.Conversion
 			IconPath = pIconPath;
 		}
 
+		// the temp path is appended with the current date and time to prevent duplicates
+		public static string tempFolderPath = Path.GetFullPath($"{Path.GetTempPath()}/Advocate/{DateTime.Now:yyyyMMdd-THHmmss}");
+
 		/// <summary>
 		///		Converts the skin. The converted .zip file will be put at <see cref="Properties.Settings.OutputPath"/>
 		/// </summary>
 		public bool Convert(bool nogui = false)
 		{
-			return Convert(Properties.Settings.Default.OutputPath, Properties.Settings.Default.RePakPath, Properties.Settings.Default.Description, nogui);
+			return Convert(Properties.Settings.Default.OutputPath, Properties.Settings.Default.RePakPath, Properties.Settings.Default.TexconvPath, Properties.Settings.Default.Description, nogui);
 		}
 		/// <summary>
 		///		Converts the skin. The converted .zip file will be put at outputPath/>
 		/// </summary>
-		public bool Convert(string outputPath, string repakPath, string description, bool nogui = false)
+		public bool Convert(string outputPath, string repakPath, string texconvPath, string description, bool nogui = false)
 		{
 			// initialise various path variables, just because they are useful
 
-			// the temp path is appended with the current date and time to prevent duplicates
-			string tempFolderPath = $"{Path.GetTempPath()}/Advocate/{DateTime.Now:yyyyMMdd-THHmmss}";
 			string skinTempFolderPath = Path.GetFullPath($"{tempFolderPath}/Skin");
 			string modTempFolderPath = Path.GetFullPath($"{tempFolderPath}/Mod");
 			string repakTempFolderPath = Path.GetFullPath($"{tempFolderPath}/RePak");
 			try
 			{
-				Logging.Logger.CreateLogFile(outputPath);
+				Logging.Logger.CreateLogFile($"{outputPath}/advlog-{AuthorName}.{SkinName}-{Version}");
 			}
 			catch (Exception ex) when (!nogui)
 			{
@@ -259,65 +260,28 @@ namespace Advocate.Conversion
 				// create icon.png //
 				/////////////////////
 
-				// if IconPath is an empty string, we try and generate the icon from a _col texture (thunderstore requires an icon)
+				// if IconPath is an empty string, we try and generate the icon from a _col texture or a _spc texture (thunderstore requires an icon)
 				if (string.IsNullOrWhiteSpace(IconPath))
 				{
 					// set the message for the new conversion step
 					Info("Generating icon.png...");
-					// fuck you, im using the col of the first folder i find, shouldve specified an icon path
-					string[] skinPaths = Directory.GetDirectories(skinTempFolderPath);
-					if (skinPaths.Length == 0)
+
+					// find all DDS _col files within the zip folder
+					List<string> validImages = new();
+					validImages.AddRange(Directory.GetFiles(skinTempFolderPath, "*_col.dds", SearchOption.AllDirectories));
+
+					// if there arent any _col textures, try use _spc textures
+					if (validImages.Count == 0)
 					{
-						Error("Couldn't generate icon.png: No Skins found in zip!");
-						return false;
-					}
-					string[] resolutions = Directory.GetDirectories(skinPaths[0]);
-					if (resolutions.Length == 0)
-					{
-						Error("Couldn't generate icon.png: No Skins found in zip!");
-						return false;
-					}
-					// find highest resolution folder
-					int highestRes = 0;
-					foreach (string resolution in resolutions)
-					{
-						string? thing = Path.GetFileName(resolution);
-						// check if higher than highestRes and a power of 2
-						if (int.TryParse(thing, out int res) && res > highestRes && (highestRes & (highestRes - 1)) == 0)
+						validImages.AddRange(Directory.GetFiles(skinTempFolderPath, "*_spc.dds", SearchOption.AllDirectories));
+						if (validImages.Count == 0)
 						{
-							highestRes = res;
+							Error("Couldn't generate icon.png: no _col or _spc textures found!");
+							return false;
 						}
 					}
-					// check that we actually found something
-					if (highestRes == 0)
-					{
-						Error("Couldn't generate icon.png: No valid image resolutions found in zip!");
-						return false;
-					}
 
-					string[] files = Directory.GetFiles(skinPaths[0] + "\\" + highestRes.ToString());
-					if (files.Length == 0)
-					{
-						Error("Couldn't generate icon.png: No files in highest resolution folder!");
-						return false;
-					}
-					// find _col file
-					string colPath = "";
-					foreach (string file in files)
-					{
-						if (file.EndsWith("_col.dds"))
-						{
-							colPath = file;
-							break;
-						}
-					}
-					if (colPath == "")
-					{
-						Error("Couldn't generate icon.png: No _col texture found in highest resolution folder!");
-						return false;
-					}
-
-					if (!DdsToPng(colPath, modTempFolderPath + "\\icon.png"))
+					if (!DdsToPng(validImages[0], modTempFolderPath + "\\icon.png"))
 					{
 						Error("Couldn't generate icon.png: Failed to convert dds to png!");
 						return false;
@@ -357,7 +321,7 @@ namespace Advocate.Conversion
 				//////////////////////////////////////////////////////////////////
 
 				// set the message for the new conversion step
-				Info("Copying textures...");
+				Info("Converting textures...");
 
 				JSON.Map map = new(SkinName, $"{repakTempFolderPath}/assets", $"{modTempFolderPath}/mods/{AuthorName}.{SkinName}/paks");
 
@@ -366,58 +330,84 @@ namespace Advocate.Conversion
 				// this tracks the different skin types that we have found, for description parsing later
 				List<string> skinTypes = new();
 
-				foreach (string skinPath in Directory.GetDirectories(skinTempFolderPath))
+				// this keeps track of the different DDS files we are handling and combining
+				// the key is the texture name (example: CAR_Default_col)
+				Dictionary<string, DDS.Manager> ddsManagers = new();
+				/* The plan here is to:
+				 * 1. find all textures, and put them into arrays/lists of mip sizes (where 2^index == image width/height)
+				 * 2. take each dds, and rip the image data directly from it, putting them together to create as many mip levels as we can
+				 * 3. create the lower level mips from the highest resolution image that we have
+				 * (decompression and recompression harms image quality so we want to avoid this wherever we can)
+				 * 4. put the raw image data for the mips into one dds file
+				 * 
+				 * ASSUMPTIONS:
+				 * 1. the lower resolution images use the same compression format as the highest resolution image
+				 * if this is not the case, log, and skip the lower level image (this means we have to generate more mip levels, which is bad)
+				 * 
+				 */
+
+				// find all DDS files within the zip folder
+				string[] ddsImages = Directory.GetFiles(skinTempFolderPath, "*.dds", SearchOption.AllDirectories);
+
+				// add all of the files to their respective DDS Managers
+				foreach (string path in ddsImages)
 				{
-					// some skins have random files and folders in here, like images and stuff, so I have to do sorting in an annoying way
-					List<string> parsedDirs = new();
-					foreach (string dir in Directory.GetDirectories(skinPath))
+					string filename = Path.GetFileNameWithoutExtension(path);
+
+					// create a new DDS.Manager if needed
+					if (!ddsManagers.ContainsKey(filename))
 					{
-						// only add to the list of dirs if we manage to parse the value
-						if (int.TryParse(Path.GetFileName(dir), out int val))
-						{
-							parsedDirs.Add(dir);
-						}
+						Debug($"Found new texture type '{filename}', creating Manager.");
+						ddsManagers.Add(filename, new DDS.Manager());
 					}
 
+					// read the dds file into the Manager
+					Debug($"Adding new image for texture type '{filename}' from path '{path}'");
+					BinaryReader reader = new(new FileStream(path, FileMode.Open));
+					ddsManagers[filename].LoadImage(reader);
+					reader.Close();
 
-					foreach (string resolution in parsedDirs.OrderBy(path => int.Parse(Path.GetFileName(path))))
+					// add texture to skinTypes for tracking which skins are in the package
+					string type = Path.GetFileNameWithoutExtension(path).Split("_")[0];
+					if (!skinTypes.Contains(type))
 					{
-						if (int.TryParse(Path.GetFileName(resolution), out int res))
-						{
-							foreach (string texture in Directory.GetFiles(resolution))
-							{
-								// move texture to temp folder for packing
-								// convert from skin tool syntax to actual texture path, gotta be hardcoded because pain
-								string texturePath = TextureNameToPath(Path.GetFileNameWithoutExtension(texture));
-								if (string.IsNullOrWhiteSpace(texturePath))
-								{
-									Error($"Failed to convert texture '{Path.GetFileNameWithoutExtension(texture)}')");
-									return false;
-								}
-
-								// avoid duplicate textures in the json
-								if (!textures.Contains(texturePath))
-								{
-									map.AddTextureAsset(texturePath);
-									// add texturePath to tracked textures
-									textures.Add(texturePath);
-									// add texture to skinTypes for tracking which skins are in the package
-									skinTypes.Add(Path.GetFileNameWithoutExtension(texture).Split("_")[0]);
-								}
-								else
-								{
-									Debug($"Skipping duplicate texturePath '{texturePath}'");
-								}
-
-								// instantiate dds handler, pass it the texture path
-								DdsHandler handler = new(texture);
-								// convert the dds image to one that works with RePak
-								handler.Convert();
-								// save the file where RePak expects it to be
-								handler.Save($"{repakTempFolderPath}/assets/{texturePath}.dds");
-							}
-						}
+						Debug($"Found new skin type for description handling ({type})");
+						skinTypes.Add(type);
 					}
+				}
+
+				// save all dds images
+				foreach (KeyValuePair<string, DDS.Manager> pair in ddsManagers)
+				{
+					string texturePath = TextureNameToPath(pair.Key);
+					string filePath = $"{repakTempFolderPath}/assets/{texturePath}.dds";
+					// writer doesnt create directories, so do it beforehand
+					Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+					Debug($"Saving texture (with {pair.Value.MipMapCount} mips) to path '{filePath}'");
+
+					// create writer and save the image
+					BinaryWriter writer = new(new FileStream(filePath, FileMode.Create));
+
+					// generate missing mips
+					if (pair.Value.HasMissingMips())
+					{
+						Debug($"Texture being saved to '{filePath}' has missing mip levels");
+						Info($"Generating MipMaps... ({pair.Key})");
+						pair.Value.GenerateMissingMips(texconvPath);
+					}
+
+					Info("Saving texture...");
+					pair.Value.SaveImage(writer);
+
+					// close the writer
+					writer.Close();
+
+					// add asset to map file
+					map.AddTextureAsset(texturePath);
+
+					// add texturePath to tracked textures
+					textures.Add(texturePath);
 				}
 
 				// write the map json
@@ -437,19 +427,22 @@ namespace Advocate.Conversion
 				// create the process for RePak
 
 
-				//var sb = new StringBuilder();
+				StringBuilder sb = new();
 
 				Process P = new();
 
-				//P.StartInfo.RedirectStandardOutput = true;
-				//P.StartInfo.RedirectStandardError = true;
-				//P.OutputDataReceived += (sender, args) => sb.AppendLine(args.Data);
-				//P.ErrorDataReceived += (sender, args) => sb.AppendLine(args.Data);
-				//P.StartInfo.UseShellExecute = false;
+				P.StartInfo.RedirectStandardOutput = true;
+				P.StartInfo.RedirectStandardError = true;
+				P.OutputDataReceived += (sender, args) => sb.AppendLine(args.Data);
+				P.ErrorDataReceived += (sender, args) => sb.AppendLine(args.Data);
+				P.StartInfo.UseShellExecute = false;
+				P.StartInfo.CreateNoWindow = true;
 				P.StartInfo.FileName = repakPath;
 				P.StartInfo.Arguments = $"\"{repakTempFolderPath}\\map.json\"";
 				P.Start();
 				P.WaitForExit();
+
+				Debug(sb.ToString());
 
 				// currently, RePak always uses exitcode 1 for failure, if we implement more error codes then I'll probably give a more detailed error here
 				if (P.ExitCode == 1)
