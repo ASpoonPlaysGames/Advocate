@@ -199,6 +199,8 @@ namespace Advocate.DDS
 			proc.StartInfo.RedirectStandardError = true;
 			proc.OutputDataReceived += (sender, args) => sb.AppendLine(args.Data);
 			proc.ErrorDataReceived += (sender, args) => sb.AppendLine(args.Data);
+			proc.StartInfo.UseShellExecute = false;
+			proc.StartInfo.CreateNoWindow = true;
 			proc.StartInfo.FileName = Properties.Settings.Default.TexconvPath;
 			proc.StartInfo.Arguments = $"-f {format} -nologo -m 0 -bc d -o {temp3} -y {temp2}\\{temp}";
 			proc.Start();
