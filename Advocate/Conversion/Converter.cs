@@ -311,7 +311,15 @@ namespace Advocate.Conversion
 
 				// set the message for the new conversion step
 				Info("Generating README.md...");
-				File.WriteAllText($"{modTempFolderPath}/README.md", ReadMePath);
+				if (string.IsNullOrWhiteSpace(ReadMePath))
+				{
+					// write an empty string to the readme
+					File.WriteAllText($"{modTempFolderPath}/README.md", "");
+				}
+				else
+				{
+					File.Copy(ReadMePath, $"{modTempFolderPath}/README.md", true);
+				}
 
 				// move progress bar
 				ConvertTaskComplete();
