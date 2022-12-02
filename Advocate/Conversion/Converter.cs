@@ -406,6 +406,7 @@ namespace Advocate.Conversion
 					}
 
 					Info("Saving texture...");
+					pair.Value.Convert();
 					pair.Value.SaveImage(writer);
 
 					// close the writer
