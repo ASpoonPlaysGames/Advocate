@@ -127,7 +127,12 @@ namespace Advocate.DDS
 						caps |= 0x00000008;
 					break;
 				case "DX10":
-					// do nothing, but do support the fourCC
+					// some DXGI formats arent in their SRGB variants, but we need them to be
+					dxgiFormat = dxgiFormat switch
+					{
+						DXGI_FORMAT.DXGI_FORMAT_BC7_UNORM => DXGI_FORMAT.DXGI_FORMAT_BC7_UNORM_SRGB,
+						_ => dxgiFormat
+					};
 					break;
 
 				default:
@@ -150,7 +155,6 @@ namespace Advocate.DDS
 
 		public void Save(BinaryWriter writer)
 		{
-			Convert();
 			// write magic
 			writer.Write(magic);
 			// write header
