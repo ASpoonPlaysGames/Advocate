@@ -145,7 +145,7 @@ namespace Advocate.DDS
 			}
 
 			// check for non-square images having a 1x1 mip
-			if (isSquare && !mipmaps.ContainsKey(1))
+			if (!isSquare && !mipmaps.ContainsKey(1))
 				ret.Add(1);
 
 			return ret;
@@ -185,7 +185,7 @@ namespace Advocate.DDS
 				format = format switch
 				{
 					"BC4U" => "BC4_UNORM",
-					"BC5U" => "BC5_UNORM",
+					"ATI2" => "BC5_UNORM",
 					_ => format
 				};
 			}
@@ -209,6 +209,11 @@ namespace Advocate.DDS
 			BinaryReader reader = new(new FileStream($"{temp3}\\{temp}", FileMode.Open));
 			LoadImage(reader);
 			reader.Close();
+		}
+
+		public void Convert()
+		{
+			lastHeader.Convert();
 		}
 	}
 }
