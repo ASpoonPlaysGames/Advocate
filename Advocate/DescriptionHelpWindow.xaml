@@ -15,7 +15,7 @@
         <Label Margin="5,0,5,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0" Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left">
             <TextBlock TextDecorations="Underline">Description Help</TextBlock>
         </Label>
-        <ItemsControl ItemsSource="{Binding Path=descHelpHints}" Grid.Row="1">
+        <ItemsControl ItemsSource="{Binding Path=DescriptionHelpHints}" Grid.Row="1">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid>
