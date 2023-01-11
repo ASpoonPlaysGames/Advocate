@@ -707,6 +707,8 @@ namespace Advocate.Conversion
 			{ "HoloPilot_jumpkit_col", "texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_j_v1_skn02_col" },
 			{ "HoloPilot_viewhand_col", "texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_vh_v1_skn02_col" },
 			{ "HoloPilot_viewhand_spc", "texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_vh_v1_skn02_spc" },
+			{ "HoloPilot_viewhands_col", "texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_vh_v1_skn02_col" },
+			{ "HoloPilot_viewhands_spc", "texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_vh_v1_skn02_spc" },
 			//////////////
 			/// TITANS ///
 			//////////////
@@ -789,6 +791,7 @@ namespace Advocate.Conversion
 			{ "PhaseShift_mbody", "texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_b_v1_skn01" },
 			{ "PhaseShift_gear", "texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_g_v1_skn01" },
 			{ "PhaseShift_viewhand", "texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_vh_v1_skn01" },
+			{ "PhaseShift_viewhands", "texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_vh_v1_skn01" },
 			{ "PhaseShift_jumpkit", "texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_j_v1_skn01" },
 			{ "PhaseShift_helmet", "texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_g_v1_skn01" },
 			{ "PhaseShift_hair", "texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_alpha_v1_skn01" },
@@ -820,6 +823,7 @@ namespace Advocate.Conversion
 			{ "HoloPilot_mbody", "texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_b_v1_skn01" },
 			{ "HoloPilot_gear", "texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_g_v1_skn01" },
 			{ "HoloPilot_viewhand", "texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_vh_v1_skn01" },
+			{ "HoloPilot_viewhands", "texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_vh_v1_skn01" },
 			{ "HoloPilot_jumpkit", "texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_j_v1_skn01" },
 			{ "HoloPilot_helmet", "texture\\models\\humans\\titanpilot_gsuits\\pilot_medium_stalker\\p_m_stalker_male_he_v1_skn01" },
 			// shared
