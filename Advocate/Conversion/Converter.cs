@@ -388,6 +388,11 @@ namespace Advocate.Conversion
 				foreach (KeyValuePair<string, DDS.Manager> pair in ddsManagers)
 				{
 					string texturePath = TextureNameToPath(pair.Key);
+					if (texturePath == "")
+					{
+						Logging.Logger.Error($"Failed to find texture path for {pair.Key}");
+						return false;
+					}
 					string filePath = $"{repakTempFolderPath}/assets/{texturePath}.dds";
 					// writer doesnt create directories, so do it beforehand
 					Directory.CreateDirectory(Path.GetDirectoryName(filePath));
