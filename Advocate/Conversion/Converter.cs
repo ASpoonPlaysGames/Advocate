@@ -640,7 +640,7 @@ namespace Advocate.Conversion
 			{ "R101_Default", "texture\\models\\Weapons_R2\\r101_sfp\\r101_sfp" },
 			{ "HemlokBFR_Default", "texture\\models\\Weapons_R2\\hemlok_bfr_ar\\hemlok_BFR_ar" },
 			{ "V47Flatline_Default", "texture\\models\\weapons\\vinson\\vinson_rifle" },
-			{ "G2A5_Default", "texture\\models\\Weapons_R2\\g2a4_ar\\g2a4_ar_col" },
+			{ "G2A5_Default", "texture\\models\\Weapons_R2\\g2a4_ar\\g2a4_ar" },
 			{ "Alternator_Default", "texture\\models\\Weapons_R2\\alternator_smg\\alternator_smg" },
 			{ "CAR_Default", "texture\\models\\Weapons_R2\\car_smg\\CAR_smg" },
 			{ "R97_Default", "texture\\models\\Weapons_R2\\r97\\R97_CN" },
