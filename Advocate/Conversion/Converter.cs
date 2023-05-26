@@ -72,7 +72,7 @@ namespace Advocate.Conversion
 		/// <value>
 		///     <para>A Bitmap of the skin's icon, must be 256x256.</para>
 		///     <para>Generated from the first _col texture found in the skin
-		///     if null when <see cref="Convert(string, string, string, bool)"/> is called.</para>
+		///     if null when <see cref="Convert(string, string, string, string, bool)"/> is called.</para>
 		/// </value>
 		public string? IconPath { get; private set; }
 
