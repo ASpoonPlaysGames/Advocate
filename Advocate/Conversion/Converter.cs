@@ -440,23 +440,20 @@ namespace Advocate.Conversion
 
 				// create the process for RePak
 
-
-				StringBuilder sb = new();
-
 				Process P = new();
 
 				P.StartInfo.RedirectStandardOutput = true;
 				P.StartInfo.RedirectStandardError = true;
-				P.OutputDataReceived += (sender, args) => sb.AppendLine(args.Data);
-				P.ErrorDataReceived += (sender, args) => sb.AppendLine(args.Data);
+				P.OutputDataReceived += (sender, args) => Debug(args.Data ?? "<null>");
+				P.ErrorDataReceived += (sender, args) => Debug(args.Data ?? "<null>");
 				P.StartInfo.UseShellExecute = false;
 				P.StartInfo.CreateNoWindow = true;
 				P.StartInfo.FileName = repakPath;
 				P.StartInfo.Arguments = $"\"{repakTempFolderPath}\\map.json\"";
 				P.Start();
+				P.BeginOutputReadLine();
+				P.BeginErrorReadLine();
 				P.WaitForExit();
-
-				Debug(sb.ToString());
 
 				// currently, RePak always uses exitcode 1 for failure, if we implement more error codes then I'll probably give a more detailed error here
 				if (P.ExitCode == 1)
