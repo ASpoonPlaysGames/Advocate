@@ -444,8 +444,8 @@ namespace Advocate.Conversion
 
 				P.StartInfo.RedirectStandardOutput = true;
 				P.StartInfo.RedirectStandardError = true;
-				P.OutputDataReceived += (sender, args) => Debug(args.Data ?? "<null>");
-				P.ErrorDataReceived += (sender, args) => Debug(args.Data ?? "<null>");
+				P.OutputDataReceived += (sender, args) => Debug(args.Data ?? "");
+				P.ErrorDataReceived += (sender, args) => Debug(args.Data ?? "");
 				P.StartInfo.UseShellExecute = false;
 				P.StartInfo.CreateNoWindow = true;
 				P.StartInfo.FileName = repakPath;
