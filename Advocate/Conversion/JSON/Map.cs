@@ -13,6 +13,9 @@ namespace Advocate.Conversion.JSON
 		[JsonPropertyName("name")]
 		public string Name { get; init; }
 
+		[JsonPropertyName("starpakPath")]
+		public string StarpakPath { get; init; }
+
 		[JsonPropertyName("assetsDir")]
 		public string AssetsDir { get; init; }
 
@@ -31,14 +34,15 @@ namespace Advocate.Conversion.JSON
 			Name = name;
 			AssetsDir = assetsDir;
 			OutputDir = outputDir;
+			StarpakPath = $"{name}.starpak";
 		}
 
-		public void AddTextureAsset(string path, string? starpakPath = null)
+		public void AddTextureAsset(string path, bool disableStreaming = false)
 		{
-			TextureAsset asset = new() { Path = path, DisableStreaming = starpakPath == null };
+			TextureAsset asset = new() { Path = path, DisableStreaming = disableStreaming };
 			Files.Add(asset);
 		}
-	}
+}
 
 	internal class TextureAsset
 	{
