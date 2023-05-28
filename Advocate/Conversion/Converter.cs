@@ -659,7 +659,7 @@ namespace Advocate.Conversion
 			{ "P2016_Default", "texture\\models\\Weapons_R2\\p2011_pstl\\p2011_pstl" },
 			{ "RE45_Default", "texture\\models\\Weapons_R2\\re45_pstl\\RE45" },
 			{ "SmartPistol_Default", "texture\\models\\Weapons_R2\\smart_pistol\\Smart_Pistol_MK6" },
-			{ "Wingman_Default", "texture\\models\\weapons\\b3_wingman\\b3_wingman" },
+			{ "Wingman_Default", "texture\\models\\Weapons_R2\\wingman_pstl\\wingman_pstl" },
 			{ "WingmanElite_Default", "texture\\models\\Weapons_R2\\wingman_elite\\wingman_elite" },
 			{ "Archer_Default", "texture\\models\\Weapons_R2\\archer_at\\archer_at" },
 			{ "ChargeRifle_Default", "texture\\models\\Weapons_R2\\charge_rifle\\charge_rifle_at" },
