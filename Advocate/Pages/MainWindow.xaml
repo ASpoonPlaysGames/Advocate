@@ -7,10 +7,15 @@
         x:Name="window"
         x:Class="Advocate.Pages.MainWindow"
         mc:Ignorable="d"
-        Title="Advocate" Height="450" Width="800"
+        Title="Advocate" Height="480" Width="800"
        
         Background="{DynamicResource MainContentForegroundBrush}"
         ResizeMode="CanMinimize">
-
-    <Frame x:Name="PageFrame"/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Frame Grid.Row="1" x:Name="PageFrame"/>
+    </Grid>
 </Window>
