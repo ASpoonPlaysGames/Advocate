@@ -63,10 +63,6 @@ namespace Advocate
                 // create our window
                 Pages.MainWindow window = new(openedFilePath);
 
-				// set SkinPath as soon as we make the window if it is in the command line args
-				//if (openedFilePath != null)
-				//	window.SkinPath = openedFilePath;
-
 				// show the window
 				window.ShowDialog();
 			}
