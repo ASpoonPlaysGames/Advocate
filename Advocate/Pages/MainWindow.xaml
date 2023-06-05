@@ -12,10 +12,15 @@
         Background="{DynamicResource MainContentForegroundBrush}"
         ResizeMode="CanMinimize">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Frame Grid.Row="1" x:Name="PageFrame"/>
+
+        <hc:TabControl ShowCloseButton="False" IsDraggable="False" IsAnimationEnabled="False" ShowContextMenu="False"
+                       TabItemWidth="150" TabItemHeight="25">
+            <hc:TabItem Header="Skin Converter">
+                <Frame  x:Name="SkinConverterFrame" BorderThickness="0" Background="{DynamicResource MainContentForegroundBrush}"/>
+            </hc:TabItem>
+            <hc:TabItem Header="Nose Art Creator">
+                <Frame  x:Name="NoseArtCreatorFrame" BorderThickness="0" Background="{DynamicResource MainContentForegroundBrush}"/>
+            </hc:TabItem>
+        </hc:TabControl>
     </Grid>
 </Window>

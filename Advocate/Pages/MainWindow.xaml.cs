@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Advocate.Pages.NoseArtCreator;
 using HandyControl.Themes;
 using Microsoft.Win32;
 
@@ -28,6 +29,7 @@ namespace Advocate.Pages
 	{
 
 		private readonly Converter.ConverterPage converterPage;
+		private readonly NoseArtCreator.NoseArtCreatorPage noseArtCreatorPage;
 
 		/// <summary>
 		///		Constructor for the MainWindow class
@@ -39,9 +41,11 @@ namespace Advocate.Pages
 
 			// initialise our pages
 			converterPage = new(openedFilePath);
+			SkinConverterFrame.Navigate(converterPage);
 
-			// start open to the converter page
-			PageFrame.Navigate(converterPage);
+			noseArtCreatorPage = new(openedFilePath);
+			NoseArtCreatorFrame.Navigate(noseArtCreatorPage);
+			
 		}
 
 
