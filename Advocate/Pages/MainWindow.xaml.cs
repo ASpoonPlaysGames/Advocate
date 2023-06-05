@@ -28,6 +28,11 @@ namespace Advocate.Pages
 	{
 
 		private ConverterPage converterPage;
+
+		/// <summary>
+		///		Constructor for the MainWindow class
+		/// </summary>
+		/// <param name="openedFilePath">The file path that Advocate was opened with</param>
 		public MainWindow(string? openedFilePath)
 		{
 			InitializeComponent();
