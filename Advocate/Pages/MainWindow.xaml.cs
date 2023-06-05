@@ -27,7 +27,7 @@ namespace Advocate.Pages
 	public partial class MainWindow : Window
 	{
 
-		private ConverterPage converterPage;
+		private readonly Converter.ConverterPage converterPage;
 
 		/// <summary>
 		///		Constructor for the MainWindow class

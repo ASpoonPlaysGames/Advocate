@@ -19,7 +19,7 @@ using System.Windows.Shapes;
 using HandyControl.Themes;
 using Microsoft.Win32;
 
-namespace Advocate.Pages
+namespace Advocate.Pages.Converter
 {
 	/// <summary>
 	/// Interaction logic for ConverterPage.xaml

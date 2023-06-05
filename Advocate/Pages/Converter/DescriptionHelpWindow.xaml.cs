@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Advocate
+namespace Advocate.Pages.Converter
 {
 	/// <summary>
 	///     Interaction logic for DescriptionHelp.xaml

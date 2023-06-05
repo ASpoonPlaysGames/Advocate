@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using HandyControl.Themes;
 using Microsoft.Win32;
 
-namespace Advocate
+namespace Advocate.Pages.Converter
 {
 	/// <summary>
 	///     Interaction logic for SettingsWindow.xaml
