@@ -271,7 +271,7 @@ namespace Advocate.Pages
 
 
 		/// <summary>
-		///     Constructor for the MainWindow class
+		///     Constructor for the ConverterPage class
 		/// </summary>
 		/// <param name="path">The path to immediately set the SkinPath to on page load</param>
 		public ConverterPage(string? path = null)
@@ -298,7 +298,7 @@ namespace Advocate.Pages
 
 		private void OnClosed(object sender, EventArgs e)
 		{
-			// close event listener for conversion messages to allow GC to destroy the MainWindow object
+			// close event listener for conversion messages to allow GC to destroy the ConverterPage object
 			Logging.Logger.LogReceived -= HandleConversionMessage;
 		}
 
