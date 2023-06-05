@@ -61,11 +61,11 @@ namespace Advocate
 			if (!nogui)
 			{
 				// create our window
-				MainWindow window = new(openedFilePath);
+				MainWindow window = new();//new(openedFilePath);
 
 				// set SkinPath as soon as we make the window if it is in the command line args
-				if (openedFilePath != null)
-					window.SkinPath = openedFilePath;
+				//if (openedFilePath != null)
+				//	window.SkinPath = openedFilePath;
 
 				// show the window
 				window.ShowDialog();
