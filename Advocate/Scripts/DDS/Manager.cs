@@ -5,9 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Advocate.Conversion;
+using Advocate.Scripts.Conversion;
 
-namespace Advocate.DDS
+namespace Advocate.Scripts.DDS
 {
 	internal class Manager
 	{
@@ -33,9 +33,7 @@ namespace Advocate.DDS
 			Header hdr = new(reader);
 			// override lastHeader if this dds is higher resolution (should make my life easier)
 			if (lastHeader == null || hdr.Width * hdr.Height > lastHeader.Width * lastHeader.Height)
-			{
 				lastHeader = hdr;
-			}
 
 			// if the fourCC does not match up, skip this image
 			if (lastHeader.FourCC != hdr.FourCC)
@@ -59,9 +57,7 @@ namespace Advocate.DDS
 				int numPixels = width * height;
 				// if we already have a mip for this resolution, dont do anything
 				if (mipmaps.ContainsKey(numPixels))
-				{
 					continue;
-				}
 
 				// sometimes dds files dont have this set (WHICH IS ANNOYING)
 				// to "fix" this, just assume its all one mip level
@@ -87,17 +83,13 @@ namespace Advocate.DDS
 			lastHeader.MipMapCount = mipmaps.Count;
 			// make sure that the mipmap flag is set if we have more than 1 mip level
 			if (lastHeader.MipMapCount > 0)
-			{
 				lastHeader.Flags |= 0x20000;
-			}
 
 			// write the header
 			lastHeader.Save(writer);
 			// write the image data (bigger mips first so iterate backwards)
 			for (int i = mipmaps.Count - 1; i >= 0; --i)
-			{
 				writer.Write(mipmaps.Values[i]);
-			}
 		}
 
 		public void SaveImage_NoMipMaps(BinaryWriter writer)
@@ -107,9 +99,7 @@ namespace Advocate.DDS
 			lastHeader.MipMapCount = 1;
 			// make sure that the mipmap flag is set if we have more than 1 mip level
 			if (lastHeader.MipMapCount > 0)
-			{
 				lastHeader.Flags |= 0x20000;
-			}
 
 			// write the header
 			lastHeader.Save(writer);
@@ -174,9 +164,7 @@ namespace Advocate.DDS
 
 			string format;
 			if (lastHeader.isDX10)
-			{
 				format = Enum.GetName(typeof(DXGI_FORMAT), lastHeader.DXGIFormat).Replace("DXGI_FORMAT_", "") + " -dx10";
-			}
 			else
 			{
 				format = lastHeader.FourCC;

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Advocate.DDS
+namespace Advocate.Scripts.DDS
 {
 	internal class Header
 	{
@@ -62,9 +62,7 @@ namespace Advocate.DDS
 			// read magic
 			magic = reader.ReadChars(4);
 			if (new string(magic) != "DDS ")
-			{
 				throw new Exception("File is not a valid DDS file!");
-			}
 			// read header
 			size = reader.ReadUInt32();
 			flags = reader.ReadUInt32();

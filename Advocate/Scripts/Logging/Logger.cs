@@ -6,10 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Advocate.Logging
+namespace Advocate.Scripts.Logging
 {
 	/// <summary>
-	///     Handles Logging, use <see cref="Logger.CreateLogFile"></see> to write logs to a file.
+	///     Handles Logging, use <see cref="CreateLogFile"></see> to write logs to a file.
 	/// </summary>
 	public static class Logger
 	{

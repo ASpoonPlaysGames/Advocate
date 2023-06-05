@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Advocate.Conversion.JSON
+namespace Advocate.Models.JSON
 {
 	internal class Map
 	{
@@ -42,7 +42,7 @@ namespace Advocate.Conversion.JSON
 			TextureAsset asset = new() { Path = path, DisableStreaming = disableStreaming };
 			Files.Add(asset);
 		}
-}
+	}
 
 	internal class TextureAsset
 	{

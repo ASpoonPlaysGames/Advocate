@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Advocate
+namespace Advocate.Scripts
 {
 	/// <summary>
 	///     Handles parsing descriptions given by users, using information about the skin.

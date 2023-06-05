@@ -12,9 +12,12 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using Advocate.Models.JSON;
+using Advocate.Scripts.DDS;
+using Advocate.Scripts.Logging;
 using Pfim;
 
-namespace Advocate.Conversion
+namespace Advocate.Scripts.Conversion
 {
 	/// <summary>
 	///     Handles skin conversion.
@@ -85,10 +88,10 @@ namespace Advocate.Conversion
 		private void ConvertTaskComplete() { curStep++; }
 
 		// helper functions for some nicer logging
-		private void Debug(string message) { Logging.Logger.Debug(message, ConvertProgress); }
-		private void Info(string message) { Logging.Logger.Info(message, ConvertProgress); }
-		private void Completion(string message) { Logging.Logger.Completion(message, ConvertProgress); }
-		private void Error(string message) { Logging.Logger.Error(message, ConvertProgress); }
+		private void Debug(string message) { Logger.Debug(message, ConvertProgress); }
+		private void Info(string message) { Logger.Info(message, ConvertProgress); }
+		private void Completion(string message) { Logger.Completion(message, ConvertProgress); }
+		private void Error(string message) { Logger.Error(message, ConvertProgress); }
 
 		// provides the serialisation options we use for writing json files
 		private static readonly JsonSerializerOptions jsonOptions = new()
@@ -103,51 +106,34 @@ namespace Advocate.Conversion
 		{
 			// validate pZipPath, must exist and be a .zip file
 			if (!File.Exists(pZipPath))
-			{
 				throw new FileNotFoundException("Couldn't find file at Skin Path!");
-			}
 			if (!pZipPath.EndsWith(".zip"))
-			{
 				throw new ArgumentException("Skin Path is invalid!");
-			}
 			ZipPath = pZipPath;
 
 			// validate pAuthorName, see AuthorName for more details
-			if (string.IsNullOrEmpty(pAuthorName)) { throw new ArgumentException("Author Name is required!"); }
-			if (Regex.Match(pAuthorName, "[^\\da-zA-Z _]").Success || string.IsNullOrWhiteSpace(pAuthorName))
-			{
+			if (string.IsNullOrEmpty(pAuthorName)) throw new ArgumentException("Author Name is required!"); 			if (Regex.Match(pAuthorName, "[^\\da-zA-Z _]").Success || string.IsNullOrWhiteSpace(pAuthorName))
 				throw new ArgumentException("Author Name is invalid!");
-			}
 			AuthorName = pAuthorName;
 
 			// validate pSkinName, same as pAuthorName
-			if (string.IsNullOrEmpty(pSkinName)) { throw new ArgumentException("Skin Name is required!"); }
-			if (Regex.Match(pSkinName, "[^\\da-zA-Z _]").Success || string.IsNullOrWhiteSpace(pSkinName))
-			{
+			if (string.IsNullOrEmpty(pSkinName)) throw new ArgumentException("Skin Name is required!"); 			if (Regex.Match(pSkinName, "[^\\da-zA-Z _]").Success || string.IsNullOrWhiteSpace(pSkinName))
 				throw new ArgumentException("Skin Name is invalid!");
-			}
 			SkinName = pSkinName;
 
 			// validate pVersion, must be in the format MAJOR.MINOR.VERSION
-			if (string.IsNullOrEmpty(pVersion)) { throw new ArgumentException("Version is required!"); }
-			if (!Regex.Match(pVersion, "^\\d+.\\d+.\\d+$").Success)
-			{
+			if (string.IsNullOrEmpty(pVersion)) throw new ArgumentException("Version is required!"); 			if (!Regex.Match(pVersion, "^\\d+.\\d+.\\d+$").Success)
 				throw new ArgumentException("Version is invalid! (Example: 1.0.0)");
-			}
 			Version = pVersion;
 
 			// check that pReadMePath is valid and leads to a .md file
 			if (!string.IsNullOrWhiteSpace(pReadMePath) && !pReadMePath.EndsWith(".md"))
-			{
 				throw new ArgumentException("README path doesn't lead to a .md file!");
-			}
 			ReadMePath = pReadMePath;
 
 			// check that pIconPath is valid and leads to a .png file
 			if (!string.IsNullOrWhiteSpace(pIconPath) && !pIconPath.EndsWith(".png"))
-			{
 				throw new ArgumentException("Icon path doesn't lead to a .png file!");
-			}
 			IconPath = pIconPath;
 		}
 
@@ -173,14 +159,14 @@ namespace Advocate.Conversion
 			string repakTempFolderPath = Path.GetFullPath($"{tempFolderPath}/RePak");
 			try
 			{
-				Logging.Logger.CreateLogFile($"{outputPath}/advlog-{AuthorName}.{SkinName}-{Version}");
+				Logger.CreateLogFile($"{outputPath}/advlog-{AuthorName}.{SkinName}-{Version}");
 			}
 			catch (Exception ex) when (!nogui)
 			{
 				// create message box showing the full error
 				MessageBoxButton msgButton = MessageBoxButton.OK;
 				MessageBoxImage msgIcon = MessageBoxImage.Error;
-				MessageBox.Show($"Failed to create log file at path: '{Logging.Logger.LogFilePath}'\nMake sure that the Output Path directory is writable!\n\nDebugging information:\n\n {ex.Message}\n{ex.StackTrace}", "Logging Error", msgButton, msgIcon);
+				MessageBox.Show($"Failed to create log file at path: '{Logger.LogFilePath}'\nMake sure that the Output Path directory is writable!\n\nDebugging information:\n\n {ex.Message}\n{ex.StackTrace}", "Logging Error", msgButton, msgIcon);
 				return false;
 			}
 
@@ -312,14 +298,10 @@ namespace Advocate.Conversion
 				// set the message for the new conversion step
 				Info("Generating README.md...");
 				if (string.IsNullOrWhiteSpace(ReadMePath))
-				{
 					// write an empty string to the readme
 					File.WriteAllText($"{modTempFolderPath}/README.md", "");
-				}
 				else
-				{
 					File.Copy(ReadMePath, $"{modTempFolderPath}/README.md", true);
-				}
 
 				// move progress bar
 				ConvertTaskComplete();
@@ -331,7 +313,7 @@ namespace Advocate.Conversion
 				// set the message for the new conversion step
 				Info("Converting textures...");
 
-				JSON.Map map = new(SkinName, $"{repakTempFolderPath}/assets", $"{modTempFolderPath}/mods/{AuthorName}.{SkinName}/paks");
+				Map map = new(SkinName, $"{repakTempFolderPath}/assets", $"{modTempFolderPath}/mods/{AuthorName}.{SkinName}/paks");
 
 				// this tracks the textures that we have already added to the json, so we can avoid duplicates in there
 				List<string> textures = new();
@@ -340,7 +322,7 @@ namespace Advocate.Conversion
 
 				// this keeps track of the different DDS files we are handling and combining
 				// the key is the texture name (example: CAR_Default_col)
-				Dictionary<string, DDS.Manager> ddsManagers = new();
+				Dictionary<string, Manager> ddsManagers = new();
 				/* The plan here is to:
 				 * 1. find all textures, and put them into arrays/lists of mip sizes (where 2^index == image width/height)
 				 * 2. take each dds, and rip the image data directly from it, putting them together to create as many mip levels as we can
@@ -366,7 +348,7 @@ namespace Advocate.Conversion
 					if (!ddsManagers.ContainsKey(filename))
 					{
 						Debug($"Found new texture type '{filename}', creating Manager.");
-						ddsManagers.Add(filename, new DDS.Manager());
+						ddsManagers.Add(filename, new Manager());
 					}
 
 					// read the dds file into the Manager
@@ -385,12 +367,12 @@ namespace Advocate.Conversion
 				}
 
 				// save all dds images
-				foreach (KeyValuePair<string, DDS.Manager> pair in ddsManagers)
+				foreach (KeyValuePair<string, Manager> pair in ddsManagers)
 				{
 					string texturePath = TextureNameToPath(pair.Key);
 					if (texturePath == "")
 					{
-						Logging.Logger.Error($"Failed to find texture path for {pair.Key}");
+						Logger.Error($"Failed to find texture path for {pair.Key}");
 						return false;
 					}
 					string filePath = $"{repakTempFolderPath}/assets/{texturePath}.dds";
@@ -425,7 +407,7 @@ namespace Advocate.Conversion
 				}
 
 				// write the map json
-				File.WriteAllText($"{repakTempFolderPath}/map.json", JsonSerializer.Serialize<JSON.Map>(map, jsonOptions));
+				File.WriteAllText($"{repakTempFolderPath}/map.json", JsonSerializer.Serialize(map, jsonOptions));
 
 				// move progress bar
 				ConvertTaskComplete();
@@ -471,12 +453,12 @@ namespace Advocate.Conversion
 				Info("Generating rpak.json...");
 
 				// we can just preload our rpak, since it should only contain textures
-				JSON.RPak rpak = new()
+				RPak rpak = new()
 				{
 					Preload = new() { { $"{SkinName}.rpak", true } }
 				};
 
-				File.WriteAllText($"{modTempFolderPath}/mods/{AuthorName}.{SkinName}/paks/rpak.json", JsonSerializer.Serialize<JSON.RPak>(rpak, jsonOptions));
+				File.WriteAllText($"{modTempFolderPath}/mods/{AuthorName}.{SkinName}/paks/rpak.json", JsonSerializer.Serialize(rpak, jsonOptions));
 
 				// move progress bar
 				ConvertTaskComplete();
@@ -502,7 +484,7 @@ namespace Advocate.Conversion
 					Types = skinTypes.Distinct().ToArray()
 				};
 
-				JSON.Manifest manifest = new()
+				Manifest manifest = new()
 				{
 					name = SkinName.Replace(' ', '_'),
 					version_number = Version,
@@ -510,7 +492,7 @@ namespace Advocate.Conversion
 					description = desc.FormatDescription(description),
 				};
 
-				File.WriteAllText($"{modTempFolderPath}/manifest.json", JsonSerializer.Serialize<JSON.Manifest>(manifest, jsonOptions));
+				File.WriteAllText($"{modTempFolderPath}/manifest.json", JsonSerializer.Serialize(manifest, jsonOptions));
 
 				// move progress bar
 				ConvertTaskComplete();
@@ -527,7 +509,7 @@ namespace Advocate.Conversion
 				// set the message for the new conversion step
 				Info("Writing mod.json...");
 
-				JSON.Mod mod = new()
+				Mod mod = new()
 				{
 					Name = $"{AuthorName}.{SkinName}",
 					Description = desc.FormatDescription(description),
@@ -535,7 +517,7 @@ namespace Advocate.Conversion
 					LoadPriority = 1,
 				};
 
-				File.WriteAllText($"{modTempFolderPath}/mods/{AuthorName}.{SkinName}/mod.json", JsonSerializer.Serialize<JSON.Mod>(mod, jsonOptions));
+				File.WriteAllText($"{modTempFolderPath}/mods/{AuthorName}.{SkinName}/mod.json", JsonSerializer.Serialize(mod, jsonOptions));
 
 				// move progress bar
 				ConvertTaskComplete();

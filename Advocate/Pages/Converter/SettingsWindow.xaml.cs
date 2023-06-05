@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Advocate.Scripts.Logging;
 using HandyControl.Themes;
 using Microsoft.Win32;
 
@@ -37,7 +38,7 @@ namespace Advocate.Pages.Converter
 		public static string RePakPath
 		{
 			get { return Properties.Settings.Default.RePakPath; }
-			set { Properties.Settings.Default.RePakPath = value; Logging.Logger.Debug($"RePakPath changed to {value}"); }
+			set { Properties.Settings.Default.RePakPath = value; Logger.Debug($"RePakPath changed to {value}"); }
 		}
 		/// <summary>
 		///     Holds the path to the user's output folder, where we put converted mods.
@@ -45,7 +46,7 @@ namespace Advocate.Pages.Converter
 		public static string OutputPath
 		{
 			get { return Properties.Settings.Default.OutputPath; }
-			set { Properties.Settings.Default.OutputPath = value; Logging.Logger.Debug($"OutputPath changed to {value}"); }
+			set { Properties.Settings.Default.OutputPath = value; Logger.Debug($"OutputPath changed to {value}"); }
 		}
 		/// <summary>
 		///     Holds a non-formatted version of the user's description, used as a template to generate descriptions.
@@ -53,7 +54,7 @@ namespace Advocate.Pages.Converter
 		public static string Description
 		{
 			get { return Properties.Settings.Default.Description; }
-			set { Properties.Settings.Default.Description = value; Logging.Logger.Debug($"Description changed to {value}"); }
+			set { Properties.Settings.Default.Description = value; Logger.Debug($"Description changed to {value}"); }
 		}
 		/// <summary>
 		///     Holds the path to texconv.exe. (hopefully)
@@ -61,7 +62,7 @@ namespace Advocate.Pages.Converter
 		public static string TexconvPath
 		{
 			get { return Properties.Settings.Default.TexconvPath; }
-			set { Properties.Settings.Default.TexconvPath = value; Logging.Logger.Debug($"TexconvPath changed to {value}"); }
+			set { Properties.Settings.Default.TexconvPath = value; Logger.Debug($"TexconvPath changed to {value}"); }
 		}
 
 

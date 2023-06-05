@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Advocate.Logging
+namespace Advocate.Scripts.Logging
 {
 	/// <summary>
 	///     Holds the type of message,

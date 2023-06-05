@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Advocate.Conversion.JSON
+namespace Advocate.Models.JSON
 {
 #pragma warning disable IDE1006 // Naming Styles
 	internal class Manifest

@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Advocate.Scripts.Logging;
 using HandyControl.Themes;
 using Microsoft.Win32;
 
@@ -96,7 +97,7 @@ namespace Advocate.Pages.Converter
 
 		/// <summary>
 		///     The file path of the skin's icon.png file.
-		///     This field is optional, and a .png file will be generated during <see cref="Conversion.Converter.Convert(string, string, string, bool)"/>
+		///     This field is optional, and a .png file will be generated during <see cref="Scripts.Conversion.Converter.Convert(string, string, string, bool)"/>
 		/// </summary>
 		/// <value>
 		///     A fully qualified file path, leading to a .png file, or 
@@ -284,7 +285,7 @@ namespace Advocate.Pages.Converter
 			DataContext = this;
 
 			// register event listener for conversion messages
-			Logging.Logger.LogReceived += HandleConversionMessage;
+			Logger.LogReceived += HandleConversionMessage;
 
 			// if we are given a path, set the SkinPath
 			if (path != null)
@@ -299,26 +300,26 @@ namespace Advocate.Pages.Converter
 		private void OnClosed(object sender, EventArgs e)
 		{
 			// close event listener for conversion messages to allow GC to destroy the ConverterPage object
-			Logging.Logger.LogReceived -= HandleConversionMessage;
+			Logger.LogReceived -= HandleConversionMessage;
 		}
 
 		/// <summary>
-		///     <para>Event listener for the <see cref="Logging.Logger.LogReceived"/> event.</para>
-		///     <para>Sets <see cref="Message"/> to the <see cref="Logging.LogMessageEventArgs.Message"/> or an empty string if null.</para>
+		///     <para>Event listener for the <see cref="Logger.LogReceived"/> event.</para>
+		///     <para>Sets <see cref="Message"/> to the <see cref="LogMessageEventArgs.Message"/> or an empty string if null.</para>
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void HandleConversionMessage(object? sender, Logging.LogMessageEventArgs e)
+		private void HandleConversionMessage(object? sender, LogMessageEventArgs e)
 		{
 			// ignore messages that are below MessageType.Info in gui
-			if (e.Type < Logging.MessageType.Info)
+			if (e.Type < MessageType.Info)
 				return;
 
 			// update the ConvertProgress
 			ConvertProgress = e.Type switch
 			{
 				// error is a special case where we want to set the conversion progress to 0 no matter what
-				Logging.MessageType.Error => 0,
+				MessageType.Error => 0,
 				// default to just using the percentage we were given, or not changing it at all if we are given null
 				_ => e.ConversionPercent ?? ConvertProgress
 			};
@@ -329,8 +330,8 @@ namespace Advocate.Pages.Converter
 			// Update the status message inside the button
 			Status = e.Type switch
 			{
-				Logging.MessageType.Completion => "Complete!",
-				Logging.MessageType.Error => "Error!",
+				MessageType.Completion => "Complete!",
+				MessageType.Error => "Error!",
 				// default to just not changing it
 				_ => Status
 			};
@@ -339,9 +340,9 @@ namespace Advocate.Pages.Converter
 			string style = e.Type switch
 			{
 				// this is like a light green
-				Logging.MessageType.Completion => "ProgressButtonSuccess",
+				MessageType.Completion => "ProgressButtonSuccess",
 				// this is a red
-				Logging.MessageType.Error => "ProgressButtonDanger",
+				MessageType.Error => "ProgressButtonDanger",
 				// this is the user's system accent colour
 				_ => "ProgressButtonPrimary"
 			};
@@ -361,7 +362,7 @@ namespace Advocate.Pages.Converter
 			try
 			{
 				// instantiate converter
-				Conversion.Converter conv = new(SkinPath, AuthorName, ModName, Version, ReadMePath, IconPath);
+				Scripts.Conversion.Converter conv = new(SkinPath, AuthorName, ModName, Version, ReadMePath, IconPath);
 
 				// set the status
 				Status = "Converting...";
@@ -386,7 +387,7 @@ namespace Advocate.Pages.Converter
 			}
 			catch (Exception ex)
 			{
-				Logging.Logger.Error(ex.Message);
+				Logger.Error(ex.Message);
 				// allow the button to be pressed again if conversion fails
 				ConvertButton.IsChecked = false;
 				ConvertButton.IsEnabled = true;
@@ -445,37 +446,37 @@ namespace Advocate.Pages.Converter
 		private void ReadMePath_TextBox_TextChanged(object sender, RoutedEventArgs e)
 		{
 			ReadMePath = ReadMePath_TextBox.Text;
-			Logging.Logger.Debug($"ReadMePath changed to '{ReadMePath}'");
+			Logger.Debug($"ReadMePath changed to '{ReadMePath}'");
 		}
 
 		private void SkinPath_TextBox_TextChanged(object sender, RoutedEventArgs e)
 		{
 			SkinPath = SkinPath_TextBox.Text;
-			Logging.Logger.Debug($"SkinPath changed to '{SkinPath}'");
+			Logger.Debug($"SkinPath changed to '{SkinPath}'");
 		}
 
 		private void IconPath_TextBox_TextChanged(object sender, RoutedEventArgs e)
 		{
 			IconPath = IconPath_TextBox.Text;
-			Logging.Logger.Debug($"IconPath changed to '{IconPath}'");
+			Logger.Debug($"IconPath changed to '{IconPath}'");
 		}
 
 		private void Author_TextBox_TextChanged(object sender, RoutedEventArgs e)
 		{
 			AuthorName = Author_TextBox.Text;
-			Logging.Logger.Debug($"AuthorName changed to '{AuthorName}'");
+			Logger.Debug($"AuthorName changed to '{AuthorName}'");
 		}
 
 		private void SkinName_TextBox_TextChanged(object sender, RoutedEventArgs e)
 		{
 			ModName = SkinName_TextBox.Text;
-			Logging.Logger.Debug($"ModName changed to '{ModName}'");
+			Logger.Debug($"ModName changed to '{ModName}'");
 		}
 
 		private void Version_TextBox_TextChanged(object sender, RoutedEventArgs e)
 		{
 			Version = Version_TextBox.Text;
-			Logging.Logger.Debug($"Version changed to '{Version}'");
+			Logger.Debug($"Version changed to '{Version}'");
 		}
 	}
 }
