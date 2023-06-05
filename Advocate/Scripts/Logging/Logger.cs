@@ -27,8 +27,7 @@ namespace Advocate.Scripts.Logging
 		/// <param name="logPath"></param>
 		public static void CreateLogFile(string logPath)
 		{
-			if (logWriter != null)
-				logWriter.Close();
+			logWriter?.Close();
 
 			LogFilePath = $"{logPath}.txt";
 
