@@ -60,8 +60,8 @@ namespace Advocate
 
 			if (!nogui)
 			{
-				// create our window
-				MainWindow window = new();//new(openedFilePath);
+                // create our window
+                Pages.MainWindow window = new(openedFilePath);
 
 				// set SkinPath as soon as we make the window if it is in the command line args
 				//if (openedFilePath != null)
