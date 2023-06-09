@@ -20,6 +20,7 @@ namespace Advocate.Pages
 			InitializeComponent();
 
 			// initialise our pages
+			// note: this is done here instead of in-editor so that i can pass arguments to the page constructors
 			converterPage = new(openedFilePath);
 			SkinConverterFrame.Navigate(converterPage);
 
