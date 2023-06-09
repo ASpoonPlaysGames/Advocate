@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Advocate.Scripts.Logging
+namespace Advocate.Logging
 {
 	/// <summary>
 	///     Handles Logging, use <see cref="CreateLogFile"></see> to write logs to a file.

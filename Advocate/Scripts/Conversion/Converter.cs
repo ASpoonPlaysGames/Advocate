@@ -12,9 +12,9 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using Advocate.Logging;
 using Advocate.Models.JSON;
 using Advocate.Scripts.DDS;
-using Advocate.Scripts.Logging;
 using Pfim;
 
 namespace Advocate.Scripts.Conversion

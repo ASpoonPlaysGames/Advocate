@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Advocate.Logging;
 
 namespace Advocate.Scripts.DDS
 {
@@ -89,7 +90,7 @@ namespace Advocate.Scripts.DDS
 			isDX10 = new string(pixel_FourCC) == "DX10";
 			if (isDX10)
 			{
-				Logging.Logger.Debug("DDS file is using DX10");
+				Logger.Debug("DDS file is using DX10");
 				dxgiFormat = (DXGI_FORMAT)reader.ReadUInt32();
 				resourceDimension = (DX10ResourceDimension)reader.ReadUInt32();
 				miscFlags = reader.ReadUInt32();
@@ -108,7 +109,7 @@ namespace Advocate.Scripts.DDS
 					ToDX10(DXGI_FORMAT.DXGI_FORMAT_BC1_UNORM_SRGB);
 					break;
 				case "ATI2":
-					Logging.Logger.Debug($"DDS file is using ATI2, changing to BC5U");
+					Logger.Debug($"DDS file is using ATI2, changing to BC5U");
 					pixel_FourCC = new char[4] { 'B', 'C', '5', 'U' };
 					goto case "BC5U";
 				case "BC5U":
@@ -134,7 +135,7 @@ namespace Advocate.Scripts.DDS
 					break;
 
 				default:
-					Logging.Logger.Debug($"DDS file is using {str_fourCC}, which is unsupported.");
+					Logger.Debug($"DDS file is using {str_fourCC}, which is unsupported.");
 					throw new NotImplementedException("DDS fourCC not supported: " + str_fourCC);
 			}
 		}

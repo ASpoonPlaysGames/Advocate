@@ -6,8 +6,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
+using Advocate.Logging;
 using Advocate.Scripts.Conversion;
-using Advocate.Scripts.Logging;
 
 namespace Advocate
 {

@@ -12,7 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Advocate.Scripts.Logging;
+using Advocate.Logging;
 using HandyControl.Themes;
 using Microsoft.Win32;
 
