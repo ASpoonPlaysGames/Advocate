@@ -69,7 +69,7 @@ namespace Advocate.Logging
 		/// <param name="completionPercent"></param>
 		public static void Debug(string message, float? completionPercent = null)
 		{
-			LogReceived?.Invoke(null, new LogMessageEventArgs(message, MessageType.Debug) { ConversionPercent = completionPercent });
+			LogReceived?.Invoke(null, new LogMessageEventArgs(message, MessageType.Debug) { Progress = completionPercent });
 		}
 
 		/// <summary>
@@ -80,7 +80,7 @@ namespace Advocate.Logging
 		/// <param name="completionPercent"></param>
 		public static void Info(string message, float? completionPercent = null)
 		{
-			LogReceived?.Invoke(null, new LogMessageEventArgs(message, MessageType.Info) { ConversionPercent = completionPercent });
+			LogReceived?.Invoke(null, new LogMessageEventArgs(message, MessageType.Info) { Progress = completionPercent });
 		}
 
 		/// <summary>
@@ -91,7 +91,7 @@ namespace Advocate.Logging
 		/// <param name="completionPercent"></param>
 		public static void Completion(string message, float? completionPercent = null)
 		{
-			LogReceived?.Invoke(null, new LogMessageEventArgs(message, MessageType.Completion) { ConversionPercent = completionPercent });
+			LogReceived?.Invoke(null, new LogMessageEventArgs(message, MessageType.Completion) { Progress = completionPercent });
 		}
 
 		/// <summary>
@@ -102,7 +102,7 @@ namespace Advocate.Logging
 		/// <param name="completionPercent"></param>
 		public static void Error(string message, float? completionPercent = null)
 		{
-			LogReceived?.Invoke(null, new LogMessageEventArgs(message, MessageType.Error) { ConversionPercent = completionPercent });
+			LogReceived?.Invoke(null, new LogMessageEventArgs(message, MessageType.Error) { Progress = completionPercent });
 		}
 	}
 }

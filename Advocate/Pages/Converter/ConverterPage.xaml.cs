@@ -321,7 +321,7 @@ namespace Advocate.Pages.Converter
 				// error is a special case where we want to set the conversion progress to 0 no matter what
 				MessageType.Error => 0,
 				// default to just using the percentage we were given, or not changing it at all if we are given null
-				_ => e.ConversionPercent ?? ConvertProgress
+				_ => e.Progress ?? ConvertProgress
 			};
 
 			// Update the conversion message shown to the user, if null then just use an empty string

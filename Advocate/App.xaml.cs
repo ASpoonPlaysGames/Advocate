@@ -155,7 +155,7 @@ namespace Advocate
 				_ => throw new NotImplementedException($"MessageType value '{e.Type}' is unsupported in Console_ConversionMessage.")
 			};
 
-			Console.WriteLine($"[{level}]{(e.ConversionPercent == null ? "" : $" [{(int)e.ConversionPercent,3}%]")} {e.Message}");
+			Console.WriteLine($"[{level}]{(e.Progress == null ? "" : $" [{(int)e.Progress,3}%]")} {e.Message}");
 		}
 
 		[DllImport("Kernel32.dll")]

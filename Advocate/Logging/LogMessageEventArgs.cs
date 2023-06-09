@@ -54,12 +54,12 @@ namespace Advocate.Logging
 		public MessageType Type { get; }
 
 		/// <summary>
-		///     How complete the conversion is, represented by a percentage.
+		///     How complete the current process is, represented by a percentage.
 		/// </summary>
 		/// <value>
 		///     A float value between 0 and 100 (inclusive), or null to signify no change.
 		/// </value>
-		public float? ConversionPercent { get; init; }
+		public float? Progress { get; init; }
 
 		/// <summary>
 		///     Basic constructor for <see cref="LogMessageEventArgs"/>
