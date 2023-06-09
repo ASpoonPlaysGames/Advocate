@@ -25,19 +25,19 @@ namespace Advocate.Logging
 		/// </summary>
 		Info,
 		/// <summary>
-		///     <para>Indicates that the skin conversion is complete.</para>
+		///     <para>Indicates that the current process is complete.</para>
 		///     Shown in gui.
 		/// </summary>
 		Completion,
 		/// <summary>
-		///     <para>Indicates an error during skin conversion.</para>
+		///     <para>Indicates an error during the current process.</para>
 		///     Shown in gui.
 		/// </summary>
 		Error
 	}
 
 	/// <summary>
-	///     Holds information about a conversion message,
+	///     Holds information about the current process,
 	///     used for logging to the console and updating the gui.
 	/// </summary>
 	public class LogMessageEventArgs : EventArgs
