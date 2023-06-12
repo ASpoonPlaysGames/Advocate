@@ -20,6 +20,11 @@ namespace Advocate.Models.JSON
 		public string name;
 
 		[JsonInclude]
+		public int width;
+		[JsonInclude]
+		public int height;
+
+		[JsonInclude]
 		public string[] textures;
 	}
 }

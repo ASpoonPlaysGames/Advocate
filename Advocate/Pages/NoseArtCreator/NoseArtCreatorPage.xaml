@@ -11,11 +11,16 @@
 
     <Grid Visibility="Visible" Margin="10,10,10,40">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Visibility="Visible" Margin="0">
+        <Grid Grid.Column="0" Margin="0,0,0,0">
+            
+        </Grid>
+
+        <Grid Grid.Column="1" Visibility="Visible" Margin="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -45,11 +50,11 @@
 
         </Grid>
 
-        <Grid Grid.Column="1" Margin="10,0,0,0">
+        <Grid Grid.Column="2" Margin="10,0,0,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -65,33 +70,29 @@
                         Grid.Column="0"
                         Grid.Row="0" 
                         Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
-            <hc:ImageSelector Name="ImageSelector_col" Grid.Row="1" Grid.Column="0" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="2" ImageUnselected="ImageSelector_col_ImageUnselected"/>
-            <Button Name="ResetButton_col" Margin="5,0,15,0" hc:IconElement.Geometry="{StaticResource RotateRightGeometry}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="ResetButton_col_Click"/>
-            <Button Name="DownloadButton_col" Margin="5,0,15,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <hc:ImageSelector Name="ImageSelector_col" Margin="5,0,5,0" Grid.Row="1" Grid.Column="0" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="2" ImageUnselected="ImageSelector_col_ImageUnselected" Grid.ColumnSpan="2"/>
+            <Button Name="DownloadButton_col" Margin="5,0,5,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 
             <Label Content="_opa" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                         Grid.Column="2"
                         Grid.Row="0" 
                         Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
-            <hc:ImageSelector Name="ImageSelector_opa" Grid.Row="1" Grid.Column="2" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="2"/>
-            <Button Name="ResetButton_opa" Margin="5,0,15,0" hc:IconElement.Geometry="{StaticResource RotateRightGeometry}" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="ResetButton_opa_Click"/>
-            <Button Name="DownloadButton_opa" Margin="5,0,15,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <hc:ImageSelector Name="ImageSelector_opa" Margin="5,0,5,0" Grid.Row="1" Grid.Column="2" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="2" ImageUnselected="ImageSelector_opa_ImageUnselected" Grid.ColumnSpan="2"/>
+            <Button Name="DownloadButton_opa" Margin="5,0,5,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 
             <Label Content="_spc" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                         Grid.Column="0"
                         Grid.Row="3" 
                         Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
-            <hc:ImageSelector Name="ImageSelector_spc" Grid.Row="4" Grid.Column="0" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="2"/>
-            <Button Name="ResetButton_spc" Margin="5,0,15,0" hc:IconElement.Geometry="{StaticResource RotateRightGeometry}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="ResetButton_spc_Click"/>
-            <Button Name="DownloadButton_spc" Margin="5,0,15,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <hc:ImageSelector Name="ImageSelector_spc" Margin="5,0,5,0" Grid.Row="4" Grid.Column="0" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="5" ImageUnselected="ImageSelector_spc_ImageUnselected" Grid.ColumnSpan="2"/>
+            <Button Name="DownloadButton_spc" Margin="5,0,5,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 
             <Label Content="_gls" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                         Grid.Column="2"
                         Grid.Row="3" 
                         Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
-            <hc:ImageSelector Name="ImageSelector_gls" Grid.Row="4" Grid.Column="2" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="2"/>
-            <Button Name="ResetButton_gls" Margin="5,0,15,0" hc:IconElement.Geometry="{StaticResource RotateRightGeometry}" Grid.Row="4" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="ResetButton_gls_Click"/>
-            <Button Name="DownloadButton_gls" Margin="5,0,15,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="5" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <hc:ImageSelector Name="ImageSelector_gls" Margin="5,0,5,0" Grid.Row="4" Grid.Column="2" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="2" ImageUnselected="ImageSelector_gls_ImageUnselected" Grid.ColumnSpan="2"/>
+            <Button Name="DownloadButton_gls" Margin="5,0,5,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="3" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </Grid>
     </Grid>
 </Page>

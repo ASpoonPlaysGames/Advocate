@@ -4,6 +4,8 @@
     "assetPathPrefix": "texture/models/titans_r2/light_northstar/nose_art/nose_art_v00/t_l_northstar_nose_art_v00",
     "previewPathPrefix": "NoseArts/Northstar/00",
     "name": "Test",
+    "width": 1024,
+    "height": 1024,
     "textures": [
       "col",
       "gls",
@@ -16,6 +18,8 @@
     "assetPathPrefix": "texture/models/titans_r2/light_northstar/nose_art/nose_art_v01/t_l_northstar_nose_art_v01",
     "previewPathPrefix": "NoseArts/Northstar/01",
     "name": "OtherThing",
+    "width": 1024,
+    "height": 1024,
     "textures": [
       "col",
       "gls",

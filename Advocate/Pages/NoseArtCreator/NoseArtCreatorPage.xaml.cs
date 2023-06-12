@@ -26,6 +26,7 @@ using System.Xml.Linq;
 using System.CodeDom;
 using System.Drawing;
 using HandyControl.Controls;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Advocate.Pages.NoseArtCreator
 {
@@ -121,10 +122,10 @@ namespace Advocate.Pages.NoseArtCreator
 			// update the preview
 			Task.Run(UpdatePreviewImage);
 
-			ResetImage("col");
-			ResetImage("opa");
-			ResetImage("spc");
-			ResetImage("gls");
+			ResetImageSelection("col");
+			ResetImageSelection("opa");
+			ResetImageSelection("spc");
+			ResetImageSelection("gls");
 		}
 
 		private void ChassisList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -139,8 +140,6 @@ namespace Advocate.Pages.NoseArtCreator
 			}
 
 			NamesList.SelectedIndex = 0;
-
-
 		}
 
 		private void UpdatePreviewImage()
@@ -149,11 +148,17 @@ namespace Advocate.Pages.NoseArtCreator
 			{
 				ImagePreview.Visibility = Visibility.Hidden;
 			});
+
+			Uri colUri = ImageSelector_col.Dispatcher.Invoke(() => { return ImageSelector_col.Uri; });
 			
-			Uri imageUri = new($"pack://application:,,,/{assembly.GetName().Name};component/Resource/{selectedNoseArt.previewPathPrefix}_col.png");
 			if (!selectedNoseArt.textures.Contains("opa"))
 			{
-				BitmapImage image = new(imageUri);
+				BitmapImage image = new(colUri);
+
+				if (!IsValidNoseArtDimensions(image.PixelWidth, image.PixelHeight))
+				{
+					return;
+				}
 
 				ImagePreview.Dispatcher.Invoke(() =>
 				{
@@ -163,10 +168,20 @@ namespace Advocate.Pages.NoseArtCreator
 				return;
 			}
 
-			Bitmap imageBmp = new(Application.GetResourceStream(imageUri).Stream);
+			Bitmap imageBmp = new(System.Windows.Application.GetResourceStream(colUri).Stream);
 
-			Uri maskUri = new($"pack://application:,,,/{assembly.GetName().Name};component/Resource/{selectedNoseArt.previewPathPrefix}_opa.png");
-			Bitmap maskBmp = new(Application.GetResourceStream(maskUri).Stream);
+			if (!IsValidNoseArtDimensions(imageBmp.Width, imageBmp.Height))
+			{
+				return;
+			}
+
+			Uri maskUri = ImageSelector_opa.Dispatcher.Invoke(() => { return ImageSelector_opa.Uri; });
+			Bitmap maskBmp = new(System.Windows.Application.GetResourceStream(maskUri).Stream);
+
+			if (!IsValidNoseArtDimensions(maskBmp.Width, maskBmp.Height))
+			{
+				return;
+			}
 
 			imageBmp = ApplyMask(imageBmp, maskBmp);
 
@@ -207,7 +222,7 @@ namespace Advocate.Pages.NoseArtCreator
 			return ret;
 		}
 
-		// digusting, i hate it here
+		// disgusting, i hate it here
 		private static BitmapImage ToBitmapImage(Bitmap bitmap)
 		{
 			using (var memory = new MemoryStream())
@@ -226,7 +241,7 @@ namespace Advocate.Pages.NoseArtCreator
 			}
 		}
 
-		private void ResetImage(string imageType)
+		private void ResetImageSelection(string imageType)
 		{
 			Uri uri = new($"pack://application:,,,/{assembly.GetName().Name};component/Resource/{selectedNoseArt.previewPathPrefix}_{imageType}.png");
 			ImageSelector imageSelector = imageType switch
@@ -238,6 +253,7 @@ namespace Advocate.Pages.NoseArtCreator
 				_ => throw new NotImplementedException("Invalid imageType"),
 			};
 
+			// do this manually, so that the + icon doesn't change, but we still get a preview
 			imageSelector.SetValue(ImageSelector.UriPropertyKey, uri);
 			imageSelector.SetValue(ImageSelector.PreviewBrushPropertyKey, new ImageBrush(BitmapFrame.Create(uri, BitmapCreateOptions.IgnoreImageCache, BitmapCacheOption.None))
 			{
@@ -245,17 +261,23 @@ namespace Advocate.Pages.NoseArtCreator
 			});
 		}
 
-		private void ResetButton_gls_Click(object sender, RoutedEventArgs e) { ResetImage("gls"); }
-		private void ResetButton_spc_Click(object sender, RoutedEventArgs e) { ResetImage("spc"); }
-		private void ResetButton_opa_Click(object sender, RoutedEventArgs e) { ResetImage("opa"); }
-		private void ResetButton_col_Click(object sender, RoutedEventArgs e) { ResetImage("col"); }
+		private bool IsValidNoseArtDimensions(int w, int h)
+		{
+			return w == selectedNoseArt.width && h == selectedNoseArt.height;
+		}
 
-		private void ImageSelector_col_ImageUnselected(object sender, RoutedEventArgs e) { ResetImage("col"); }
+		//////////////////////////////////////////////////////////////////////////////////////////
+		// BELOW HERE IS JUST EVENT HANDLERS FOR BUTTONS AND STUFF, NOTHING PARTICULARLY USEFUL //
+		//////////////////////////////////////////////////////////////////////////////////////////
+		
+		private void ResetButton_gls_Click(object sender, RoutedEventArgs e) { ResetImageSelection("gls"); }
+		private void ResetButton_spc_Click(object sender, RoutedEventArgs e) { ResetImageSelection("spc"); }
+		private void ResetButton_opa_Click(object sender, RoutedEventArgs e) { ResetImageSelection("opa"); }
+		private void ResetButton_col_Click(object sender, RoutedEventArgs e) { ResetImageSelection("col"); }
 
-		private void ImageSelector_opa_ImageUnselected(object sender, RoutedEventArgs e) { ResetImage("opa"); }
-
-		private void ImageSelector_spc_ImageUnselected(object sender, RoutedEventArgs e) { ResetImage("spc"); }
-
-		private void ImageSelector_gls_ImageUnselected(object sender, RoutedEventArgs e) { ResetImage("gls"); }
+		private void ImageSelector_col_ImageUnselected(object sender, RoutedEventArgs e) { ResetImageSelection("col"); }
+		private void ImageSelector_opa_ImageUnselected(object sender, RoutedEventArgs e) { ResetImageSelection("opa"); }
+		private void ImageSelector_spc_ImageUnselected(object sender, RoutedEventArgs e) { ResetImageSelection("spc"); }
+		private void ImageSelector_gls_ImageUnselected(object sender, RoutedEventArgs e) { ResetImageSelection("gls"); }
 	}
 }
