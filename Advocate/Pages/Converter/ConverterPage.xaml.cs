@@ -25,7 +25,7 @@ namespace Advocate.Pages.Converter
 	/// <summary>
 	/// Interaction logic for ConverterPage.xaml
 	/// </summary>
-	public partial class ConverterPage : Page
+	public partial class ConverterPage : Page, INotifyPropertyChanged
 	{
 		/// <summary>
 		///     Handles property changes, updating the UI.

@@ -1,14 +1,52 @@
-﻿<Page x:Class="Advocate.Pages.NoseArtCreator.NoseArtCreatorPage"
+﻿<Page
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Advocate.Pages.NoseArtCreator"
+      xmlns:hc="https://handyorg.github.io/handycontrol" x:Class="Advocate.Pages.NoseArtCreator.NoseArtCreatorPage"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="NoseArtCreatorPage">
 
-    <Grid Visibility="Visible" Margin="5,5,5,5">
-        <Label Content="Hello, World!"/>
+    <Grid Visibility="Visible" Margin="10,10,10,40">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Visibility="Visible" Margin="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="150"/>
+            </Grid.RowDefinitions>
+            <Label Content="Chassis:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        Grid.Column="0"
+                        Grid.Row="0" 
+                        Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
+            <hc:ComboBox Grid.Row="1" Name="ChassisList" ItemsSource="{Binding chassisTypes}" SelectedIndex="0" />
+            <Label Content="Nose Art:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        Grid.Column="0"
+                        Grid.Row="2" 
+                        Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
+            <hc:ComboBox Grid.Row="3" Name="NamesList" ItemsSource="{Binding noseArtNames}" SelectedIndex="0" />
+
+            <Label Content="Preview:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        Grid.Column="0"
+                        Grid.Row="4" 
+                        Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
+
+            <Image Name="ImagePreview" Grid.Row="5" Source="/Resource/NoseArts/Northstar/00_col.png" Panel.ZIndex="1">
+                <Image.OpacityMask>
+                    <ImageBrush ImageSource="/Resource/NoseArts/Northstar/00_opa.png"/>
+                </Image.OpacityMask>
+            </Image>
+            <Image Grid.Row="5" Source="/Resource/NoseArts/preview-background.png"/>
+
+        </Grid>
     </Grid>
 </Page>

@@ -21,6 +21,12 @@
 
   <ItemGroup>
     <None Remove="advocate.ico" />
+    <None Remove="Resource\NoseArts\Northstar\00_col.png" />
+    <None Remove="Resource\NoseArts\Northstar\00_gls.png" />
+    <None Remove="Resource\NoseArts\Northstar\00_opa.png" />
+    <None Remove="Resource\NoseArts\Northstar\00_spc.png" />
+    <None Remove="Resource\NoseArts\nose-arts.json" />
+    <None Remove="Resource\NoseArts\preview-background.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +42,12 @@
 
   <ItemGroup>
     <Resource Include="Resource\advocate.ico" />
+    <Resource Include="Resource\NoseArts\Northstar\00_col.png" />
+    <Resource Include="Resource\NoseArts\Northstar\00_gls.png" />
+    <Resource Include="Resource\NoseArts\Northstar\00_opa.png" />
+    <Resource Include="Resource\NoseArts\Northstar\00_spc.png" />
+    <EmbeddedResource Include="Resource\NoseArts\nose-arts.json" />
+    <Resource Include="Resource\NoseArts\preview-background.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,6 +63,10 @@
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Scripts\NoseArts\" />
   </ItemGroup>
 
 </Project>
