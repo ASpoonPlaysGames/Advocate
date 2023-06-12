@@ -23,6 +23,8 @@ using System.Text.Json;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Xml.Linq;
+using System.CodeDom;
+using System.Drawing;
 
 namespace Advocate.Pages.NoseArtCreator
 {
@@ -51,6 +53,10 @@ namespace Advocate.Pages.NoseArtCreator
 		public ObservableCollection<string> noseArtNames { get; private set; } = new();
 		public ObservableCollection<string> chassisTypes { get; private set; } = new();
 
+		private NoseArt selectedNoseArt;
+
+		private Assembly assembly;
+
 		/// <summary>
 		///		Constructor for NoseArtCreatorPage.
 		/// </summary>
@@ -66,9 +72,9 @@ namespace Advocate.Pages.NoseArtCreator
 			NamesList.SelectionChanged += NamesList_SelectionChanged;
 
 			// read the json that controls nose arts
-			var assembly = Assembly.GetExecutingAssembly();
+			assembly = Assembly.GetExecutingAssembly();
 			string str;
-			using (Stream stream = assembly.GetManifestResourceStream("Advocate.Resource.NoseArts.nose-arts.json"))
+			using (Stream stream = assembly.GetManifestResourceStream("Advocate.Resource.NoseArts.nose-arts.json") ?? throw new Exception("Failed to find nose art json! This is probably a bug"))
 			using (StreamReader reader = new(stream))
 			{
 				str = reader.ReadToEnd();
@@ -108,12 +114,18 @@ namespace Advocate.Pages.NoseArtCreator
 
 		private void NamesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			//throw new NotImplementedException();
+			if (NamesList.SelectedIndex == -1)
+				return;
+			selectedNoseArt = noseArts[chassisTypes[ChassisList.SelectedIndex]][NamesList.SelectedIndex];
 			// update the preview
+			Task.Run(UpdatePreviewImage);
 		}
 
 		private void ChassisList_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
+			if (ChassisList.SelectedIndex == -1)
+				return;
+
 			noseArtNames.Clear();
 			foreach(NoseArt art in noseArts[chassisTypes[ChassisList.SelectedIndex]])
 			{
@@ -123,6 +135,89 @@ namespace Advocate.Pages.NoseArtCreator
 			NamesList.SelectedIndex = 0;
 
 
+		}
+
+		private void UpdatePreviewImage()
+		{
+			ImagePreview.Dispatcher.Invoke(() =>
+			{
+				ImagePreview.Visibility = Visibility.Hidden;
+			});
+			
+			Uri imageUri = new($"pack://application:,,,/{assembly.GetName().Name};component/Resource/{selectedNoseArt.previewPathPrefix}_col.png");
+			if (!selectedNoseArt.textures.Contains("opa"))
+			{
+				BitmapImage image = new(imageUri);
+
+				ImagePreview.Dispatcher.Invoke(() =>
+				{
+					ImagePreview.Source = image;
+				});
+				
+				return;
+			}
+
+			Bitmap imageBmp = new(Application.GetResourceStream(imageUri).Stream);
+
+			Uri maskUri = new($"pack://application:,,,/{assembly.GetName().Name};component/Resource/{selectedNoseArt.previewPathPrefix}_opa.png");
+			Bitmap maskBmp = new(Application.GetResourceStream(maskUri).Stream);
+
+			imageBmp = ApplyMask(imageBmp, maskBmp);
+
+
+			ImagePreview.Dispatcher.Invoke(() =>
+			{
+				ImagePreview.Source = ToBitmapImage(imageBmp);
+				ImagePreview.Visibility = Visibility.Visible;
+			});
+		}
+
+
+		// this is rather slow, too bad!
+		private Bitmap ApplyMask(Bitmap image, Bitmap mask)
+		{
+			if (image.Width != mask.Width)
+				throw new Exception("Image width and mask width does not match");
+
+			if (image.Height != mask.Height)
+				throw new Exception("Image width and mask height does not match");
+
+			Bitmap ret = new(image.Width, image.Height);
+
+			for (int x = 0; x < image.Width; x++)
+			{
+				for (int y = 0; y < image.Height; y++)
+				{
+					System.Drawing.Color col = image.GetPixel(x, y);
+					System.Drawing.Color maskCol = mask.GetPixel(x, y);
+
+					// literally just average the R, G, and B
+					int maskAlpha = ((maskCol.R + maskCol.G + maskCol.B) / 3);
+
+					ret.SetPixel(x, y, System.Drawing.Color.FromArgb(maskAlpha, col));
+				}
+			}
+
+			return ret;
+		}
+
+		// digusting, i hate it here
+		private static BitmapImage ToBitmapImage(Bitmap bitmap)
+		{
+			using (var memory = new MemoryStream())
+			{
+				bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+				memory.Position = 0;
+
+				var bitmapImage = new BitmapImage();
+				bitmapImage.BeginInit();
+				bitmapImage.StreamSource = memory;
+				bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+				bitmapImage.EndInit();
+				bitmapImage.Freeze();
+
+				return bitmapImage;
+			}
 		}
 	}
 }

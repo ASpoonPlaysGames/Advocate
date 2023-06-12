@@ -25,6 +25,10 @@
     <None Remove="Resource\NoseArts\Northstar\00_gls.png" />
     <None Remove="Resource\NoseArts\Northstar\00_opa.png" />
     <None Remove="Resource\NoseArts\Northstar\00_spc.png" />
+    <None Remove="Resource\NoseArts\Northstar\01_col.png" />
+    <None Remove="Resource\NoseArts\Northstar\01_gls.png" />
+    <None Remove="Resource\NoseArts\Northstar\01_opa.png" />
+    <None Remove="Resource\NoseArts\Northstar\01_spc.png" />
     <None Remove="Resource\NoseArts\nose-arts.json" />
     <None Remove="Resource\NoseArts\preview-background.png" />
   </ItemGroup>
@@ -47,6 +51,10 @@
     <Resource Include="Resource\NoseArts\Northstar\00_opa.png" />
     <Resource Include="Resource\NoseArts\Northstar\00_spc.png" />
     <EmbeddedResource Include="Resource\NoseArts\nose-arts.json" />
+    <Resource Include="Resource\NoseArts\Northstar\01_col.png" />
+    <Resource Include="Resource\NoseArts\Northstar\01_gls.png" />
+    <Resource Include="Resource\NoseArts\Northstar\01_opa.png" />
+    <Resource Include="Resource\NoseArts\Northstar\01_spc.png" />
     <Resource Include="Resource\NoseArts\preview-background.png" />
   </ItemGroup>
 

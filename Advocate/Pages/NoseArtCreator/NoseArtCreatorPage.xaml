@@ -40,13 +40,58 @@
                         Grid.Row="4" 
                         Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
 
-            <Image Name="ImagePreview" Grid.Row="5" Source="/Resource/NoseArts/Northstar/00_col.png" Panel.ZIndex="1">
-                <Image.OpacityMask>
-                    <ImageBrush ImageSource="/Resource/NoseArts/Northstar/00_opa.png"/>
-                </Image.OpacityMask>
-            </Image>
+            <Image Name="ImagePreview" Grid.Row="5" Source="/Resource/NoseArts/Northstar/00_col.png" Panel.ZIndex="1"/>
             <Image Grid.Row="5" Source="/Resource/NoseArts/preview-background.png"/>
 
+        </Grid>
+
+        <Grid Grid.Column="1" Margin="10,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="1.5*"/>
+            </Grid.RowDefinitions>
+
+            <Label Content="_col" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        Grid.Column="0"
+                        Grid.Row="0" 
+                        Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
+            <hc:ImageSelector Name="ImageSelector_col" Grid.Row="1" Grid.Column="0" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="2"/>
+            <Button Margin="5,0,15,0" hc:IconElement.Geometry="{StaticResource RotateRightGeometry}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <Button Margin="5,0,15,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+            <Label Content="_opa" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        Grid.Column="2"
+                        Grid.Row="0" 
+                        Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
+            <hc:ImageSelector Name="ImageSelector_opa" Grid.Row="1" Grid.Column="2" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="2"/>
+            <Button Margin="5,0,15,0" hc:IconElement.Geometry="{StaticResource RotateRightGeometry}" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <Button Margin="5,0,15,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+            <Label Content="_spc" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        Grid.Column="0"
+                        Grid.Row="3" 
+                        Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
+            <hc:ImageSelector Name="ImageSelector_spc" Grid.Row="4" Grid.Column="0" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="2"/>
+            <Button Margin="5,0,15,0" hc:IconElement.Geometry="{StaticResource RotateRightGeometry}" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <Button Margin="5,0,15,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+            <Label Content="_gls" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        Grid.Column="2"
+                        Grid.Row="3" 
+                        Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
+            <hc:ImageSelector Name="ImageSelector_gls" Grid.Row="4" Grid.Column="2" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="2"/>
+            <Button Margin="5,0,15,0" hc:IconElement.Geometry="{StaticResource RotateRightGeometry}" Grid.Row="4" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <Button Margin="5,0,15,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="5" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </Grid>
     </Grid>
 </Page>
