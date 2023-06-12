@@ -25,6 +25,7 @@ using System.Collections.ObjectModel;
 using System.Xml.Linq;
 using System.CodeDom;
 using System.Drawing;
+using HandyControl.Controls;
 
 namespace Advocate.Pages.NoseArtCreator
 {
@@ -119,6 +120,11 @@ namespace Advocate.Pages.NoseArtCreator
 			selectedNoseArt = noseArts[chassisTypes[ChassisList.SelectedIndex]][NamesList.SelectedIndex];
 			// update the preview
 			Task.Run(UpdatePreviewImage);
+
+			ResetImage("col");
+			ResetImage("opa");
+			ResetImage("spc");
+			ResetImage("gls");
 		}
 
 		private void ChassisList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -174,7 +180,7 @@ namespace Advocate.Pages.NoseArtCreator
 
 
 		// this is rather slow, too bad!
-		private Bitmap ApplyMask(Bitmap image, Bitmap mask)
+		private static Bitmap ApplyMask(Bitmap image, Bitmap mask)
 		{
 			if (image.Width != mask.Width)
 				throw new Exception("Image width and mask width does not match");
@@ -219,5 +225,37 @@ namespace Advocate.Pages.NoseArtCreator
 				return bitmapImage;
 			}
 		}
+
+		private void ResetImage(string imageType)
+		{
+			Uri uri = new($"pack://application:,,,/{assembly.GetName().Name};component/Resource/{selectedNoseArt.previewPathPrefix}_{imageType}.png");
+			ImageSelector imageSelector = imageType switch
+			{
+				"col" => ImageSelector_col,
+				"spc" => ImageSelector_spc,
+				"gls" => ImageSelector_gls,
+				"opa" => ImageSelector_opa,
+				_ => throw new NotImplementedException("Invalid imageType"),
+			};
+
+			imageSelector.SetValue(ImageSelector.UriPropertyKey, uri);
+			imageSelector.SetValue(ImageSelector.PreviewBrushPropertyKey, new ImageBrush(BitmapFrame.Create(uri, BitmapCreateOptions.IgnoreImageCache, BitmapCacheOption.None))
+			{
+				Stretch = imageSelector.Stretch
+			});
+		}
+
+		private void ResetButton_gls_Click(object sender, RoutedEventArgs e) { ResetImage("gls"); }
+		private void ResetButton_spc_Click(object sender, RoutedEventArgs e) { ResetImage("spc"); }
+		private void ResetButton_opa_Click(object sender, RoutedEventArgs e) { ResetImage("opa"); }
+		private void ResetButton_col_Click(object sender, RoutedEventArgs e) { ResetImage("col"); }
+
+		private void ImageSelector_col_ImageUnselected(object sender, RoutedEventArgs e) { ResetImage("col"); }
+
+		private void ImageSelector_opa_ImageUnselected(object sender, RoutedEventArgs e) { ResetImage("opa"); }
+
+		private void ImageSelector_spc_ImageUnselected(object sender, RoutedEventArgs e) { ResetImage("spc"); }
+
+		private void ImageSelector_gls_ImageUnselected(object sender, RoutedEventArgs e) { ResetImage("gls"); }
 	}
 }
