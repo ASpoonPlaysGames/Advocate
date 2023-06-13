@@ -66,28 +66,28 @@
                 <RowDefinition Height="1.5*"/>
             </Grid.RowDefinitions>
 
-            <Label Content="_col" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            <Label Content="__col" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                         Grid.Column="0"
                         Grid.Row="0" 
                         Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
             <hc:ImageSelector Name="ImageSelector_col" Margin="5,0,5,0" Grid.Row="1" Grid.Column="0" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="2" ImageUnselected="ImageSelector_col_ImageUnselected" Grid.ColumnSpan="2"/>
             <Button Name="DownloadButton_col" Margin="5,0,5,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 
-            <Label Content="_opa" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            <Label Content="__opa" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                         Grid.Column="2"
                         Grid.Row="0" 
                         Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
             <hc:ImageSelector Name="ImageSelector_opa" Margin="5,0,5,0" Grid.Row="1" Grid.Column="2" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="2" ImageUnselected="ImageSelector_opa_ImageUnselected" Grid.ColumnSpan="2"/>
             <Button Name="DownloadButton_opa" Margin="5,0,5,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 
-            <Label Content="_spc" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            <Label Content="__spc" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                         Grid.Column="0"
                         Grid.Row="3" 
                         Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
             <hc:ImageSelector Name="ImageSelector_spc" Margin="5,0,5,0" Grid.Row="4" Grid.Column="0" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="5" ImageUnselected="ImageSelector_spc_ImageUnselected" Grid.ColumnSpan="2"/>
             <Button Name="DownloadButton_spc" Margin="5,0,5,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 
-            <Label Content="_gls" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            <Label Content="__gls" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                         Grid.Column="2"
                         Grid.Row="3" 
                         Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>

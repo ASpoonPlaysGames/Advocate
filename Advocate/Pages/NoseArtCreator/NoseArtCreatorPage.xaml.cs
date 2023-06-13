@@ -1,32 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.IO;
 using System.Reflection;
 using System.Collections;
 using System.Resources;
 using System.Threading;
 using Advocate.Models.JSON;
-using System.Text.Json.Nodes;
 using System.Text.Json;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
-using System.Xml.Linq;
-using System.CodeDom;
 using System.Drawing;
 using HandyControl.Controls;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Advocate.Pages.NoseArtCreator
 {
@@ -118,6 +108,7 @@ namespace Advocate.Pages.NoseArtCreator
 		{
 			if (NamesList.SelectedIndex == -1)
 				return;
+
 			selectedNoseArt = noseArts[chassisTypes[ChassisList.SelectedIndex]][NamesList.SelectedIndex];
 			// update the preview
 			Task.Run(UpdatePreviewImage);
@@ -144,6 +135,11 @@ namespace Advocate.Pages.NoseArtCreator
 
 		private void UpdatePreviewImage()
 		{
+			if (!selectedNoseArt.textures.Contains("col"))
+			{
+				throw new Exception("Cannot make a preview without a col map");
+			}
+
 			ImagePreview.Dispatcher.Invoke(() =>
 			{
 				ImagePreview.Visibility = Visibility.Hidden;
@@ -243,7 +239,6 @@ namespace Advocate.Pages.NoseArtCreator
 
 		private void ResetImageSelection(string imageType)
 		{
-			Uri uri = new($"pack://application:,,,/{assembly.GetName().Name};component/Resource/{selectedNoseArt.previewPathPrefix}_{imageType}.png");
 			ImageSelector imageSelector = imageType switch
 			{
 				"col" => ImageSelector_col,
@@ -252,6 +247,28 @@ namespace Advocate.Pages.NoseArtCreator
 				"opa" => ImageSelector_opa,
 				_ => throw new NotImplementedException("Invalid imageType"),
 			};
+
+			Button button = imageType switch
+			{
+				"col" => DownloadButton_col,
+				"spc" => DownloadButton_spc,
+				"gls" => DownloadButton_gls,
+				"opa" => DownloadButton_opa,
+				_ => throw new NotImplementedException("Invalid imageType"),
+			};
+
+			if (!selectedNoseArt.textures.Contains(imageType))
+			{
+				imageSelector.Visibility = Visibility.Hidden;
+				button.Visibility = Visibility.Hidden;
+			}
+			else
+			{
+				imageSelector.Visibility = Visibility.Visible;
+				button.Visibility = Visibility.Visible;
+			}
+
+			Uri uri = new($"pack://application:,,,/{assembly.GetName().Name};component/Resource/{selectedNoseArt.previewPathPrefix}_{imageType}.png");
 
 			// do this manually, so that the + icon doesn't change, but we still get a preview
 			imageSelector.SetValue(ImageSelector.UriPropertyKey, uri);
@@ -269,12 +286,6 @@ namespace Advocate.Pages.NoseArtCreator
 		//////////////////////////////////////////////////////////////////////////////////////////
 		// BELOW HERE IS JUST EVENT HANDLERS FOR BUTTONS AND STUFF, NOTHING PARTICULARLY USEFUL //
 		//////////////////////////////////////////////////////////////////////////////////////////
-		
-		private void ResetButton_gls_Click(object sender, RoutedEventArgs e) { ResetImageSelection("gls"); }
-		private void ResetButton_spc_Click(object sender, RoutedEventArgs e) { ResetImageSelection("spc"); }
-		private void ResetButton_opa_Click(object sender, RoutedEventArgs e) { ResetImageSelection("opa"); }
-		private void ResetButton_col_Click(object sender, RoutedEventArgs e) { ResetImageSelection("col"); }
-
 		private void ImageSelector_col_ImageUnselected(object sender, RoutedEventArgs e) { ResetImageSelection("col"); }
 		private void ImageSelector_opa_ImageUnselected(object sender, RoutedEventArgs e) { ResetImageSelection("opa"); }
 		private void ImageSelector_spc_ImageUnselected(object sender, RoutedEventArgs e) { ResetImageSelection("spc"); }
