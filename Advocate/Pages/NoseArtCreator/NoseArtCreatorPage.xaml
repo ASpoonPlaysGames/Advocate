@@ -9,90 +9,173 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="NoseArtCreatorPage">
 
-    <Grid Visibility="Visible" Margin="10,10,10,40">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.5*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="2*"/>
-        </Grid.ColumnDefinitions>
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
 
-        <Grid Grid.Column="0" Margin="0,0,0,0">
-            
-        </Grid>
-
-        <Grid Grid.Column="1" Visibility="Visible" Margin="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="150"/>
-            </Grid.RowDefinitions>
-            <Label Content="Chassis:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                        Grid.Column="0"
-                        Grid.Row="0" 
-                        Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
-            <hc:ComboBox Grid.Row="1" Name="ChassisList" ItemsSource="{Binding chassisTypes}" SelectedIndex="0" />
-            <Label Content="Nose Art:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                        Grid.Column="0"
-                        Grid.Row="2" 
-                        Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
-            <hc:ComboBox Grid.Row="3" Name="NamesList" ItemsSource="{Binding noseArtNames}" SelectedIndex="0" />
-
-            <Label Content="Preview:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                        Grid.Column="0"
-                        Grid.Row="4" 
-                        Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
-
-            <Image Name="ImagePreview" Grid.Row="5" Source="/Resource/NoseArts/Northstar/00_col.png" Panel.ZIndex="1"/>
-            <Image Grid.Row="5" Source="/Resource/NoseArts/preview-background.png"/>
-
-        </Grid>
-
-        <Grid Grid.Column="2" Margin="10,0,0,0">
+        <Grid Visibility="Visible" Margin="10,10,10,5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1.5*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="1.5*"/>
-                <RowDefinition Height="1.5*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="1.5*"/>
-                <RowDefinition Height="1.5*"/>
-            </Grid.RowDefinitions>
 
-            <Label Content="__col" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                        Grid.Column="0"
-                        Grid.Row="0" 
-                        Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
-            <hc:ImageSelector Name="ImageSelector_col" Margin="5,0,5,0" Grid.Row="1" Grid.Column="0" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="2" ImageUnselected="ImageSelector_col_ImageUnselected" Grid.ColumnSpan="2"/>
-            <Button Name="DownloadButton_col" Margin="5,0,5,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <Grid Grid.Column="0" Margin="0,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-            <Label Content="__opa" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                        Grid.Column="2"
-                        Grid.Row="0" 
-                        Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
-            <hc:ImageSelector Name="ImageSelector_opa" Margin="5,0,5,0" Grid.Row="1" Grid.Column="2" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="2" ImageUnselected="ImageSelector_opa_ImageUnselected" Grid.ColumnSpan="2"/>
-            <Button Name="DownloadButton_opa" Margin="5,0,5,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                <Label Content="Author" Margin="5,5,5,-5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Grid.Column="0"
+                            Grid.Row="0" 
+                            Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="16" HorizontalContentAlignment="Left" Grid.ColumnSpan="2"/>
+                <hc:TextBox x:Name="Author_TextBox" TextWrapping="Wrap" Margin="5,0,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Text="{Binding AuthorName}"/>
 
-            <Label Content="__spc" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                        Grid.Column="0"
-                        Grid.Row="3" 
-                        Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
-            <hc:ImageSelector Name="ImageSelector_spc" Margin="5,0,5,0" Grid.Row="4" Grid.Column="0" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="5" ImageUnselected="ImageSelector_spc_ImageUnselected" Grid.ColumnSpan="2"/>
-            <Button Name="DownloadButton_spc" Margin="5,0,5,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                <Label Content="Name" Margin="5,5,5,-5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Grid.Column="0"
+                            Grid.Row="2" 
+                            Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="16" HorizontalContentAlignment="Left" Grid.ColumnSpan="2"/>
+                <hc:TextBox x:Name="Name_TextBox" TextWrapping="Wrap" Margin="5,0,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Grid.Column="0"
+                            Grid.Row="3"
+                            Grid.ColumnSpan="2"
+                            Text="{Binding ModName}"/>
 
-            <Label Content="__gls" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                        Grid.Column="2"
-                        Grid.Row="3" 
-                        Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
-            <hc:ImageSelector Name="ImageSelector_gls" Margin="5,0,5,0" Grid.Row="4" Grid.Column="2" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="2" ImageUnselected="ImageSelector_gls_ImageUnselected" Grid.ColumnSpan="2"/>
-            <Button Name="DownloadButton_gls" Margin="5,0,5,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="3" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                <Label Content="Version" Margin="5,5,5,-5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Grid.Column="0"
+                            Grid.Row="4" 
+                            Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="16" HorizontalContentAlignment="Left" Grid.ColumnSpan="2"/>
+                <hc:TextBox x:Name="Version_TextBox" TextWrapping="Wrap" Margin="5,0,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Grid.Column="0"
+                            Grid.Row="5"
+                            Grid.ColumnSpan="2"
+                            Text="{Binding Version}"/>
+
+                <Label Content="Icon Path (Optional)" Margin="5,5,5,-5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Grid.Column="0"
+                            Grid.Row="6" 
+                            Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="16" HorizontalContentAlignment="Left" Grid.ColumnSpan="2"/>
+                <hc:TextBox x:Name="IconPath_TextBox" TextWrapping="Wrap" Margin="5,0,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Grid.Column="0"
+                            Grid.Row="7"
+                            Text="{Binding IconPath}"/>
+                <Button Name="IconPath_Button" Margin="0,0,5,0" hc:IconElement.Geometry="{StaticResource SearchGeometry}"
+                        Grid.Row="7" Grid.Column="1"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="IconPath_Button_Click"/>
+
+                <Label Content="ReadMe Path (Optional)" Margin="5,5,5,-5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Grid.Column="0"
+                            Grid.Row="8" 
+                            Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="16" HorizontalContentAlignment="Left" Grid.ColumnSpan="2"/>
+                <hc:TextBox x:Name="ReadMePath_TextBox" TextWrapping="Wrap" Margin="5,0,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Grid.Column="0"
+                            Grid.Row="9"
+                            Text="{Binding ReadMePath}"/>
+                <Button Name="ReadMePath_Button" Margin="0,0,5,0" hc:IconElement.Geometry="{StaticResource SearchGeometry}"
+                        Grid.Row="9" Grid.Column="1"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="ReadMePath_Button_Click"/>
+            </Grid>
+
+            <Grid Grid.Column="1" Visibility="Visible" Margin="10,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="150"/>
+                </Grid.RowDefinitions>
+                <Label Content="Chassis:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Grid.Column="0"
+                            Grid.Row="0" 
+                            Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
+                <hc:ComboBox Grid.Row="1" Name="ChassisList" ItemsSource="{Binding chassisTypes}" SelectedIndex="0" />
+                <Label Content="Nose Art:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Grid.Column="0"
+                            Grid.Row="2" 
+                            Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
+                <hc:ComboBox Grid.Row="3" Name="NamesList" ItemsSource="{Binding noseArtNames}" SelectedIndex="0" />
+
+                <Label Content="Preview:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Grid.Column="0"
+                            Grid.Row="4" 
+                            Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
+
+                <Image Name="ImagePreview" Grid.Row="5" Source="/Resource/NoseArts/Northstar/00_col.png" Panel.ZIndex="1"/>
+                <Image Grid.Row="5" Source="/Resource/NoseArts/preview-background.png"/>
+
+            </Grid>
+
+            <Grid Grid.Column="2" Margin="10,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="1.5*"/>
+                </Grid.RowDefinitions>
+
+                <Label Content="__col" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Grid.Column="0"
+                            Grid.Row="0" 
+                            Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
+                <hc:ImageSelector Name="ImageSelector_col" Margin="5,0,5,0" Grid.Row="1" Grid.Column="0" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="2" ImageUnselected="ImageSelector_col_ImageUnselected" Grid.ColumnSpan="2"/>
+                <Button Name="DownloadButton_col" Margin="5,0,5,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+                <Label Content="__opa" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Grid.Column="2"
+                            Grid.Row="0" 
+                            Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
+                <hc:ImageSelector Name="ImageSelector_opa" Margin="5,0,5,0" Grid.Row="1" Grid.Column="2" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="2" ImageUnselected="ImageSelector_opa_ImageUnselected" Grid.ColumnSpan="2"/>
+                <Button Name="DownloadButton_opa" Margin="5,0,5,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+                <Label Content="__spc" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Grid.Column="0"
+                            Grid.Row="3" 
+                            Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
+                <hc:ImageSelector Name="ImageSelector_spc" Margin="5,0,5,0" Grid.Row="4" Grid.Column="0" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="5" ImageUnselected="ImageSelector_spc_ImageUnselected" Grid.ColumnSpan="2"/>
+                <Button Name="DownloadButton_spc" Margin="5,0,5,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+                <Label Content="__gls" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            Grid.Column="2"
+                            Grid.Row="3" 
+                            Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Left"/>
+                <hc:ImageSelector Name="ImageSelector_gls" Margin="5,0,5,0" Grid.Row="4" Grid.Column="2" DefaultExt=".png" Filter="(.dds)|*.dds|(.png)|*.png" Stretch="Uniform" Grid.RowSpan="2" ImageUnselected="ImageSelector_gls_ImageUnselected" Grid.ColumnSpan="2"/>
+                <Button Name="DownloadButton_gls" Margin="5,0,5,0" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Grid.Row="3" Grid.Column="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            </Grid>
         </Grid>
+
+        <hc:Divider Height="30" VerticalAlignment="Bottom" Margin="-5,0,-5,5" Grid.Row="1"/>
+        
+        <StackPanel Height="30" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="0,0,0,0" Grid.Row="1">
+            <hc:ProgressButton Style="{StaticResource ProgressButtonPrimary}" x:Name="StatusButton" Margin="5,0,5,0"/>
+            <Label x:Name="StatusMessage" Height="30" Margin="5,0,5,0" Background="{x:Null}" BorderBrush="{x:Null}" />
+        </StackPanel>
     </Grid>
 </Page>

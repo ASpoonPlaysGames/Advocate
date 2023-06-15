@@ -105,35 +105,31 @@ namespace Advocate.Scripts.Conversion
 		public Converter(string pZipPath, string pAuthorName, string pSkinName, string pVersion, string pReadMePath = "", string pIconPath = "")
 		{
 			// validate pZipPath, must exist and be a .zip file
-			if (!File.Exists(pZipPath))
-				throw new FileNotFoundException("Couldn't find file at Skin Path!");
-			if (!pZipPath.EndsWith(".zip"))
-				throw new ArgumentException("Skin Path is invalid!");
+			if (!File.Exists(pZipPath)) { throw new FileNotFoundException("Couldn't find file at Skin Path!"); }
+			if (!pZipPath.EndsWith(".zip")) { throw new ArgumentException("Skin Path is invalid!"); }
 			ZipPath = pZipPath;
 
 			// validate pAuthorName, see AuthorName for more details
-			if (string.IsNullOrEmpty(pAuthorName)) throw new ArgumentException("Author Name is required!"); 			if (Regex.Match(pAuthorName, "[^\\da-zA-Z _]").Success || string.IsNullOrWhiteSpace(pAuthorName))
-				throw new ArgumentException("Author Name is invalid!");
+			if (string.IsNullOrEmpty(pAuthorName)) { throw new ArgumentException("Author Name is required!"); }
+			if (Regex.Match(pAuthorName, "[^\\da-zA-Z _]").Success || string.IsNullOrWhiteSpace(pAuthorName)) { throw new ArgumentException("Author Name is invalid!"); }
 			AuthorName = pAuthorName;
 
 			// validate pSkinName, same as pAuthorName
-			if (string.IsNullOrEmpty(pSkinName)) throw new ArgumentException("Skin Name is required!"); 			if (Regex.Match(pSkinName, "[^\\da-zA-Z _]").Success || string.IsNullOrWhiteSpace(pSkinName))
-				throw new ArgumentException("Skin Name is invalid!");
+			if (string.IsNullOrEmpty(pSkinName)) { throw new ArgumentException("Skin Name is required!"); }
+			if (Regex.Match(pSkinName, "[^\\da-zA-Z _]").Success || string.IsNullOrWhiteSpace(pSkinName)) { throw new ArgumentException("Skin Name is invalid!"); }
 			SkinName = pSkinName;
 
 			// validate pVersion, must be in the format MAJOR.MINOR.VERSION
-			if (string.IsNullOrEmpty(pVersion)) throw new ArgumentException("Version is required!"); 			if (!Regex.Match(pVersion, "^\\d+.\\d+.\\d+$").Success)
-				throw new ArgumentException("Version is invalid! (Example: 1.0.0)");
+			if (string.IsNullOrEmpty(pVersion)) { throw new ArgumentException("Version is required!"); }
+			if (!Regex.Match(pVersion, "^\\d+.\\d+.\\d+$").Success) { throw new ArgumentException("Version is invalid! (Example: 1.0.0)"); }
 			Version = pVersion;
 
 			// check that pReadMePath is valid and leads to a .md file
-			if (!string.IsNullOrWhiteSpace(pReadMePath) && !pReadMePath.EndsWith(".md"))
-				throw new ArgumentException("README path doesn't lead to a .md file!");
+			if (!string.IsNullOrWhiteSpace(pReadMePath) && !pReadMePath.EndsWith(".md")) { throw new ArgumentException("README path doesn't lead to a .md file!"); }
 			ReadMePath = pReadMePath;
 
 			// check that pIconPath is valid and leads to a .png file
-			if (!string.IsNullOrWhiteSpace(pIconPath) && !pIconPath.EndsWith(".png"))
-				throw new ArgumentException("Icon path doesn't lead to a .png file!");
+			if (!string.IsNullOrWhiteSpace(pIconPath) && !pIconPath.EndsWith(".png")) { throw new ArgumentException("Icon path doesn't lead to a .png file!"); }
 			IconPath = pIconPath;
 		}
 

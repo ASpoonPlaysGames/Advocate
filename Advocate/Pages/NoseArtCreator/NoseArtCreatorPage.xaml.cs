@@ -17,6 +17,9 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using HandyControl.Controls;
+using Advocate.Logging;
+using Microsoft.Win32;
+using System.Text.RegularExpressions;
 
 namespace Advocate.Pages.NoseArtCreator
 {
@@ -40,6 +43,7 @@ namespace Advocate.Pages.NoseArtCreator
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
+
 		private Dictionary<string, ObservableCollection<NoseArt>> noseArts = new();
 
 		public ObservableCollection<string> noseArtNames { get; private set; } = new();
@@ -47,7 +51,43 @@ namespace Advocate.Pages.NoseArtCreator
 
 		private NoseArt selectedNoseArt;
 
-		private Assembly assembly;
+		private readonly Assembly assembly;
+
+		// variables for actual nose art creation
+		private string iconPath = "";
+		public string IconPath
+		{
+			get { return iconPath; }
+			set { iconPath = value; OnPropertyChanged(nameof(IconPath)); CheckStatus(); }
+		}
+
+		private string readMePath = "";
+		public string ReadMePath
+		{
+			get { return readMePath; }
+			set { readMePath = value; OnPropertyChanged(nameof(ReadMePath)); CheckStatus(); }
+		}
+
+		private string authorName = "";
+		public string AuthorName
+		{
+			get { return authorName; }
+			set { authorName = value; OnPropertyChanged(nameof(AuthorName)); CheckStatus(); }
+		}
+
+		private string modName = "";
+		public string ModName
+		{
+			get { return modName; }
+			set { modName = value; OnPropertyChanged(nameof(ModName)); CheckStatus(); }
+		}
+
+		private string version = "1.0.0";
+		public string Version
+		{
+			get { return version; }
+			set { version = value; OnPropertyChanged(nameof(Version)); CheckStatus(); }
+		}
 
 		/// <summary>
 		///		Constructor for NoseArtCreatorPage.
@@ -62,6 +102,9 @@ namespace Advocate.Pages.NoseArtCreator
 			// Add event listener for the nose art selection combo boxes
 			ChassisList.SelectionChanged += ChassisList_SelectionChanged;
 			NamesList.SelectionChanged += NamesList_SelectionChanged;
+
+			// add event listener for diplaying messages to the user
+			Logger.LogReceived += OnLogMessageReceived;
 
 			// read the json that controls nose arts
 			assembly = Assembly.GetExecutingAssembly();
@@ -101,36 +144,142 @@ namespace Advocate.Pages.NoseArtCreator
 			ChassisList.SelectedIndex = 0;
 			NamesList.SelectedIndex = 0;
 
-			
+			CheckStatus();
 		}
 
-		private void NamesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		private bool CheckStatus()
 		{
-			if (NamesList.SelectedIndex == -1)
-				return;
-
-			selectedNoseArt = noseArts[chassisTypes[ChassisList.SelectedIndex]][NamesList.SelectedIndex];
-			// update the preview
-			Task.Run(UpdatePreviewImage);
-
-			ResetImageSelection("col");
-			ResetImageSelection("opa");
-			ResetImageSelection("spc");
-			ResetImageSelection("gls");
-		}
-
-		private void ChassisList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			if (ChassisList.SelectedIndex == -1)
-				return;
-
-			noseArtNames.Clear();
-			foreach(NoseArt art in noseArts[chassisTypes[ChassisList.SelectedIndex]])
+			try
 			{
-				noseArtNames.Add(art.name);
+				StatusButton.Content = "Create Nose Art";
+				// check that RePak path is valid
+				if (!File.Exists(Properties.Settings.Default.RePakPath))
+				{
+					StatusMessage.Content = "Error: RePak path is invalid! (Change in Settings)";
+					return false;
+				}
+				// i swear to god if people rename RePak.exe and break shit im going to commit war crimes
+				if (!Properties.Settings.Default.RePakPath.EndsWith("RePak.exe"))
+				{
+					StatusMessage.Content = "Error: RePak path does not lead to RePak.exe! (Change in Settings)";
+					return false;
+				}
+				// check that texconv path is valid
+				if (!File.Exists(Properties.Settings.Default.TexconvPath))
+				{
+					StatusMessage.Content = "Error: texconv path is invalid! (Change in Settings)";
+					return false;
+				}
+				// i swear to god if people rename texconv.exe and break shit im going to commit war crimes
+				if (!Properties.Settings.Default.TexconvPath.EndsWith("texconv.exe"))
+				{
+					StatusMessage.Content = "Error: texconv path does not lead to texconv.exe! (Change in Settings)";
+					return false;
+				}
+				// check that Output path is valid
+				if (!Directory.Exists(Properties.Settings.Default.OutputPath))
+				{
+					StatusMessage.Content = "Error: Output path is invalid! (Change in Settings)";
+					return false;
+				}
+				// check that ReadMePath is valid and leads to a .md file
+				if (!string.IsNullOrWhiteSpace(ReadMePath) && !ReadMePath.EndsWith(".md"))
+				{
+					StatusMessage.Content = "Error: README path doesn't lead to a .md file!";
+					return false;
+				}
+				// check that IconPath is valid and leads to a .png file
+				if (!string.IsNullOrWhiteSpace(IconPath) && !IconPath.EndsWith(".png"))
+				{
+					StatusMessage.Content = "Error: Icon path doesn't lead to a .png file!";
+					return false;
+				}
+				// check that AuthorName is valid
+				if (AuthorName.Length == 0)
+				{
+					StatusMessage.Content = "Error: Author Name is required!";
+					return false;
+				}
+				if (Regex.Match(AuthorName, "[^\\da-zA-Z _]").Success)
+				{
+					StatusMessage.Content = "Error: Author Name is invalid!";
+					return false;
+				}
+				// check that ModName is valid
+				if (ModName.Length == 0)
+				{
+					StatusMessage.Content = "Error: Name is required!";
+					return false;
+				}
+				if (Regex.Match(ModName, "[^\\da-zA-Z _]").Success)
+				{
+					StatusMessage.Content = "Error: Name is invalid!";
+					return false;
+				}
+				// check that Version is valid
+				if (Version.Length == 0)
+				{
+					StatusMessage.Content = "Error: Version is required!";
+					return false;
+				}
+				if (!Regex.Match(Version, "^\\d+\\.\\d+\\.\\d+$").Success)
+				{
+					StatusMessage.Content = "Error: Version is invalid! (Example: 1.0.0)";
+					return false;
+				}
+
+				// everything looks good
+				StatusMessage.Content = "Ready!";
+				return true;
+			}
+			catch (Exception ex)
+			{
+				// create message box showing the full error
+				MessageBoxButton msgButton = MessageBoxButton.OK;
+				MessageBoxImage msgIcon = MessageBoxImage.Error;
+                System.Windows.MessageBox.Show($"There was an unhandled error during checking!\n\n{ex.Message}\n\n{ex.StackTrace}", "Nose Art Creation Checking Error", msgButton, msgIcon);
+
+				// exit out of the conversion
+				StatusMessage.Content = "Unknown Checking Error!";
+				return false;
+			}
+		}
+
+		private void OnLogMessageReceived(object? sender, LogMessageEventArgs e)
+		{
+			// ignore messages that are below MessageType.Info in gui
+			if (e.Type < MessageType.Info)
+				return;
+
+			StatusMessage.Content = e.Message;
+			if (e.Progress != null)
+			{
+				StatusButton.Progress = (double)e.Progress;
 			}
 
-			NamesList.SelectedIndex = 0;
+			StatusButton.Content = e.Type switch
+			{
+				MessageType.Completion => "Complete!",
+				MessageType.Error => "Error!",
+				// default to just not changing it
+				_ => StatusButton.Content
+			};
+
+			string style = e.Type switch
+			{
+				// this is like a light green
+				MessageType.Completion => "ProgressButtonSuccess",
+				// this is a red
+				MessageType.Error => "ProgressButtonDanger",
+				// this is the user's system accent colour
+				_ => "ProgressButtonPrimary"
+			};
+
+			// update the StatusButton's style
+			StatusButton.Dispatcher.Invoke(() =>
+			{
+				StatusButton.SetResourceReference(StyleProperty, style);
+			});
 		}
 
 		private void UpdatePreviewImage()
@@ -164,7 +313,7 @@ namespace Advocate.Pages.NoseArtCreator
 				return;
 			}
 
-			Bitmap imageBmp = new(System.Windows.Application.GetResourceStream(colUri).Stream);
+			Bitmap imageBmp = new(Application.GetResourceStream(colUri).Stream);
 
 			if (!IsValidNoseArtDimensions(imageBmp.Width, imageBmp.Height))
 			{
@@ -172,7 +321,7 @@ namespace Advocate.Pages.NoseArtCreator
 			}
 
 			Uri maskUri = ImageSelector_opa.Dispatcher.Invoke(() => { return ImageSelector_opa.Uri; });
-			Bitmap maskBmp = new(System.Windows.Application.GetResourceStream(maskUri).Stream);
+			Bitmap maskBmp = new(Application.GetResourceStream(maskUri).Stream);
 
 			if (!IsValidNoseArtDimensions(maskBmp.Width, maskBmp.Height))
 			{
@@ -290,5 +439,59 @@ namespace Advocate.Pages.NoseArtCreator
 		private void ImageSelector_opa_ImageUnselected(object sender, RoutedEventArgs e) { ResetImageSelection("opa"); }
 		private void ImageSelector_spc_ImageUnselected(object sender, RoutedEventArgs e) { ResetImageSelection("spc"); }
 		private void ImageSelector_gls_ImageUnselected(object sender, RoutedEventArgs e) { ResetImageSelection("gls"); }
+
+		private void ReadMePath_Button_Click(object sender, RoutedEventArgs e)
+		{
+			OpenFileDialog openFileDialog = new()
+			{
+				Filter = "README.md|*README.md|All Markdown Files|*.md|All Files|*.*"
+			};
+			if (openFileDialog.ShowDialog() == true)
+			{
+				ReadMePath = openFileDialog.FileName;
+			}
+		}
+
+		private void IconPath_Button_Click(object sender, RoutedEventArgs e)
+		{
+			OpenFileDialog openFileDialog = new()
+			{
+				Filter = "PNG Files|*.png|All Files|*.*"
+			};
+			if (openFileDialog.ShowDialog() == true)
+			{
+				IconPath = openFileDialog.FileName;
+			}
+		}
+
+		private void NamesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (NamesList.SelectedIndex == -1)
+				return;
+
+			selectedNoseArt = noseArts[chassisTypes[ChassisList.SelectedIndex]][NamesList.SelectedIndex];
+			// update the preview
+			Task.Run(UpdatePreviewImage);
+
+			// reset all images
+			ResetImageSelection("col");
+			ResetImageSelection("opa");
+			ResetImageSelection("spc");
+			ResetImageSelection("gls");
+		}
+
+		private void ChassisList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (ChassisList.SelectedIndex == -1)
+				return;
+
+			noseArtNames.Clear();
+			foreach (NoseArt art in noseArts[chassisTypes[ChassisList.SelectedIndex]])
+			{
+				noseArtNames.Add(art.name);
+			}
+
+			NamesList.SelectedIndex = 0;
+		}
 	}
 }
