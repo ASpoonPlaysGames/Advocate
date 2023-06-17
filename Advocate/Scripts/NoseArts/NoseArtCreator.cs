@@ -237,6 +237,7 @@ namespace Advocate.Scripts.NoseArts
 							Debug("URI is png file");
 							FileStream stream = new(uri.LocalPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 							imageBmp = new(stream);
+							stream.Close();
 						}
 						else if (uri.LocalPath.EndsWith(".dds"))
 						{
@@ -246,6 +247,7 @@ namespace Advocate.Scripts.NoseArts
 							Debug("Converting dds file to png");
 							DDS.Manager.DdsToPng(stream, mem, NoseArt.width, NoseArt.height);
 							imageBmp = new(mem);
+							stream.Close();
 						}
 						else
 						{
@@ -302,6 +304,7 @@ namespace Advocate.Scripts.NoseArts
 					Directory.CreateDirectory(Path.GetDirectoryName($"{tempRePakPath}/{NoseArt.assetPathPrefix}_{textureType}.dds"));
 					BinaryWriter writer = new(new FileStream($"{tempRePakPath}/{NoseArt.assetPathPrefix}_{textureType}.dds", FileMode.OpenOrCreate));
 					managers[textureType].SaveImage(writer);
+					writer.Close();
 				}
 
 				// move progress bar

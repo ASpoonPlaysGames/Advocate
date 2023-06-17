@@ -1,9 +1,9 @@
 ﻿[
   {
-    "chassis": "Northstar",
-    "assetPathPrefix": "texture/models/titans_r2/light_northstar/nose_art/nose_art_v00/t_l_northstar_nose_art_v00",
-    "previewPathPrefix": "NoseArts/Northstar/00",
-    "name": "Test",
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v00\\t_m_ion_nose_art_v00",
+    "previewPathPrefix": "NoseArts/Ion/00",
+    "name": "Factory Issue",
     "width": 1024,
     "height": 1024,
     "textures": [
@@ -14,10 +14,10 @@
     ]
   },
   {
-    "chassis": "Northstar",
-    "assetPathPrefix": "texture/models/titans_r2/light_northstar/nose_art/nose_art_v01/t_l_northstar_nose_art_v01",
-    "previewPathPrefix": "NoseArts/Northstar/01",
-    "name": "OtherThing",
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v01\\t_m_ion_nose_art_v01",
+    "previewPathPrefix": "NoseArts/Ion/01",
+    "name": "Out of This World",
     "width": 1024,
     "height": 1024,
     "textures": [
@@ -28,15 +28,389 @@
     ]
   },
   {
-    "chassis": "Northstar",
-    "assetPathPrefix": "texture/models/titans_r2/light_northstar/nose_art/nose_art_v00/t_l_northstar_nose_art_v00",
-    "previewPathPrefix": "NoseArts/Northstar/00",
-    "name": "Three",
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v02\\t_m_ion_nose_art_v02",
+    "previewPathPrefix": "NoseArts/Ion/02",
+    "name": "The Kraken",
     "width": 1024,
     "height": 1024,
     "textures": [
       "col",
       "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v03\\t_m_ion_nose_art_v03",
+    "previewPathPrefix": "NoseArts/Ion/03",
+    "name": "Frickin Laser Beams",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v04\\t_m_ion_nose_art_v04",
+    "previewPathPrefix": "NoseArts/Ion/04",
+    "name": "Serpentine",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v05\\t_m_ion_nose_art_v05",
+    "previewPathPrefix": "NoseArts/Ion/05",
+    "name": "Winged Fury",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v06\\t_m_ion_nose_art_v06",
+    "previewPathPrefix": "NoseArts/Ion/06",
+    "name": "The Claw",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v07\\t_m_ion_nose_art_v07",
+    "previewPathPrefix": "NoseArts/Ion/07",
+    "name": "Thunderbird",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v08\\t_m_ion_nose_art_v08",
+    "previewPathPrefix": "NoseArts/Ion/08",
+    "name": "Body Count",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v09\\t_m_ion_nose_art_v09",
+    "previewPathPrefix": "NoseArts/Ion/09",
+    "name": "Smoking Gun",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v10\\t_m_ion_nose_art_v10",
+    "previewPathPrefix": "NoseArts/Ion/10",
+    "name": "The Wolfpack",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v11\\t_m_ion_nose_art_v11",
+    "previewPathPrefix": "NoseArts/Ion/11",
+    "name": "Apex Ion",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v12\\t_m_ion_nose_art_v12",
+    "previewPathPrefix": "NoseArts/Ion/12",
+    "name": "Straight Shooter",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v13\\t_m_ion_nose_art_v13",
+    "previewPathPrefix": "NoseArts/Ion/13",
+    "name": "Laser Stripe",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v14\\t_m_ion_nose_art_v14",
+    "previewPathPrefix": "NoseArts/Ion/14",
+    "name": "6-4",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v17\\t_m_ion_nose_art_v17",
+    "previewPathPrefix": "NoseArts/Ion/17",
+    "name": "Cold Blooded",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v18\\t_m_ion_nose_art_v18",
+    "previewPathPrefix": "NoseArts/Ion/18",
+    "name": "Space Ion!",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v19\\t_m_ion_nose_art_v19",
+    "previewPathPrefix": "NoseArts/Ion/19",
+    "name": "Nessy",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v20\\t_m_ion_nose_art_v20",
+    "previewPathPrefix": "NoseArts/Ion/20",
+    "name": "Ion's Finish",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v21\\t_m_ion_nose_art_v21",
+    "previewPathPrefix": "NoseArts/Ion/21",
+    "name": "Missing Link",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v22\\t_m_ion_nose_art_v22",
+    "previewPathPrefix": "NoseArts/Ion/22",
+    "name": "Bloomtown",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v23\\t_m_ion_nose_art_v23",
+    "previewPathPrefix": "NoseArts/Ion/23",
+    "name": "Psyche Out",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v24\\t_m_ion_nose_art_v24",
+    "previewPathPrefix": "NoseArts/Ion/24",
+    "name": "Rabid",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v25\\t_m_ion_nose_art_v25",
+    "previewPathPrefix": "NoseArts/Ion/25",
+    "name": "Face of Death",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v26\\t_m_ion_nose_art_v26",
+    "previewPathPrefix": "NoseArts/Ion/26",
+    "name": "Kill Frenzy",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v27\\t_m_ion_nose_art_v27",
+    "previewPathPrefix": "NoseArts/Ion/27",
+    "name": "Face Your Fear",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v28\\t_m_ion_nose_art_v28",
+    "previewPathPrefix": "NoseArts/Ion/28",
+    "name": "Smokin' Rabbit",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v29\\t_m_ion_nose_art_v29",
+    "previewPathPrefix": "NoseArts/Ion/29",
+    "name": "Grimpoteuthis",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v30\\t_m_ion_nose_art_v30",
+    "previewPathPrefix": "NoseArts/Ion/30",
+    "name": "Eye Holes",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Ion",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_ion\\nose_art\\nose_art_v31\\t_m_ion_nose_art_v31",
+    "previewPathPrefix": "NoseArts/Ion/31",
+    "name": "Visually Impaired",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
       "opa"
     ]
   }

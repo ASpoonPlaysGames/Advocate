@@ -320,6 +320,7 @@ namespace Advocate.Pages.NoseArtCreator
 				{
 					FileStream stream = new(colUri.LocalPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 					imageBmp = new(stream);
+					stream.Close();
 				}
 				else if (colUri.LocalPath.EndsWith(".dds"))
 				{
@@ -327,6 +328,7 @@ namespace Advocate.Pages.NoseArtCreator
 					MemoryStream mem = new MemoryStream();
 					Scripts.DDS.Manager.DdsToPng(stream, mem, selectedNoseArt.width, selectedNoseArt.height);
 					imageBmp = new(mem);
+					stream.Close();
 				}
 				else
 				{
@@ -351,6 +353,7 @@ namespace Advocate.Pages.NoseArtCreator
 				{
 					FileStream stream = new(maskUri.LocalPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 					maskBmp = new(stream);
+					stream.Close();
 				}
 				else if (maskUri.LocalPath.EndsWith(".dds"))
 				{
@@ -358,6 +361,7 @@ namespace Advocate.Pages.NoseArtCreator
 					MemoryStream mem = new MemoryStream();
 					Scripts.DDS.Manager.DdsToPng(stream, mem, selectedNoseArt.width, selectedNoseArt.height);
 					maskBmp = new(mem);
+					stream.Close();
 				}
 				else
 				{
@@ -456,6 +460,7 @@ namespace Advocate.Pages.NoseArtCreator
 			{
 				imageSelector.Visibility = Visibility.Hidden;
 				button.Visibility = Visibility.Hidden;
+				return;
 			}
 			else
 			{
@@ -478,6 +483,32 @@ namespace Advocate.Pages.NoseArtCreator
 		private bool IsValidNoseArtDimensions(int w, int h)
 		{
 			return w == selectedNoseArt.width && h == selectedNoseArt.height;
+		}
+
+		private void SaveDefaultTexture(string type)
+		{
+			if (!selectedNoseArt.textures.Contains(type))
+				return;
+
+			SaveFileDialog dialog = new()
+			{
+				Filter = "PNG Image|*.png",
+				Title = "Save Vanilla Texture",
+				FileName = $"{selectedNoseArt.name}_{type}.png"
+			};
+
+			bool? res = dialog.ShowDialog();
+
+			if (res != true)
+				return;
+
+			Uri uri = new($"pack://application:,,,/{assembly.GetName().Name};component/Resource/{selectedNoseArt.previewPathPrefix}_{type}.png");
+			Bitmap bmp = new(Application.GetResourceStream(uri).Stream);
+
+			FileStream fs = (FileStream)dialog.OpenFile();
+			bmp.Save(fs, System.Drawing.Imaging.ImageFormat.Png);
+
+			fs.Close();
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////
@@ -621,5 +652,13 @@ namespace Advocate.Pages.NoseArtCreator
 				StatusButton.IsEnabled = true;
 			}
 		}
+
+		private void DownloadButton_col_Click(object sender, RoutedEventArgs e) { SaveDefaultTexture("col"); }
+
+		private void DownloadButton_opa_Click(object sender, RoutedEventArgs e) { SaveDefaultTexture("opa"); }
+
+		private void DownloadButton_spc_Click(object sender, RoutedEventArgs e) { SaveDefaultTexture("spc"); }
+
+		private void DownloadButton_gls_Click(object sender, RoutedEventArgs e) { SaveDefaultTexture("gls"); }
 	}
 }
