@@ -251,33 +251,33 @@ namespace Advocate.Pages.NoseArtCreator
 			if (e.Type < MessageType.Info)
 				return;
 
-			StatusMessage.Content = e.Message;
-			if (e.Progress != null)
-			{
-				StatusButton.Progress = (double)e.Progress;
-			}
-
-			StatusButton.Content = e.Type switch
-			{
-				MessageType.Completion => "Complete!",
-				MessageType.Error => "Error!",
-				// default to just not changing it
-				_ => StatusButton.Content
-			};
-
-			string style = e.Type switch
-			{
-				// this is like a light green
-				MessageType.Completion => "ProgressButtonSuccess",
-				// this is a red
-				MessageType.Error => "ProgressButtonDanger",
-				// this is the user's system accent colour
-				_ => "ProgressButtonPrimary"
-			};
-
-			// update the StatusButton's style
 			StatusButton.Dispatcher.Invoke(() =>
 			{
+				StatusMessage.Content = e.Message;
+				if (e.Progress != null)
+				{
+					StatusButton.Progress = (double)e.Progress;
+				}
+
+				StatusButton.Content = e.Type switch
+				{
+					MessageType.Completion => "Complete!",
+					MessageType.Error => "Error!",
+					// default to just not changing it
+					_ => StatusButton.Content
+				};
+
+				string style = e.Type switch
+				{
+					// this is like a light green
+					MessageType.Completion => "ProgressButtonSuccess",
+					// this is a red
+					MessageType.Error => "ProgressButtonDanger",
+					// this is the user's system accent colour
+					_ => "ProgressButtonPrimary"
+				};
+
+				// update the StatusButton's style
 				StatusButton.SetResourceReference(StyleProperty, style);
 			});
 		}
@@ -313,7 +313,30 @@ namespace Advocate.Pages.NoseArtCreator
 				return;
 			}
 
-			Bitmap imageBmp = new(Application.GetResourceStream(colUri).Stream);
+			Bitmap imageBmp;
+			if (colUri.IsFile)
+			{
+				if (colUri.LocalPath.EndsWith(".png"))
+				{
+					FileStream stream = new(colUri.LocalPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+					imageBmp = new(stream);
+				}
+				else if (colUri.LocalPath.EndsWith(".dds"))
+				{
+					FileStream stream = new(colUri.LocalPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+					MemoryStream mem = new MemoryStream();
+					Scripts.DDS.Manager.DdsToPng(stream, mem, selectedNoseArt.width, selectedNoseArt.height);
+					imageBmp = new(mem);
+				}
+				else
+				{
+					throw new NotImplementedException("Failed to load texture, invalid extension");
+				}
+			}
+			else
+			{
+				imageBmp = new(Application.GetResourceStream(colUri).Stream);
+			}
 
 			if (!IsValidNoseArtDimensions(imageBmp.Width, imageBmp.Height))
 			{
@@ -321,7 +344,30 @@ namespace Advocate.Pages.NoseArtCreator
 			}
 
 			Uri maskUri = ImageSelector_opa.Dispatcher.Invoke(() => { return ImageSelector_opa.Uri; });
-			Bitmap maskBmp = new(Application.GetResourceStream(maskUri).Stream);
+			Bitmap maskBmp;
+			if (maskUri.IsFile)
+			{
+				if (maskUri.LocalPath.EndsWith(".png"))
+				{
+					FileStream stream = new(maskUri.LocalPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+					maskBmp = new(stream);
+				}
+				else if (maskUri.LocalPath.EndsWith(".dds"))
+				{
+					FileStream stream = new(maskUri.LocalPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+					MemoryStream mem = new MemoryStream();
+					Scripts.DDS.Manager.DdsToPng(stream, mem, selectedNoseArt.width, selectedNoseArt.height);
+					maskBmp = new(mem);
+				}
+				else
+				{
+					throw new NotImplementedException("Failed to load texture, invalid extension");
+				}
+			}
+			else
+			{
+				maskBmp = new(Application.GetResourceStream(maskUri).Stream);
+			}
 
 			if (!IsValidNoseArtDimensions(maskBmp.Width, maskBmp.Height))
 			{
@@ -420,8 +466,10 @@ namespace Advocate.Pages.NoseArtCreator
 			Uri uri = new($"pack://application:,,,/{assembly.GetName().Name};component/Resource/{selectedNoseArt.previewPathPrefix}_{imageType}.png");
 
 			// do this manually, so that the + icon doesn't change, but we still get a preview
+			// the + icon is handled by the HasValue property
 			imageSelector.SetValue(ImageSelector.UriPropertyKey, uri);
-			imageSelector.SetValue(ImageSelector.PreviewBrushPropertyKey, new ImageBrush(BitmapFrame.Create(uri, BitmapCreateOptions.IgnoreImageCache, BitmapCacheOption.None))
+			imageSelector.SetValue(ImageSelector.HasValuePropertyKey, false);
+			imageSelector.SetValue(ImageSelector.PreviewBrushPropertyKey, new ImageBrush(BitmapFrame.Create(uri, BitmapCreateOptions.IgnoreImageCache, BitmapCacheOption.OnLoad))
 			{
 				Stretch = imageSelector.Stretch
 			});
@@ -435,10 +483,30 @@ namespace Advocate.Pages.NoseArtCreator
 		//////////////////////////////////////////////////////////////////////////////////////////
 		// BELOW HERE IS JUST EVENT HANDLERS FOR BUTTONS AND STUFF, NOTHING PARTICULARLY USEFUL //
 		//////////////////////////////////////////////////////////////////////////////////////////
-		private void ImageSelector_col_ImageUnselected(object sender, RoutedEventArgs e) { ResetImageSelection("col"); }
-		private void ImageSelector_opa_ImageUnselected(object sender, RoutedEventArgs e) { ResetImageSelection("opa"); }
-		private void ImageSelector_spc_ImageUnselected(object sender, RoutedEventArgs e) { ResetImageSelection("spc"); }
-		private void ImageSelector_gls_ImageUnselected(object sender, RoutedEventArgs e) { ResetImageSelection("gls"); }
+		private void ImageSelector_col_ImageUnselected(object sender, RoutedEventArgs e) { ResetImageSelection("col"); Task.Run(UpdatePreviewImage); }
+		private void ImageSelector_opa_ImageUnselected(object sender, RoutedEventArgs e) { ResetImageSelection("opa"); Task.Run(UpdatePreviewImage); }
+		private void ImageSelector_spc_ImageUnselected(object sender, RoutedEventArgs e) { ResetImageSelection("spc"); Task.Run(UpdatePreviewImage); }
+		private void ImageSelector_gls_ImageUnselected(object sender, RoutedEventArgs e) { ResetImageSelection("gls"); Task.Run(UpdatePreviewImage); }
+
+		private void ImageSelector_col_ImageSelected(object sender, RoutedEventArgs e)
+		{
+			Task.Run(UpdatePreviewImage);
+		}
+
+		private void ImageSelector_opa_ImageSelected(object sender, RoutedEventArgs e)
+		{
+			Task.Run(UpdatePreviewImage);
+		}
+
+		private void ImageSelector_spc_ImageSelected(object sender, RoutedEventArgs e)
+		{
+			Task.Run(UpdatePreviewImage);
+		}
+
+		private void ImageSelector_gls_ImageSelected(object sender, RoutedEventArgs e)
+		{
+			Task.Run(UpdatePreviewImage);
+		}
 
 		private void ReadMePath_Button_Click(object sender, RoutedEventArgs e)
 		{
@@ -492,6 +560,66 @@ namespace Advocate.Pages.NoseArtCreator
 			}
 
 			NamesList.SelectedIndex = 0;
+		}
+
+		private void StatusButton_Checked(object sender, RoutedEventArgs e)
+		{
+			try
+			{
+				Dictionary<string, Uri> uris = new();
+				// create dictionary of uris to pass to the creator
+				foreach (string textureType in selectedNoseArt.textures)
+				{
+					ImageSelector imageSelector = textureType switch
+					{
+						"col" => ImageSelector_col,
+						"spc" => ImageSelector_spc,
+						"gls" => ImageSelector_gls,
+						"opa" => ImageSelector_opa,
+						_ => throw new NotImplementedException("Invalid imageType"),
+					};
+
+					uris.Add(textureType, imageSelector.Uri);
+				}
+
+				Scripts.NoseArts.NoseArtCreator creator = new(
+					selectedNoseArt,
+					uris,
+					AuthorName,
+					ModName,
+					Version,
+					ReadMePath,
+					IconPath
+					);
+
+				// set the status
+				StatusButton.Content = "Converting...";
+				// reset the conversion progress
+				StatusButton.Progress = 0;
+				// reset the button style
+				StatusButton.SetResourceReference(StyleProperty, "ProgressButtonPrimary");
+				// lock the button to try prevent multiple conversion threads running at the same time
+				StatusButton.IsEnabled = false;
+
+				// run conversion in separate thread from the UI
+				Task.Run(() =>
+				{
+					creator.CreateNoseArt();
+					StatusButton.Dispatcher.Invoke(() =>
+					{
+						// allow the button to be pressed again once conversion is complete
+						StatusButton.IsChecked = false;
+						StatusButton.IsEnabled = true;
+					});
+				});
+			}
+			catch (Exception ex)
+			{
+				Logger.Error(ex.Message);
+				// allow the button to be pressed again if conversion fails
+				StatusButton.IsChecked = false;
+				StatusButton.IsEnabled = true;
+			}
 		}
 	}
 }

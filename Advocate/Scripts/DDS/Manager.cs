@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Advocate.Logging;
 using Advocate.Scripts.Conversion;
+using Pfim;
 
 namespace Advocate.Scripts.DDS
 {
@@ -207,6 +211,44 @@ namespace Advocate.Scripts.DDS
 		public void Convert()
 		{
 			lastHeader.Convert();
+		}
+
+		/// <summary>
+		///     Converts a .dds file to a .png file with dimensions of 256x256 (thunderstore compliant)
+		/// </summary>
+		/// <param name="imagePath">The path of the input image (.dds)</param>
+		/// <param name="outputPath">The path of the output image (.png)</param>
+		/// <returns>true on success</returns>
+		/// <exception cref="NotImplementedException"></exception>
+		public static bool DdsToPng(Stream inputStream, Stream outputStream, int width = 256, int height = 256)
+		{
+			// this code is just yoinked from pfim usage example
+			using (var image = Pfimage.FromStream(inputStream))
+			{
+				var format = image.Format switch
+				{
+					Pfim.ImageFormat.Rgba32 => PixelFormat.Format32bppArgb,
+					_ => throw new NotImplementedException(),// see the sample for more details
+				};
+
+				// Pin pfim's data array so that it doesn't get reaped by GC, unnecessary
+				// in this snippet but useful technique if the data was going to be used in
+				// control like a picture box
+				var handle = GCHandle.Alloc(image.Data, GCHandleType.Pinned);
+				try
+				{
+					var data = Marshal.UnsafeAddrOfPinnedArrayElement(image.Data, 0);
+					var bitmap = new Bitmap(image.Width, image.Height, image.Stride, format, data);
+					// resize the bitmap before saving it
+					var resized = new Bitmap(bitmap, new(width, height));
+					resized.Save(outputStream, System.Drawing.Imaging.ImageFormat.Png);
+				}
+				finally
+				{
+					handle.Free();
+				}
+			}
+			return true;
 		}
 	}
 }

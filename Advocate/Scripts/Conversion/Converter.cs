@@ -263,7 +263,10 @@ namespace Advocate.Scripts.Conversion
 						}
 					}
 
-					if (!DdsToPng(validImages[0], modTempFolderPath + "\\icon.png"))
+					FileStream image = new(validImages[0], FileMode.Open);
+					FileStream output = new(modTempFolderPath + "\\icon.png", FileMode.OpenOrCreate);
+
+					if (!Manager.DdsToPng(image, output))
 					{
 						Error("Couldn't generate icon.png: Failed to convert dds to png!");
 						return false;
@@ -564,43 +567,7 @@ namespace Advocate.Scripts.Conversion
 			return true;
 		}
 
-		/// <summary>
-		///     Converts a .dds file to a .png file with dimensions of 256x256 (thunderstore compliant)
-		/// </summary>
-		/// <param name="imagePath">The path of the input image (.dds)</param>
-		/// <param name="outputPath">The path of the output image (.png)</param>
-		/// <returns>true on success</returns>
-		/// <exception cref="NotImplementedException"></exception>
-		private static bool DdsToPng(string imagePath, string outputPath)
-		{
-			// this code is just yoinked from pfim usage example
-			using (var image = Pfimage.FromFile(imagePath))
-			{
-				var format = image.Format switch
-				{
-					Pfim.ImageFormat.Rgba32 => PixelFormat.Format32bppArgb,
-					_ => throw new NotImplementedException(),// see the sample for more details
-				};
-
-				// Pin pfim's data array so that it doesn't get reaped by GC, unnecessary
-				// in this snippet but useful technique if the data was going to be used in
-				// control like a picture box
-				var handle = GCHandle.Alloc(image.Data, GCHandleType.Pinned);
-				try
-				{
-					var data = Marshal.UnsafeAddrOfPinnedArrayElement(image.Data, 0);
-					var bitmap = new Bitmap(image.Width, image.Height, image.Stride, format, data);
-					// resize the bitmap before saving it, we need 256x256
-					var resized = new Bitmap(bitmap, new System.Drawing.Size(256, 256));
-					resized.Save(outputPath, System.Drawing.Imaging.ImageFormat.Png);
-				}
-				finally
-				{
-					handle.Free();
-				}
-			}
-			return true;
-		}
+		
 
 		// these dictionaries have to be hardcoded because skin tool just hardcodes in offsets afaik
 		// maybe eventually use a .csv for this?
