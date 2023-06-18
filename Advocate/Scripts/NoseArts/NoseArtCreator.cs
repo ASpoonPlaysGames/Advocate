@@ -18,8 +18,8 @@ using static System.Windows.Forms.DataFormats;
 
 namespace Advocate.Scripts.NoseArts
 {
-    class NoseArtCreator
-    {
+	class NoseArtCreator
+	{
 		/// <summary>
 		///     The name of the Author of the skin.
 		/// </summary>

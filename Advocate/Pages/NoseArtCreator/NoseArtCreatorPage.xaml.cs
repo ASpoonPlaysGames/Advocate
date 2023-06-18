@@ -237,7 +237,7 @@ namespace Advocate.Pages.NoseArtCreator
 				// create message box showing the full error
 				MessageBoxButton msgButton = MessageBoxButton.OK;
 				MessageBoxImage msgIcon = MessageBoxImage.Error;
-                System.Windows.MessageBox.Show($"There was an unhandled error during checking!\n\n{ex.Message}\n\n{ex.StackTrace}", "Nose Art Creation Checking Error", msgButton, msgIcon);
+				System.Windows.MessageBox.Show($"There was an unhandled error during checking!\n\n{ex.Message}\n\n{ex.StackTrace}", "Nose Art Creation Checking Error", msgButton, msgIcon);
 
 				// exit out of the conversion
 				StatusMessage.Content = "Unknown Checking Error!";

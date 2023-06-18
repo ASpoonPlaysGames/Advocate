@@ -62,8 +62,8 @@ namespace Advocate
 
 			if (!nogui)
 			{
-                // create our window
-                Pages.MainWindow window = new(openedFilePath);
+				// create our window
+				Pages.MainWindow window = new(openedFilePath);
 
 				// show the window
 				window.ShowDialog();
