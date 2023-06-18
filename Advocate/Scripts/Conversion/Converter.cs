@@ -567,7 +567,7 @@ namespace Advocate.Scripts.Conversion
 			return true;
 		}
 
-		
+
 
 		// these dictionaries have to be hardcoded because skin tool just hardcodes in offsets afaik
 		// maybe eventually use a .csv for this?

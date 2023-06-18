@@ -26,10 +26,6 @@ namespace Advocate.Pages
 
 			noseArtCreatorPage = new(openedFilePath);
 			NoseArtCreatorFrame.Navigate(noseArtCreatorPage);
-			
 		}
-
-
 	}
-
 }

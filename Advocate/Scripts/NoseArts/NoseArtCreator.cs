@@ -76,7 +76,7 @@ namespace Advocate.Scripts.NoseArts
 		private const float NUM_CONVERT_STEPS = 10; // INCREMENT THIS WHEN YOU ADD A NEW MESSAGE IDK
 		private float curStep = 0;
 
-		Bitmap icon;
+		private Bitmap? icon;
 
 		// provides the serialisation options we use for writing json files
 		private static readonly JsonSerializerOptions jsonOptions = new()
@@ -135,7 +135,7 @@ namespace Advocate.Scripts.NoseArts
 			if (pNoseArt.textures.Length == 0) { throw new ArgumentException("nose art has no textures! this is probably a bug"); }
 			NoseArt = pNoseArt;
 
-			foreach(string texture in NoseArt.textures)
+			foreach (string texture in NoseArt.textures)
 			{
 				if (!pImages.ContainsKey(texture)) { throw new ArgumentException($"pImages doesn't contain image for key '{texture}'!"); }
 			}
@@ -144,16 +144,15 @@ namespace Advocate.Scripts.NoseArts
 		}
 
 		/// <summary>
-		///		Creates the Nose Art. The converted .zip file will be put at <see cref="Properties.Settings.OutputPath"/>
+		///		Creates the Nose Art. The .zip file will be put at <see cref="Properties.Settings.OutputPath"/>
 		/// </summary>
 		public bool CreateNoseArt(bool nogui = false)
 		{
 			return CreateNoseArt(Properties.Settings.Default.OutputPath, Properties.Settings.Default.RePakPath, Properties.Settings.Default.TexconvPath, Properties.Settings.Default.Description, nogui);
 		}
 
-	
 		/// <summary>
-		///		Creates the Nose Art. The converted .zip file will be put at outputPath/>
+		///		Creates the Nose Art. The .zip file will be put at outputPath/>
 		/// </summary>
 		public bool CreateNoseArt(string outputPath, string repakPath, string texconvPath, string description, bool nogui = false)
 		{
@@ -195,7 +194,7 @@ namespace Advocate.Scripts.NoseArts
 				Debug($"Width: {NoseArt.width}");
 				Debug($"Height: {NoseArt.height}");
 				Debug($"Textures:");
-				foreach(string txtr in NoseArt.textures) { Debug($"  {txtr}"); }
+				foreach (string txtr in NoseArt.textures) { Debug($"  {txtr}"); }
 				///////////////////////////
 				// create temporary dirs //
 				///////////////////////////
@@ -447,6 +446,11 @@ namespace Advocate.Scripts.NoseArts
 				if (string.IsNullOrWhiteSpace(IconPath))
 				{
 					Info("Generating icon.png");
+
+					if (icon == null)
+					{
+						throw new Exception("Had to generate an Icon, but no col texture was found");
+					}
 
 					icon.Save($"{tempModPath}/icon.png");
 				}

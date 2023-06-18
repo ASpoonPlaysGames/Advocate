@@ -1,25 +1,25 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
+using System.Text.Json;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.IO;
-using System.Reflection;
-using System.Collections;
-using System.Resources;
-using System.Threading;
-using Advocate.Models.JSON;
-using System.Text.Json;
-using System.ComponentModel;
-using System.Collections.ObjectModel;
-using System.Drawing;
-using HandyControl.Controls;
 using Advocate.Logging;
+using Advocate.Models.JSON;
+using HandyControl.Controls;
 using Microsoft.Win32;
-using System.Text.RegularExpressions;
 
 namespace Advocate.Pages.NoseArtCreator
 {
@@ -123,7 +123,7 @@ namespace Advocate.Pages.NoseArtCreator
 			}
 
 			// add the nose arts to the dictionary
-			foreach(NoseArt art in arts)
+			foreach (NoseArt art in arts)
 			{
 				if (noseArts.ContainsKey(art.chassis))
 				{
@@ -295,7 +295,7 @@ namespace Advocate.Pages.NoseArtCreator
 			});
 
 			Uri colUri = ImageSelector_col.Dispatcher.Invoke(() => { return ImageSelector_col.Uri; });
-			
+
 			if (!selectedNoseArt.textures.Contains("opa"))
 			{
 				BitmapImage image = new(colUri);
@@ -309,7 +309,7 @@ namespace Advocate.Pages.NoseArtCreator
 				{
 					ImagePreview.Source = image;
 				});
-				
+
 				return;
 			}
 
