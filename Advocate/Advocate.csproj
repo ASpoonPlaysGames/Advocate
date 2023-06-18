@@ -602,6 +602,10 @@
     <None Remove="Resource\NoseArts\Scorch\29_col.png" />
     <None Remove="Resource\NoseArts\Scorch\29_opa.png" />
     <None Remove="Resource\NoseArts\Scorch\29_spc.png" />
+    <None Remove="Resource\NoseArts\Scorch\prime06_col.png" />
+    <None Remove="Resource\NoseArts\Scorch\prime06_gls.png" />
+    <None Remove="Resource\NoseArts\Scorch\prime06_opa.png" />
+    <None Remove="Resource\NoseArts\Scorch\prime06_spc.png" />
     <None Remove="Resource\NoseArts\Tone\00_col.png" />
     <None Remove="Resource\NoseArts\Tone\00_gls.png" />
     <None Remove="Resource\NoseArts\Tone\00_nml.png" />
@@ -1296,6 +1300,10 @@
     <Resource Include="Resource\NoseArts\Scorch\29_col.png" />
     <Resource Include="Resource\NoseArts\Scorch\29_opa.png" />
     <Resource Include="Resource\NoseArts\Scorch\29_spc.png" />
+    <Resource Include="Resource\NoseArts\Scorch\prime06_col.png" />
+    <Resource Include="Resource\NoseArts\Scorch\prime06_gls.png" />
+    <Resource Include="Resource\NoseArts\Scorch\prime06_opa.png" />
+    <Resource Include="Resource\NoseArts\Scorch\prime06_spc.png" />
     <Resource Include="Resource\NoseArts\Tone\00_col.png" />
     <Resource Include="Resource\NoseArts\Tone\00_gls.png" />
     <Resource Include="Resource\NoseArts\Tone\00_nml.png" />
