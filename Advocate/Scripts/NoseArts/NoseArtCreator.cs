@@ -18,7 +18,10 @@ using static System.Windows.Forms.DataFormats;
 
 namespace Advocate.Scripts.NoseArts
 {
-	class NoseArtCreator
+	/// <summary>
+	///		Class responsible for creating a Nose Art mod.
+	/// </summary>
+	internal class NoseArtCreator
 	{
 		/// <summary>
 		///     The name of the Author of the skin.
@@ -36,7 +39,7 @@ namespace Advocate.Scripts.NoseArts
 		///     A non-zero length string of the skin's name, containing
 		///     only alphanumeric characters, ' ', and '_'.
 		/// </value>
-		public string SkinName { get; private set; }
+		public string ModName { get; private set; }
 
 		/// <summary>
 		///     The version number of the skin.
@@ -69,7 +72,7 @@ namespace Advocate.Scripts.NoseArts
 
 		public NoseArt NoseArt { get; private set; }
 
-		private Dictionary<string, Uri> Images;
+		private readonly Dictionary<string, Uri> Images;
 
 		public float ConvertProgress { get { return 100 * curStep / NUM_CONVERT_STEPS; } }
 
@@ -117,7 +120,7 @@ namespace Advocate.Scripts.NoseArts
 			// validate pSkinName, same as pAuthorName
 			if (string.IsNullOrEmpty(pSkinName)) { throw new ArgumentException("Skin Name is required!"); }
 			if (Regex.Match(pSkinName, "[^\\da-zA-Z _]").Success || string.IsNullOrWhiteSpace(pSkinName)) { throw new ArgumentException("Skin Name is invalid!"); }
-			SkinName = pSkinName;
+			ModName = pSkinName;
 
 			// validate pVersion, must be in the format MAJOR.MINOR.VERSION
 			if (string.IsNullOrEmpty(pVersion)) { throw new ArgumentException("Version is required!"); }
@@ -158,7 +161,7 @@ namespace Advocate.Scripts.NoseArts
 		{
 			try
 			{
-				Logger.CreateLogFile($"{outputPath}/advlog-{AuthorName}.{SkinName}-{Version}");
+				Logger.CreateLogFile($"{outputPath}/advlog-{AuthorName}.{ModName}-{Version}");
 			}
 			catch (Exception ex) when (!nogui)
 			{
@@ -195,6 +198,8 @@ namespace Advocate.Scripts.NoseArts
 				Debug($"Height: {NoseArt.height}");
 				Debug($"Textures:");
 				foreach (string txtr in NoseArt.textures) { Debug($"  {txtr}"); }
+
+
 				///////////////////////////
 				// create temporary dirs //
 				///////////////////////////
@@ -300,7 +305,7 @@ namespace Advocate.Scripts.NoseArts
 					managers[textureType].LoadImage(new(new FileStream($"{tempTexConvPath}/{textureType}.dds", FileMode.Open)));
 					managers[textureType].Convert();
 
-					Directory.CreateDirectory(Path.GetDirectoryName($"{tempRePakPath}/{NoseArt.assetPathPrefix}_{textureType}.dds"));
+					Directory.CreateDirectory(Path.GetDirectoryName($"{tempRePakPath}/{NoseArt.assetPathPrefix}_{textureType}.dds") ?? tempRePakPath);
 					BinaryWriter writer = new(new FileStream($"{tempRePakPath}/{NoseArt.assetPathPrefix}_{textureType}.dds", FileMode.OpenOrCreate));
 					managers[textureType].SaveImage(writer);
 					writer.Close();
@@ -315,9 +320,9 @@ namespace Advocate.Scripts.NoseArts
 
 				Info("Writing Map file");
 
-				Map map = new(SkinName, tempRePakPath, $"{tempModPath}/mods/{AuthorName}.{SkinName}/paks");
+				Map map = new(ModName, tempRePakPath, $"{tempModPath}/mods/{AuthorName}.{ModName}/paks");
 
-				Directory.CreateDirectory($"{tempModPath}/mods/{AuthorName}.{SkinName}/paks");
+				Directory.CreateDirectory($"{tempModPath}/mods/{AuthorName}.{ModName}/paks");
 
 				/////////////////////////
 				// add textures to map //
@@ -373,10 +378,10 @@ namespace Advocate.Scripts.NoseArts
 				// we can just preload our rpak, since it should only contain textures
 				RPak rpak = new()
 				{
-					Preload = new() { { $"{SkinName}.rpak", true } }
+					Preload = new() { { $"{ModName}.rpak", true } }
 				};
 
-				File.WriteAllText($"{tempModPath}/mods/{AuthorName}.{SkinName}/paks/rpak.json", JsonSerializer.Serialize(rpak, jsonOptions));
+				File.WriteAllText($"{tempModPath}/mods/{AuthorName}.{ModName}/paks/rpak.json", JsonSerializer.Serialize(rpak, jsonOptions));
 
 				// move progress bar
 				ConvertTaskComplete();
@@ -389,13 +394,13 @@ namespace Advocate.Scripts.NoseArts
 
 				Mod mod = new()
 				{
-					Name = $"{AuthorName}.{SkinName}",
+					Name = $"{AuthorName}.{ModName}",
 					LoadPriority = 1,
 					Version = Version,
 					Description = "" // TODO
 				};
 
-				File.WriteAllText($"{tempModPath}/mods/{AuthorName}.{SkinName}/mod.json", JsonSerializer.Serialize(mod, jsonOptions));
+				File.WriteAllText($"{tempModPath}/mods/{AuthorName}.{ModName}/mod.json", JsonSerializer.Serialize(mod, jsonOptions));
 
 				// move progress bar
 				ConvertTaskComplete();
@@ -408,7 +413,7 @@ namespace Advocate.Scripts.NoseArts
 
 				Manifest manifest = new()
 				{
-					name = SkinName,
+					name = ModName,
 					description = "", // TODO
 					version_number = Version,
 					website_url = "https://github.com/ASpoonPlaysGames/Advocate"
@@ -477,7 +482,7 @@ namespace Advocate.Scripts.NoseArts
 				Info("Creating zip file");
 
 				// create the zip file from the mod temp path
-				ZipFile.CreateFromDirectory(tempModPath, $"{tempFolderPath}/{AuthorName}.{SkinName}.zip");
+				ZipFile.CreateFromDirectory(tempModPath, $"{tempFolderPath}/{AuthorName}.{ModName}.zip");
 
 				// move progress bar
 				ConvertTaskComplete();
@@ -490,7 +495,7 @@ namespace Advocate.Scripts.NoseArts
 				Info("Moving zip to output folder...");
 
 				// move the zip file we created to the output folder
-				File.Move($"{tempFolderPath}/{AuthorName}.{SkinName}.zip", $"{outputPath}/{AuthorName}.{SkinName}-{Version}.zip", true);
+				File.Move($"{tempFolderPath}/{AuthorName}.{ModName}.zip", $"{outputPath}/{AuthorName}.{ModName}-{Version}.zip", true);
 			}
 			catch (Exception ex) when (!nogui)
 			{
