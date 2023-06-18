@@ -15,7 +15,7 @@ namespace Advocate.Scripts.DDS
 		public string Magic { get { return magic.ToString(); } }
 		public int Size { get { return (int)size; } }
 
-		public uint Flags { get; set; }
+		public uint Flags { get { return flags; } set { flags = value; } }
 		public int Width { get { return (int)width; } }
 		public int Height { get { return (int)height; } }
 		public int PitchOrLinearSize { get { return (int)pitchOrLinearSize; } set { pitchOrLinearSize = (uint)value; } }
@@ -24,6 +24,8 @@ namespace Advocate.Scripts.DDS
 		public string FourCC { get { return new string(pixel_FourCC); } }
 		public bool isDX10 { get; private set; }
 		public DXGI_FORMAT DXGIFormat { get { return dxgiFormat; } }
+
+		public int Caps { get { return (int)caps; } set { caps = (uint)value; } }
 
 		// dds file structure
 		char[] magic = new char[4];
