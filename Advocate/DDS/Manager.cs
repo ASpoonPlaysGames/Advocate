@@ -56,12 +56,6 @@ namespace Advocate.DDS
 				int height = hdr.Height / (int)Math.Pow(2, i);
 				int numPixels = width * height;
 
-				// if we already have a mip for this resolution, dont do anything
-				if (mipmaps.ContainsKey(numPixels))
-				{
-					continue;
-				}
-
 				// sometimes dds files dont have this set (WHICH IS ANNOYING)
 				// to "fix" this, just assume its all one mip level
 				if (hdr.PitchOrLinearSize == 0)
