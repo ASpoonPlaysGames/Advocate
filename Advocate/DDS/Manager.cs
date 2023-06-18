@@ -32,10 +32,8 @@ namespace Advocate.DDS
 			// load the header
 			Header hdr = new(reader);
 			// override lastHeader if this dds is higher resolution (should make my life easier)
-			if (lastHeader == null || hdr.Width * hdr.Height > lastHeader.Width * lastHeader.Height)
-			{
+			if (lastHeader == null || hdr.Width * hdr.Height >= lastHeader.Width * lastHeader.Height)
 				lastHeader = hdr;
-			}
 
 			// if the fourCC does not match up, skip this image
 			if (lastHeader.FourCC != hdr.FourCC)
@@ -57,6 +55,7 @@ namespace Advocate.DDS
 				int width = hdr.Width / (int)Math.Pow(2, i);
 				int height = hdr.Height / (int)Math.Pow(2, i);
 				int numPixels = width * height;
+
 				// if we already have a mip for this resolution, dont do anything
 				if (mipmaps.ContainsKey(numPixels))
 				{

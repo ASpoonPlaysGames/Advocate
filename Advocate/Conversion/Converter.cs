@@ -286,6 +286,9 @@ namespace Advocate.Conversion
 						Error("Couldn't generate icon.png: Failed to convert dds to png!");
 						return false;
 					}
+
+					image.Close();
+					output.Close();
 				}
 				else
 				{
