@@ -172,14 +172,13 @@ namespace Advocate.DDS
 			}
 			else
 			{
-				format = lastHeader.FourCC;
-
 				// fix some format aliases that texcov does not support
-				format = format switch
+				format = lastHeader.FourCC switch
 				{
 					"BC4U" => "BC4_UNORM",
+					"BC5U" => "BC5_UNORM",
 					"ATI2" => "BC5_UNORM",
-					_ => format
+					_ => lastHeader.FourCC
 				};
 			}
 
