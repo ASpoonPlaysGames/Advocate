@@ -11,20 +11,27 @@ namespace Advocate.Models.JSON
 	internal class NoseArt
 	{
 		[JsonInclude]
-		public string chassis;
+		[JsonPropertyName("chassis")]
+		public string Chassis;
 		[JsonInclude]
-		public string assetPathPrefix;
+		[JsonPropertyName("assetPathPrefix")]
+		public string AssetPathPrefix;
 		[JsonInclude]
-		public string previewPathPrefix;
+		[JsonPropertyName("previewPathPrefix")]
+		public string PreviewPathPrefix;
 		[JsonInclude]
-		public string name;
+		[JsonPropertyName("name")]
+		public string Name;
 
 		[JsonInclude]
-		public int width;
+		[JsonPropertyName("width")]
+		public int Width;
 		[JsonInclude]
-		public int height;
+		[JsonPropertyName("height")]
+		public int Height;
 
 		[JsonInclude]
-		public string[] textures;
+		[JsonPropertyName("textures")]
+		public string[] Textures;
 	}
 }

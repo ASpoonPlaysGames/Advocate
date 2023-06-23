@@ -125,14 +125,14 @@ namespace Advocate.Pages.NoseArtCreator
 			// add the nose arts to the dictionary
 			foreach (NoseArt art in arts)
 			{
-				if (noseArts.ContainsKey(art.chassis))
+				if (noseArts.ContainsKey(art.Chassis))
 				{
-					noseArts[art.chassis].Add(art);
+					noseArts[art.Chassis].Add(art);
 				}
 				else
 				{
-					noseArts.Add(art.chassis, new() { art });
-					chassisTypes.Add(art.chassis);
+					noseArts.Add(art.Chassis, new() { art });
+					chassisTypes.Add(art.Chassis);
 				}
 			}
 
@@ -284,7 +284,7 @@ namespace Advocate.Pages.NoseArtCreator
 
 		private void UpdatePreviewImage()
 		{
-			if (!selectedNoseArt.textures.Contains("col"))
+			if (!selectedNoseArt.Textures.Contains("col"))
 			{
 				throw new Exception("Cannot make a preview without a col map");
 			}
@@ -296,7 +296,7 @@ namespace Advocate.Pages.NoseArtCreator
 
 			Uri colUri = ImageSelector_col.Dispatcher.Invoke(() => { return ImageSelector_col.Uri; });
 
-			if (!selectedNoseArt.textures.Contains("opa"))
+			if (!selectedNoseArt.Textures.Contains("opa"))
 			{
 				BitmapImage image = new(colUri);
 
@@ -326,7 +326,7 @@ namespace Advocate.Pages.NoseArtCreator
 				{
 					FileStream stream = new(colUri.LocalPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 					MemoryStream mem = new MemoryStream();
-					Scripts.DDS.Manager.DdsToPng(stream, mem, selectedNoseArt.width, selectedNoseArt.height);
+					Scripts.DDS.Manager.DdsToPng(stream, mem, selectedNoseArt.Width, selectedNoseArt.Height);
 					imageBmp = new(mem);
 					stream.Close();
 				}
@@ -359,7 +359,7 @@ namespace Advocate.Pages.NoseArtCreator
 				{
 					FileStream stream = new(maskUri.LocalPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 					MemoryStream mem = new MemoryStream();
-					Scripts.DDS.Manager.DdsToPng(stream, mem, selectedNoseArt.width, selectedNoseArt.height);
+					Scripts.DDS.Manager.DdsToPng(stream, mem, selectedNoseArt.Width, selectedNoseArt.Height);
 					maskBmp = new(mem);
 					stream.Close();
 				}
@@ -456,7 +456,7 @@ namespace Advocate.Pages.NoseArtCreator
 				_ => throw new NotImplementedException("Invalid imageType"),
 			};
 
-			if (!selectedNoseArt.textures.Contains(imageType))
+			if (!selectedNoseArt.Textures.Contains(imageType))
 			{
 				imageSelector.Visibility = Visibility.Hidden;
 				button.Visibility = Visibility.Hidden;
@@ -468,7 +468,7 @@ namespace Advocate.Pages.NoseArtCreator
 				button.Visibility = Visibility.Visible;
 			}
 
-			Uri uri = new($"pack://application:,,,/{assembly.GetName().Name};component/Resource/{selectedNoseArt.previewPathPrefix}_{imageType}.png");
+			Uri uri = new($"pack://application:,,,/{assembly.GetName().Name};component/Resource/{selectedNoseArt.PreviewPathPrefix}_{imageType}.png");
 
 			// do this manually, so that the + icon doesn't change, but we still get a preview
 			// the + icon is handled by the HasValue property
@@ -482,19 +482,19 @@ namespace Advocate.Pages.NoseArtCreator
 
 		private bool IsValidNoseArtDimensions(int w, int h)
 		{
-			return w == selectedNoseArt.width && h == selectedNoseArt.height;
+			return w == selectedNoseArt.Width && h == selectedNoseArt.Height;
 		}
 
 		private void SaveDefaultTexture(string type)
 		{
-			if (!selectedNoseArt.textures.Contains(type))
+			if (!selectedNoseArt.Textures.Contains(type))
 				return;
 
 			SaveFileDialog dialog = new()
 			{
 				Filter = "PNG Image|*.png",
 				Title = "Save Vanilla Texture",
-				FileName = $"{selectedNoseArt.name}_{type}.png"
+				FileName = $"{selectedNoseArt.Name}_{type}.png"
 			};
 
 			bool? res = dialog.ShowDialog();
@@ -502,7 +502,7 @@ namespace Advocate.Pages.NoseArtCreator
 			if (res != true)
 				return;
 
-			Uri uri = new($"pack://application:,,,/{assembly.GetName().Name};component/Resource/{selectedNoseArt.previewPathPrefix}_{type}.png");
+			Uri uri = new($"pack://application:,,,/{assembly.GetName().Name};component/Resource/{selectedNoseArt.PreviewPathPrefix}_{type}.png");
 			Bitmap bmp = new(Application.GetResourceStream(uri).Stream);
 
 			FileStream fs = (FileStream)dialog.OpenFile();
@@ -587,7 +587,7 @@ namespace Advocate.Pages.NoseArtCreator
 			noseArtNames.Clear();
 			foreach (NoseArt art in noseArts[chassisTypes[ChassisList.SelectedIndex]])
 			{
-				noseArtNames.Add(art.name);
+				noseArtNames.Add(art.Name);
 			}
 
 			NamesList.SelectedIndex = 0;
@@ -599,7 +599,7 @@ namespace Advocate.Pages.NoseArtCreator
 			{
 				Dictionary<string, Uri> uris = new();
 				// create dictionary of uris to pass to the creator
-				foreach (string textureType in selectedNoseArt.textures)
+				foreach (string textureType in selectedNoseArt.Textures)
 				{
 					ImageSelector imageSelector = textureType switch
 					{

@@ -135,10 +135,10 @@ namespace Advocate.Scripts.NoseArts
 			if (!string.IsNullOrWhiteSpace(pIconPath) && !pIconPath.EndsWith(".png")) { throw new ArgumentException("Icon path doesn't lead to a .png file!"); }
 			IconPath = pIconPath;
 
-			if (pNoseArt.textures.Length == 0) { throw new ArgumentException("nose art has no textures! this is probably a bug"); }
+			if (pNoseArt.Textures.Length == 0) { throw new ArgumentException("nose art has no textures! this is probably a bug"); }
 			NoseArt = pNoseArt;
 
-			foreach (string texture in NoseArt.textures)
+			foreach (string texture in NoseArt.Textures)
 			{
 				if (!pImages.ContainsKey(texture)) { throw new ArgumentException($"pImages doesn't contain image for key '{texture}'!"); }
 			}
@@ -192,12 +192,12 @@ namespace Advocate.Scripts.NoseArts
 			try
 			{
 				Debug("Starting Nose Art creation...");
-				Debug($"Nose Art: {NoseArt.name}");
-				Debug($"Asset path prefix: {NoseArt.assetPathPrefix}");
-				Debug($"Width: {NoseArt.width}");
-				Debug($"Height: {NoseArt.height}");
+				Debug($"Nose Art: {NoseArt.Name}");
+				Debug($"Asset path prefix: {NoseArt.AssetPathPrefix}");
+				Debug($"Width: {NoseArt.Width}");
+				Debug($"Height: {NoseArt.Height}");
 				Debug($"Textures:");
-				foreach (string txtr in NoseArt.textures) { Debug($"  {txtr}"); }
+				foreach (string txtr in NoseArt.Textures) { Debug($"  {txtr}"); }
 
 
 				///////////////////////////
@@ -225,7 +225,7 @@ namespace Advocate.Scripts.NoseArts
 
 				Dictionary<string, DDS.Manager> managers = new();
 
-				foreach (string textureType in NoseArt.textures)
+				foreach (string textureType in NoseArt.Textures)
 				{
 					Info($"Reading {textureType} texture");
 
@@ -249,7 +249,7 @@ namespace Advocate.Scripts.NoseArts
 							FileStream stream = new(uri.LocalPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 							MemoryStream mem = new();
 							Debug("Converting dds file to png");
-							DDS.Manager.DdsToPng(stream, mem, NoseArt.width, NoseArt.height);
+							DDS.Manager.DdsToPng(stream, mem, NoseArt.Width, NoseArt.Height);
 							imageBmp = new(mem);
 							stream.Close();
 						}
@@ -305,8 +305,8 @@ namespace Advocate.Scripts.NoseArts
 					managers[textureType].LoadImage(new(new FileStream($"{tempTexConvPath}/{textureType}.dds", FileMode.Open)));
 					managers[textureType].Convert();
 
-					Directory.CreateDirectory(Path.GetDirectoryName($"{tempRePakPath}/{NoseArt.assetPathPrefix}_{textureType}.dds") ?? tempRePakPath);
-					BinaryWriter writer = new(new FileStream($"{tempRePakPath}/{NoseArt.assetPathPrefix}_{textureType}.dds", FileMode.OpenOrCreate));
+					Directory.CreateDirectory(Path.GetDirectoryName($"{tempRePakPath}/{NoseArt.AssetPathPrefix}_{textureType}.dds") ?? tempRePakPath);
+					BinaryWriter writer = new(new FileStream($"{tempRePakPath}/{NoseArt.AssetPathPrefix}_{textureType}.dds", FileMode.OpenOrCreate));
 					managers[textureType].SaveImage(writer);
 					writer.Close();
 				}
@@ -328,9 +328,9 @@ namespace Advocate.Scripts.NoseArts
 				// add textures to map //
 				/////////////////////////
 
-				foreach (string textureType in NoseArt.textures)
+				foreach (string textureType in NoseArt.Textures)
 				{
-					map.AddTextureAsset($"{NoseArt.assetPathPrefix}_{textureType}");
+					map.AddTextureAsset($"{NoseArt.AssetPathPrefix}_{textureType}");
 				}
 
 				File.WriteAllText($"{tempRePakPath}/map.json", JsonSerializer.Serialize(map, jsonOptions));
