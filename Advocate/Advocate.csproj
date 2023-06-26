@@ -463,8 +463,6 @@
     <None Remove="Resource\NoseArts\Ronin\30_col.png" />
     <None Remove="Resource\NoseArts\Ronin\30_opa.png" />
     <None Remove="Resource\NoseArts\Ronin\30_spc.png" />
-    <None Remove="Resource\NoseArts\Ronin\prime00_gls.png" />
-    <None Remove="Resource\NoseArts\Ronin\prime00_nml.png" />
     <None Remove="Resource\NoseArts\Ronin\prime01_col.png" />
     <None Remove="Resource\NoseArts\Ronin\prime01_opa.png" />
     <None Remove="Resource\NoseArts\Ronin\prime01_spc.png" />
@@ -1161,8 +1159,6 @@
     <Resource Include="Resource\NoseArts\Ronin\30_col.png" />
     <Resource Include="Resource\NoseArts\Ronin\30_opa.png" />
     <Resource Include="Resource\NoseArts\Ronin\30_spc.png" />
-    <Resource Include="Resource\NoseArts\Ronin\prime00_gls.png" />
-    <Resource Include="Resource\NoseArts\Ronin\prime00_nml.png" />
     <Resource Include="Resource\NoseArts\Ronin\prime01_col.png" />
     <Resource Include="Resource\NoseArts\Ronin\prime01_opa.png" />
     <Resource Include="Resource\NoseArts\Ronin\prime01_spc.png" />
