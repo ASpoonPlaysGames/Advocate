@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.IO;
+using System.Text.Json.Serialization;
 
 namespace Advocate.Models.JSON
 {
@@ -27,5 +29,26 @@ namespace Advocate.Models.JSON
 		[JsonInclude]
 		[JsonPropertyName("textures")]
 		public string[] Textures;
+
+		[JsonInclude]
+		[JsonPropertyName("assetPathOverrides")]
+		public string[] assetPathOverrides;
+
+		public string GetFullAssetPath(string textureType)
+		{
+			for (int i = 0; i < Textures.Length; i++)
+			{
+				if (Textures[i] == textureType)
+					return GetFullAssetPath(i);
+			}
+			throw new Exception($"textureType {textureType} is not present");
+		}
+
+		public string GetFullAssetPath(int textureIndex)
+		{
+			if (assetPathOverrides != null && assetPathOverrides.Length > textureIndex && assetPathOverrides[textureIndex] != "")
+				return $"{assetPathOverrides[textureIndex]}";
+			return $"{AssetPathPrefix}_{Textures[textureIndex]}";
+		}
 	}
 }

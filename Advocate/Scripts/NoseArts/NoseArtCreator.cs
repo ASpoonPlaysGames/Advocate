@@ -305,8 +305,8 @@ namespace Advocate.Scripts.NoseArts
 					managers[textureType].LoadImage(new(new FileStream($"{tempTexConvPath}/{textureType}.dds", FileMode.Open)));
 					managers[textureType].Convert();
 
-					Directory.CreateDirectory(Path.GetDirectoryName($"{tempRePakPath}/{NoseArt.AssetPathPrefix}_{textureType}.dds") ?? tempRePakPath);
-					BinaryWriter writer = new(new FileStream($"{tempRePakPath}/{NoseArt.AssetPathPrefix}_{textureType}.dds", FileMode.OpenOrCreate));
+					Directory.CreateDirectory(Path.GetDirectoryName($"{tempRePakPath}/{NoseArt.GetFullAssetPath(textureType)}.dds") ?? tempRePakPath);
+					BinaryWriter writer = new(new FileStream($"{tempRePakPath}/{NoseArt.GetFullAssetPath(textureType)}.dds", FileMode.OpenOrCreate));
 					managers[textureType].SaveImage(writer);
 					writer.Close();
 				}
@@ -330,7 +330,7 @@ namespace Advocate.Scripts.NoseArts
 
 				foreach (string textureType in NoseArt.Textures)
 				{
-					map.AddTextureAsset($"{NoseArt.AssetPathPrefix}_{textureType}");
+					map.AddTextureAsset($"{NoseArt.GetFullAssetPath(textureType)}");
 				}
 
 				File.WriteAllText($"{tempRePakPath}/map.json", JsonSerializer.Serialize(map, jsonOptions));
