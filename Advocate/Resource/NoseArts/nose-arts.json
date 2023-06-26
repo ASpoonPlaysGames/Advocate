@@ -1784,5 +1784,401 @@
       "spc",
       "opa"
     ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v00\\t_m_tone_nose_art_v00",
+    "previewPathPrefix": "NoseArts/Tone/00",
+    "name": "Factory Issue",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v01\\t_m_tone_nose_art_v01",
+    "previewPathPrefix": "NoseArts/Tone/01",
+    "name": "Bloodthirsty",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v02\\t_m_tone_nose_art_v02",
+    "previewPathPrefix": "NoseArts/Tone/02",
+    "name": "Pandamonium",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v03\\t_m_tone_nose_art_v03",
+    "previewPathPrefix": "NoseArts/Tone/03",
+    "name": "Titan Centipede",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v04\\t_m_tone_nose_art_v04",
+    "previewPathPrefix": "NoseArts/Tone/04",
+    "name": "Octo-Lock",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v05\\t_m_tone_nose_art_v05",
+    "previewPathPrefix": "NoseArts/Tone/05",
+    "name": "Doomsday",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v06\\t_m_tone_nose_art_v06",
+    "previewPathPrefix": "NoseArts/Tone/06",
+    "name": "Bombshells",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v07\\t_m_tone_nose_art_v07",
+    "previewPathPrefix": "NoseArts/Tone/07",
+    "name": "Destroyer of Worlds",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v08\\t_m_tone_nose_art_v08",
+    "previewPathPrefix": "NoseArts/Tone/08",
+    "name": "Here comes the...",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v09\\t_m_tone_nose_art_v09",
+    "previewPathPrefix": "NoseArts/Tone/09",
+    "name": "Game Face",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v10\\t_m_tone_nose_art_v10",
+    "previewPathPrefix": "NoseArts/Tone/10",
+    "name": "Thunderbird",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v11\\t_m_tone_nose_art_v11",
+    "previewPathPrefix": "NoseArts/Tone/11",
+    "name": "Ocean Zero November",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v12\\t_m_tone_nose_art_v12",
+    "previewPathPrefix": "NoseArts/Tone/12",
+    "name": "Zero Sierra November",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v13\\t_m_tone_nose_art_v13",
+    "previewPathPrefix": "NoseArts/Tone/13",
+    "name": "Apex Tone",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v14\\t_m_tone_nose_art_v14",
+    "previewPathPrefix": "NoseArts/Tone/14",
+    "name": "Seeing Red",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v17\\t_m_tone_nose_art_v17",
+    "previewPathPrefix": "NoseArts/Tone/17",
+    "name": "Lady Lock-on",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v18\\t_m_tone_nose_art_v18",
+    "previewPathPrefix": "NoseArts/Tone/18",
+    "name": "40 Meal",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v19\\t_m_tone_nose_art_v19",
+    "previewPathPrefix": "NoseArts/Tone/19",
+    "name": "Devil in the Details",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v20\\t_m_tone_nose_art_v20",
+    "previewPathPrefix": "NoseArts/Tone/20",
+    "name": "On the Prowl",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v21\\t_m_tone_nose_art_v21",
+    "previewPathPrefix": "NoseArts/Tone/21",
+    "name": "Tagged",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v22\\t_m_tone_nose_art_v22",
+    "previewPathPrefix": "NoseArts/Tone/22",
+    "name": "Bloomtown",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v23\\t_m_tone_nose_art_v23",
+    "previewPathPrefix": "NoseArts/Tone/23",
+    "name": "Psyche Out",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v24\\t_m_tone_nose_art_v24",
+    "previewPathPrefix": "NoseArts/Tone/24",
+    "name": "Rabid",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v25\\t_m_tone_nose_art_v25",
+    "previewPathPrefix": "NoseArts/Tone/25",
+    "name": "Face of Death",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v26\\t_m_tone_nose_art_v26",
+    "previewPathPrefix": "NoseArts/Tone/26",
+    "name": "Kill Frenzy",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v27\\t_m_tone_nose_art_v27",
+    "previewPathPrefix": "NoseArts/Tone/27",
+    "name": "Face your Fear",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v28\\t_m_tone_nose_art_v28",
+    "previewPathPrefix": "NoseArts/Tone/28",
+    "name": "Smokin' Rabbit",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v29\\t_m_tone_nose_art_v29",
+    "previewPathPrefix": "NoseArts/Tone/29",
+    "name": "Grimpoteuthis",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v30\\t_m_tone_nose_art_v30",
+    "previewPathPrefix": "NoseArts/Tone/30",
+    "name": "Eye Holes",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Tone",
+    "assetPathPrefix": "texture\\models\\titans_r2\\medium_tone\\nose_art\\nose_art_v31\\t_m_tone_nose_art_v31",
+    "previewPathPrefix": "NoseArts/Tone/31",
+    "name": "Visually Impared",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
   }
 ]
