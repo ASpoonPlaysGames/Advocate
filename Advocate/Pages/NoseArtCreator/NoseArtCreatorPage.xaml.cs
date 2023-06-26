@@ -660,5 +660,13 @@ namespace Advocate.Pages.NoseArtCreator
 		private void DownloadButton_spc_Click(object sender, RoutedEventArgs e) { SaveDefaultTexture("spc"); }
 
 		private void DownloadButton_gls_Click(object sender, RoutedEventArgs e) { SaveDefaultTexture("gls"); }
+
+		private void SettingsButton_Click(object sender, RoutedEventArgs e)
+		{
+			SettingsWindow settings = new();
+			settings.Closing += (object? sender, CancelEventArgs e) => { Properties.Settings.Default.Save(); };
+			settings.ShowDialog();
+			CheckStatus();
+		}
 	}
 }

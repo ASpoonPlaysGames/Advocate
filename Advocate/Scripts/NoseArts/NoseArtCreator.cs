@@ -151,7 +151,7 @@ namespace Advocate.Scripts.NoseArts
 		/// </summary>
 		public bool CreateNoseArt(bool nogui = false)
 		{
-			return CreateNoseArt(Properties.Settings.Default.OutputPath, Properties.Settings.Default.RePakPath, Properties.Settings.Default.TexconvPath, Properties.Settings.Default.Description, nogui);
+			return CreateNoseArt(Properties.Settings.Default.OutputPath, Properties.Settings.Default.RePakPath, Properties.Settings.Default.TexconvPath, Properties.Settings.Default.ConversionDescription, nogui);
 		}
 
 		/// <summary>
@@ -411,12 +411,22 @@ namespace Advocate.Scripts.NoseArts
 
 				Info("Writing manifest.json");
 
+				// create the DescriptionHandler for parsing the description
+				DescriptionHandler desc = new()
+				{
+					Author = AuthorName,
+					Version = Version,
+					Name = ModName,
+					Chassis = NoseArt.Chassis,
+					NoseArt = NoseArt.Name
+				};
+
 				Manifest manifest = new()
 				{
-					name = ModName,
-					description = "", // TODO
+					name = ModName.Replace(' ', '_'),
 					version_number = Version,
-					website_url = "https://github.com/ASpoonPlaysGames/Advocate"
+					website_url = "https://github.com/ASpoonPlaysGames/Advocate", // hey i gotta get people to use this somehow
+					description = desc.FormatDescription(description),
 				};
 
 				File.WriteAllText($"{tempModPath}/manifest.json", JsonSerializer.Serialize(manifest, jsonOptions));

@@ -12,7 +12,7 @@ namespace Advocate.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.1.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.5.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -50,12 +50,12 @@ namespace Advocate.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("{TYPES} skin made by {AUTHOR}, converted using Advocate")]
-        public string Description {
+        public string ConversionDescription {
             get {
-                return ((string)(this["Description"]));
+                return ((string)(this["ConversionDescription"]));
             }
             set {
-                this["Description"] = value;
+                this["ConversionDescription"] = value;
             }
         }
         
@@ -68,6 +68,18 @@ namespace Advocate.Properties {
             }
             set {
                 this["TexconvPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("{CHASSIS} nose art made by {AUTHOR}, using Advocate. Replaces {NOSEART}")]
+        public string NoseArtDescription {
+            get {
+                return ((string)(this["NoseArtDescription"]));
+            }
+            set {
+                this["NoseArtDescription"] = value;
             }
         }
     }

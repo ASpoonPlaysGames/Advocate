@@ -16,7 +16,7 @@ using Advocate.Logging;
 using HandyControl.Themes;
 using Microsoft.Win32;
 
-namespace Advocate.Pages.Converter
+namespace Advocate.Pages.NoseArtCreator
 {
 	/// <summary>
 	///     Interaction logic for SettingsWindow.xaml
@@ -53,8 +53,8 @@ namespace Advocate.Pages.Converter
 		/// </summary>
 		public static string Description
 		{
-			get { return Properties.Settings.Default.ConversionDescription; }
-			set { Properties.Settings.Default.ConversionDescription = value; Logger.Debug($"Conversion Description changed to {value}"); }
+			get { return Properties.Settings.Default.NoseArtDescription; }
+			set { Properties.Settings.Default.NoseArtDescription = value; Logger.Debug($"Nose Art Description changed to {value}"); }
 		}
 		/// <summary>
 		///     Holds the path to texconv.exe. (hopefully)

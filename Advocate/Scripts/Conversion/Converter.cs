@@ -141,7 +141,7 @@ namespace Advocate.Scripts.Conversion
 		/// </summary>
 		public bool Convert(bool nogui = false)
 		{
-			return Convert(Properties.Settings.Default.OutputPath, Properties.Settings.Default.RePakPath, Properties.Settings.Default.TexconvPath, Properties.Settings.Default.Description, nogui);
+			return Convert(Properties.Settings.Default.OutputPath, Properties.Settings.Default.RePakPath, Properties.Settings.Default.TexconvPath, Properties.Settings.Default.ConversionDescription, nogui);
 		}
 		/// <summary>
 		///		Converts the skin. The converted .zip file will be put at outputPath/>
