@@ -624,7 +624,7 @@ namespace Advocate.Pages.NoseArtCreator
 					);
 
 				// set the status
-				StatusButton.Content = "Converting...";
+				StatusButton.Content = "Creating Nose Art...";
 				// reset the conversion progress
 				StatusButton.Progress = 0;
 				// reset the button style

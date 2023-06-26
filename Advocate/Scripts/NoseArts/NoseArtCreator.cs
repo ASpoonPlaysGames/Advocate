@@ -151,7 +151,7 @@ namespace Advocate.Scripts.NoseArts
 		/// </summary>
 		public bool CreateNoseArt(bool nogui = false)
 		{
-			return CreateNoseArt(Properties.Settings.Default.OutputPath, Properties.Settings.Default.RePakPath, Properties.Settings.Default.TexconvPath, Properties.Settings.Default.ConversionDescription, nogui);
+			return CreateNoseArt(Properties.Settings.Default.OutputPath, Properties.Settings.Default.RePakPath, Properties.Settings.Default.TexconvPath, Properties.Settings.Default.NoseArtDescription, nogui);
 		}
 
 		/// <summary>
@@ -390,6 +390,16 @@ namespace Advocate.Scripts.NoseArts
 				// write mod.json //
 				////////////////////
 
+				// create the DescriptionHandler for parsing the description
+				DescriptionHandler desc = new()
+				{
+					Author = AuthorName,
+					Version = Version,
+					Name = ModName,
+					Chassis = NoseArt.Chassis,
+					NoseArt = NoseArt.Name
+				};
+
 				Info("Writing mod.json");
 
 				Mod mod = new()
@@ -397,7 +407,7 @@ namespace Advocate.Scripts.NoseArts
 					Name = $"{AuthorName}.{ModName}",
 					LoadPriority = 1,
 					Version = Version,
-					Description = "" // TODO
+					Description = desc.FormatDescription(description)
 				};
 
 				File.WriteAllText($"{tempModPath}/mods/{AuthorName}.{ModName}/mod.json", JsonSerializer.Serialize(mod, jsonOptions));
@@ -410,16 +420,6 @@ namespace Advocate.Scripts.NoseArts
 				////////////////////
 
 				Info("Writing manifest.json");
-
-				// create the DescriptionHandler for parsing the description
-				DescriptionHandler desc = new()
-				{
-					Author = AuthorName,
-					Version = Version,
-					Name = ModName,
-					Chassis = NoseArt.Chassis,
-					NoseArt = NoseArt.Name
-				};
 
 				Manifest manifest = new()
 				{
