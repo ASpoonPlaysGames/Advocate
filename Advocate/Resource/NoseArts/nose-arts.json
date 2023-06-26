@@ -712,7 +712,7 @@
     "chassis": "Scorch",
     "assetPathPrefix": "texture\\models\\titans_r2\\heavy_scorch\\nose_art\\nose_art_v19\\t_h_scorch_nose_art_v19",
     "previewPathPrefix": "NoseArts/Scorch/19",
-    "name": "Scorch's Finish'",
+    "name": "Scorch's Finish",
     "width": 1024,
     "height": 1024,
     "textures": [
@@ -804,7 +804,7 @@
     "chassis": "Scorch",
     "assetPathPrefix": "texture\\models\\titans_r2\\heavy_scorch\\nose_art\\nose_art_v26\\t_h_scorch_nose_art_v26",
     "previewPathPrefix": "NoseArts/Scorch/26",
-    "name": "Smokin' Rabbit'",
+    "name": "Smokin' Rabbit",
     "width": 1024,
     "height": 1024,
     "textures": [
@@ -1015,7 +1015,6 @@
     "height": 1024,
     "textures": [
       "col",
-      "gls",
       "spc",
       "opa"
     ]
@@ -1488,7 +1487,6 @@
     "height": 1024,
     "textures": [
       "col",
-      "gls",
       "spc",
       "opa"
     ]
