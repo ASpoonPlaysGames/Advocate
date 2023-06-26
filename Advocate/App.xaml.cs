@@ -6,6 +6,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
+using Advocate.Logging;
+using Advocate.Scripts.Conversion;
 
 namespace Advocate
 {
@@ -29,7 +31,7 @@ namespace Advocate
 			nogui = e.Args.Contains("-nogui");
 			if (nogui)
 			{
-				Logging.Logger.Debug($"Found 'nogui' in commandline arguments, running without gui");
+				Logger.Debug($"Found 'nogui' in commandline arguments, running without gui");
 			}
 			bool forceConsole = e.Args.Contains("-forceconsole");
 
@@ -42,7 +44,7 @@ namespace Advocate
 			string? openedFilePath = e.Args.Length != 0 ? e.Args[0] : null;
 			if (openedFilePath != null)
 			{
-				Logging.Logger.Debug($"Found target file in commandline arguments: '{openedFilePath}'");
+				Logger.Debug($"Found target file in commandline arguments: '{openedFilePath}'");
 			}
 
 			// try to attach to a console from the parent program if it exists
@@ -56,16 +58,12 @@ namespace Advocate
 
 			// if we have a console, use it
 			if (GetConsoleWindow() != IntPtr.Zero)
-				Logging.Logger.LogReceived += Console_OnConversionMessage;
+				Logger.LogReceived += Console_OnConversionMessage;
 
 			if (!nogui)
 			{
 				// create our window
-				MainWindow window = new(openedFilePath);
-
-				// set SkinPath as soon as we make the window if it is in the command line args
-				if (openedFilePath != null)
-					window.SkinPath = openedFilePath;
+				Pages.MainWindow window = new(openedFilePath);
 
 				// show the window
 				window.ShowDialog();
@@ -111,7 +109,7 @@ namespace Advocate
 
 					if (argDict.ContainsKey(key))
 					{
-						Logging.Logger.Debug($"Found key '{key}' in commandline arguments with value {val}");
+						Logger.Debug($"Found key '{key}' in commandline arguments with value {val}");
 						argDict[key] = val;
 					}
 					else
@@ -129,7 +127,7 @@ namespace Advocate
 				}
 
 				// create converter
-				Conversion.Converter conv = new(openedFilePath, argDict["-author"], argDict["-name"], argDict["-version"], argDict["-readme"], argDict["-icon"]);
+				Converter conv = new(openedFilePath, argDict["-author"], argDict["-name"], argDict["-version"], argDict["-readme"], argDict["-icon"]);
 
 				// convert
 				bool success = conv.Convert(argDict["-outputpath"], argDict["-repakpath"], argDict["-texconvpath"], argDict["-desc"], nogui);
@@ -139,7 +137,7 @@ namespace Advocate
 			}
 		}
 
-		private void Console_OnConversionMessage(object? sender, Logging.LogMessageEventArgs e)
+		private void Console_OnConversionMessage(object? sender, LogMessageEventArgs e)
 		{
 #if !DEBUG
 			// break early if message is a debug message and we arent in debug
@@ -149,15 +147,15 @@ namespace Advocate
 
 			string level = e.Type switch
 			{
-				Logging.MessageType.Debug => "DEBUG",
-				Logging.MessageType.Info => "INFO",
-				Logging.MessageType.Completion => "INFO", // just use INFO for now, maybe implement something special later?
-				Logging.MessageType.Error => "ERROR",
+				MessageType.Debug => "DEBUG",
+				MessageType.Info => "INFO",
+				MessageType.Completion => "INFO", // just use INFO for now, maybe implement something special later?
+				MessageType.Error => "ERROR",
 				// throw an error if a value is not supported
 				_ => throw new NotImplementedException($"MessageType value '{e.Type}' is unsupported in Console_ConversionMessage.")
 			};
 
-			Console.WriteLine($"[{level}]{(e.ConversionPercent == null ? "" : $" [{(int)e.ConversionPercent,3}%]")} {e.Message}");
+			Console.WriteLine($"[{level}]{(e.Progress == null ? "" : $" [{(int)e.Progress,3}%]")} {e.Message}");
 		}
 
 		[DllImport("Kernel32.dll")]

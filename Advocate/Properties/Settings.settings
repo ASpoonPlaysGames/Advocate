@@ -8,11 +8,14 @@
     <Setting Name="OutputPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">&lt;select output path&gt;</Value>
     </Setting>
-    <Setting Name="Description" Type="System.String" Scope="User">
+    <Setting Name="ConversionDescription" Type="System.String" Scope="User">
       <Value Profile="(Default)">{TYPES} skin made by {AUTHOR}, converted using Advocate</Value>
     </Setting>
     <Setting Name="TexconvPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">&lt;select texconv.exe path&gt;</Value>
+    </Setting>
+    <Setting Name="NoseArtDescription" Type="System.String" Scope="User">
+      <Value Profile="(Default)">{CHASSIS} nose art made by {AUTHOR}, using Advocate. Replaces {NOSEART}</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -9,7 +9,7 @@ using System.Windows;
 namespace Advocate.Logging
 {
 	/// <summary>
-	///     Handles Logging, use <see cref="Logger.CreateLogFile"></see> to write logs to a file.
+	///     Handles Logging, use <see cref="CreateLogFile"></see> to write logs to a file.
 	/// </summary>
 	public static class Logger
 	{
@@ -27,8 +27,7 @@ namespace Advocate.Logging
 		/// <param name="logPath"></param>
 		public static void CreateLogFile(string logPath)
 		{
-			if (logWriter != null)
-				logWriter.Close();
+			logWriter?.Close();
 
 			LogFilePath = $"{logPath}.txt";
 
@@ -70,7 +69,7 @@ namespace Advocate.Logging
 		/// <param name="completionPercent"></param>
 		public static void Debug(string message, float? completionPercent = null)
 		{
-			LogReceived?.Invoke(null, new LogMessageEventArgs(message, MessageType.Debug) { ConversionPercent = completionPercent });
+			LogReceived?.Invoke(null, new LogMessageEventArgs(message, MessageType.Debug) { Progress = completionPercent });
 		}
 
 		/// <summary>
@@ -81,7 +80,7 @@ namespace Advocate.Logging
 		/// <param name="completionPercent"></param>
 		public static void Info(string message, float? completionPercent = null)
 		{
-			LogReceived?.Invoke(null, new LogMessageEventArgs(message, MessageType.Info) { ConversionPercent = completionPercent });
+			LogReceived?.Invoke(null, new LogMessageEventArgs(message, MessageType.Info) { Progress = completionPercent });
 		}
 
 		/// <summary>
@@ -92,7 +91,7 @@ namespace Advocate.Logging
 		/// <param name="completionPercent"></param>
 		public static void Completion(string message, float? completionPercent = null)
 		{
-			LogReceived?.Invoke(null, new LogMessageEventArgs(message, MessageType.Completion) { ConversionPercent = completionPercent });
+			LogReceived?.Invoke(null, new LogMessageEventArgs(message, MessageType.Completion) { Progress = completionPercent });
 		}
 
 		/// <summary>
@@ -103,7 +102,7 @@ namespace Advocate.Logging
 		/// <param name="completionPercent"></param>
 		public static void Error(string message, float? completionPercent = null)
 		{
-			LogReceived?.Invoke(null, new LogMessageEventArgs(message, MessageType.Error) { ConversionPercent = completionPercent });
+			LogReceived?.Invoke(null, new LogMessageEventArgs(message, MessageType.Error) { Progress = completionPercent });
 		}
 	}
 }

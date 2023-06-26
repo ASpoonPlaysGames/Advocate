@@ -21,23 +21,23 @@ namespace Advocate.Logging
 		/// <summary>
 		///     <para>Default message type.</para>
 		///     <para>For general purpose messages to the user in gui and console.</para>
-		///     Shown in gui. See <see cref="MainWindow.HandleConversionMessage"/> for implementation.
+		///     Shown in gui.
 		/// </summary>
 		Info,
 		/// <summary>
-		///     <para>Indicates that the skin conversion is complete.</para>
-		///     Shown in gui. See <see cref="MainWindow.HandleConversionMessage"/> for implementation.
+		///     <para>Indicates that the current process is complete.</para>
+		///     Shown in gui.
 		/// </summary>
 		Completion,
 		/// <summary>
-		///     <para>Indicates an error during skin conversion.</para>
-		///     Shown in gui. See <see cref="MainWindow.HandleConversionMessage"/> for implementation.
+		///     <para>Indicates an error during the current process.</para>
+		///     Shown in gui.
 		/// </summary>
 		Error
 	}
 
 	/// <summary>
-	///     Holds information about a conversion message,
+	///     Holds information about the current process,
 	///     used for logging to the console and updating the gui.
 	/// </summary>
 	public class LogMessageEventArgs : EventArgs
@@ -54,12 +54,12 @@ namespace Advocate.Logging
 		public MessageType Type { get; }
 
 		/// <summary>
-		///     How complete the conversion is, represented by a percentage.
+		///     How complete the current process is, represented by a percentage.
 		/// </summary>
 		/// <value>
 		///     A float value between 0 and 100 (inclusive), or null to signify no change.
 		/// </value>
-		public float? ConversionPercent { get; init; }
+		public float? Progress { get; init; }
 
 		/// <summary>
 		///     Basic constructor for <see cref="LogMessageEventArgs"/>
