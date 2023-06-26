@@ -1808,7 +1808,6 @@
     "height": 1024,
     "textures": [
       "col",
-      "gls",
       "spc",
       "opa"
     ]
@@ -1822,7 +1821,6 @@
     "height": 1024,
     "textures": [
       "col",
-      "gls",
       "spc",
       "opa"
     ]
@@ -1836,7 +1834,6 @@
     "height": 1024,
     "textures": [
       "col",
-      "gls",
       "spc",
       "opa"
     ]
@@ -2339,7 +2336,7 @@
     "chassis": "Legion",
     "assetPathPrefix": "texture\\models\\titans_r2\\heavy_legion\\nose_art\\nose_art_v11\\t_h_legion_nose_art_v11",
     "previewPathPrefix": "NoseArts/Legion/11",
-    "name": "Arachnophobia",
+    "name": "Imaginary Friend",
     "width": 1024,
     "height": 1024,
     "textures": [
