@@ -6,7 +6,7 @@ This tool's main purpose is to aid skin creators in transitioning towards using 
 
 ## Setup
 
-1. Download [RePak](https://github.com/r-ex/RePak/releases)
+1. Download [RePak.exe](https://github.com/r-ex/RePak/releases)
 2. Download [texconv.exe](https://github.com/microsoft/DirectXTex/releases/latest)
 3. Download and run [Advocate](https://github.com/ASpoonPlaysGames/Advocate/releases/latest)
 4. Open the Settings in Advocate
