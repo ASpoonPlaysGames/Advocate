@@ -851,5 +851,413 @@
       "spc",
       "opa"
     ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v00\\t_l_northstar_nose_art_v00",
+    "previewPathPrefix": "NoseArts/Northstar/00",
+    "name": "Factory Issue",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v01\\t_l_northstar_nose_art_v01",
+    "previewPathPrefix": "NoseArts/Northstar/01",
+    "name": "Cherub Core",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v02\\t_l_northstar_nose_art_v02",
+    "previewPathPrefix": "NoseArts/Northstar/02",
+    "name": "So Below",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v03\\t_l_northstar_nose_art_v03",
+    "previewPathPrefix": "NoseArts/Northstar/03",
+    "name": "Evil Intentions",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v04\\t_l_northstar_nose_art_v04",
+    "previewPathPrefix": "NoseArts/Northstar/04",
+    "name": "Eye in the SKy",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v05\\t_l_northstar_nose_art_v05",
+    "previewPathPrefix": "NoseArts/Northstar/05",
+    "name": "Project Monarch",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v06\\t_l_northstar_nose_art_v06",
+    "previewPathPrefix": "NoseArts/Northstar/06",
+    "name": "Queen Bee",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v07\\t_l_northstar_nose_art_v07",
+    "previewPathPrefix": "NoseArts/Northstar/07",
+    "name": "Thunderbird",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v08\\t_l_northstar_nose_art_v08",
+    "previewPathPrefix": "NoseArts/Northstar/08",
+    "name": "Scorned",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v09\\t_l_northstar_nose_art_v09",
+    "previewPathPrefix": "NoseArts/Northstar/09",
+    "name": "Bloodthirsty",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v10\\t_l_northstar_nose_art_v10",
+    "previewPathPrefix": "NoseArts/Northstar/10",
+    "name": "Apex Predator",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v11\\t_l_northstar_nose_art_v11",
+    "previewPathPrefix": "NoseArts/Northstar/11",
+    "name": "Guardian Angel",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v12\\t_l_northstar_nose_art_v12",
+    "previewPathPrefix": "NoseArts/Northstar/12",
+    "name": "Redline",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v13\\t_l_northstar_nose_art_v13",
+    "previewPathPrefix": "NoseArts/Northstar/13",
+    "name": "MCOR Northstar",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v14\\t_l_northstar_nose_art_v14",
+    "previewPathPrefix": "NoseArts/Northstar/14",
+    "name": "Post Apocalyptic",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v18\\t_l_northstar_nose_art_v18",
+    "previewPathPrefix": "NoseArts/Northstar/18",
+    "name": "Nectar and Ambrosia",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v19\\t_l_northstar_nose_art_v19",
+    "previewPathPrefix": "NoseArts/Northstar/19",
+    "name": "Aerial Bombardment",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v20\\t_l_northstar_nose_art_v20",
+    "previewPathPrefix": "NoseArts/Northstar/20",
+    "name": "Space Northstar!",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v21\\t_l_northstar_nose_art_v21",
+    "previewPathPrefix": "NoseArts/Northstar/21",
+    "name": "Bird of Prey",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "gls",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v22\\t_l_northstar_nose_art_v22",
+    "previewPathPrefix": "NoseArts/Northstar/22",
+    "name": "Northstar's Finish",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v23\\t_l_northstar_nose_art_v23",
+    "previewPathPrefix": "NoseArts/Northstar/23",
+    "name": "Bloomtown",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v24\\t_l_northstar_nose_art_v24",
+    "previewPathPrefix": "NoseArts/Northstar/24",
+    "name": "Psyche Out",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v25\\t_l_northstar_nose_art_v25",
+    "previewPathPrefix": "NoseArts/Northstar/25",
+    "name": "Rabid",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v26\\t_l_northstar_nose_art_v26",
+    "previewPathPrefix": "NoseArts/Northstar/26",
+    "name": "Face of Death",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v27\\t_l_northstar_nose_art_v27",
+    "previewPathPrefix": "NoseArts/Northstar/27",
+    "name": "Kill Frenzy",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v28\\t_l_northstar_nose_art_v28",
+    "previewPathPrefix": "NoseArts/Northstar/28",
+    "name": "Face your Fear",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v29\\t_l_northstar_nose_art_v29",
+    "previewPathPrefix": "NoseArts/Northstar/29",
+    "name": "Smokin' Rabbit",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v30\\t_l_northstar_nose_art_v30",
+    "previewPathPrefix": "NoseArts/Northstar/30",
+    "name": "Grimpoteuthis",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v31\\t_l_northstar_nose_art_v31",
+    "previewPathPrefix": "NoseArts/Northstar/31",
+    "name": "Eye Holes",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
+  },
+  {
+    "chassis": "Northstar",
+    "assetPathPrefix": "texture\\models\\titans_r2\\light_northstar\\nose_art\\nose_art_v32\\t_l_northstar_nose_art_v32",
+    "previewPathPrefix": "NoseArts/Northstar/32",
+    "name": "Visually Impared",
+    "width": 1024,
+    "height": 1024,
+    "textures": [
+      "col",
+      "spc",
+      "opa"
+    ]
   }
 ]
