@@ -468,11 +468,6 @@ namespace Advocate.Scripts.Conversion
 				//////////////////////////
 				// create manifest.json //
 				//////////////////////////
-				ConvertTaskComplete();
-
-				//////////////////////////
-				// create manifest.json //
-				//////////////////////////
 
 				// set the message for the new conversion step
 				Info("Writing manifest.json...");
@@ -495,11 +490,6 @@ namespace Advocate.Scripts.Conversion
 				};
 
 				File.WriteAllText($"{modTempFolderPath}/manifest.json", JsonSerializer.Serialize(manifest, jsonOptions));
-
-				// move progress bar
-				ConvertTaskComplete();
-
-				/////////////////////
 
 				// move progress bar
 				ConvertTaskComplete();
