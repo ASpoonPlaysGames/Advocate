@@ -192,7 +192,7 @@ namespace Advocate.Scripts.DDS
 			proc.StartInfo.UseShellExecute = false;
 			proc.StartInfo.CreateNoWindow = true;
 			proc.StartInfo.FileName = texconvPath;
-			proc.StartInfo.Arguments = $"-f {format} -nologo -m 0 -bc d -o {temp3} -y {temp2}\\{temp}";
+			proc.StartInfo.Arguments = $"-f {format} -nologo -m 0 -bc d -o \"{temp3}\" -y \"{temp2}\\{temp}\"";
 			proc.Start();
 			proc.BeginOutputReadLine();
 			proc.BeginErrorReadLine();
