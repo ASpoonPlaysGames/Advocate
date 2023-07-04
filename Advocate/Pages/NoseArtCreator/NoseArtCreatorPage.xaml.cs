@@ -298,11 +298,12 @@ namespace Advocate.Pages.NoseArtCreator
 
 			if (!selectedNoseArt.Textures.Contains("opa"))
 			{
-				BitmapImage image = new(colUri);
+				BitmapSource image = new BitmapImage(colUri);
 
 				if (!IsValidNoseArtDimensions(image.PixelWidth, image.PixelHeight))
 				{
-					return;
+					// scale the image
+					image = new TransformedBitmap(image, new ScaleTransform(selectedNoseArt.Width / image.PixelWidth, selectedNoseArt.Height / image.PixelHeight));
 				}
 
 				ImagePreview.Dispatcher.Invoke(() =>
@@ -342,7 +343,7 @@ namespace Advocate.Pages.NoseArtCreator
 
 			if (!IsValidNoseArtDimensions(imageBmp.Width, imageBmp.Height))
 			{
-				return;
+				imageBmp = new(imageBmp, new(selectedNoseArt.Width, selectedNoseArt.Height));
 			}
 
 			Uri maskUri = ImageSelector_opa.Dispatcher.Invoke(() => { return ImageSelector_opa.Uri; });
@@ -375,7 +376,7 @@ namespace Advocate.Pages.NoseArtCreator
 
 			if (!IsValidNoseArtDimensions(maskBmp.Width, maskBmp.Height))
 			{
-				return;
+				maskBmp = new(maskBmp, new(selectedNoseArt.Width, selectedNoseArt.Height));
 			}
 
 			imageBmp = ApplyMask(imageBmp, maskBmp);

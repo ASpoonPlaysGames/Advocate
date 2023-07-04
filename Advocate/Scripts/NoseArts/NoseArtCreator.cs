@@ -268,6 +268,7 @@ namespace Advocate.Scripts.NoseArts
 					// however, I get the benefit of people being able to input any size image because i can resize pngs easily
 					// If people input dds files this means it gets converted to png and then back to dds, not ideal.
 					// todo: look into figuring out if an image is a dds image, (with the right size) and skip this step if so
+					imageBmp = new(imageBmp, new(NoseArt.Width, NoseArt.Height));
 					imageBmp.Save($"{tempTexConvPath}\\{textureType}.png", System.Drawing.Imaging.ImageFormat.Png);
 
 					// use the col texture as the mod's icon (unless an iconpath is specified but this is checked later)
