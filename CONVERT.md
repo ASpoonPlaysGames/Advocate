@@ -2,13 +2,13 @@
 
 # Advocate Skin Converter
 
-This tool's main purpose is to aid skin creators in transitioning towards using rpak-based Northstar mods as the primary way to distribute skins.
+This tool's main purpose is to aid skin creators in transitioning towards using rpak-based Northstar mods as the primary way to distribute skins. It can also be used by players to convert existing skin-tool skins into mods that they can then install.
 
 ## Setup
 
-1. Download [RePak.exe](https://github.com/r-ex/RePak/releases)
+1. Download [RePak.exe](https://github.com/r-ex/RePak/releases/latest)
 2. Download [texconv.exe](https://github.com/microsoft/DirectXTex/releases/latest)
-3. Download and run [Advocate](https://github.com/ASpoonPlaysGames/Advocate/releases/latest)
+3. Download and run [Advocate.exe](https://github.com/ASpoonPlaysGames/Advocate/releases/latest)
 4. Open the Settings in Advocate
 
 5. Set the RePak Path so that it points to RePak.exe
