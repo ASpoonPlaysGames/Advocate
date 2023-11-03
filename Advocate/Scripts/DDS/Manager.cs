@@ -175,6 +175,7 @@ namespace Advocate.Scripts.DDS
 				{
 					"BC4U" => "BC4_UNORM",
 					"BC5U" => "BC5_UNORM",
+					"ATI1" => "BC4_UNORM",
 					"ATI2" => "BC5_UNORM",
 					_ => lastHeader.FourCC
 				};
