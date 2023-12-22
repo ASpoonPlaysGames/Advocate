@@ -506,7 +506,7 @@ namespace Advocate.Scripts.NoseArts
 				Info("Moving zip to output folder...");
 
 				// move the zip file we created to the output folder
-				File.Move($"{tempFolderPath}/{AuthorName}.{ModName}.zip", $"{outputPath}/{AuthorName}.{ModName}-{Version}.zip", true);
+				File.Move($"{tempFolderPath}/{AuthorName}.{ModName}.zip", $"{outputPath}/{AuthorName}-{AuthorName}_{ModName}-{Version}.zip", true);
 			}
 			catch (Exception ex) when (!nogui)
 			{

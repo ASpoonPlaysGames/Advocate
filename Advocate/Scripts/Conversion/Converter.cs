@@ -535,7 +535,7 @@ namespace Advocate.Scripts.Conversion
 				Info("Moving zip to output folder...");
 
 				// move the zip file we created to the output folder
-				File.Move($"{tempFolderPath}/{AuthorName}.{SkinName}.zip", $"{outputPath}/{AuthorName}.{SkinName}-{Version}.zip", true);
+				File.Move($"{tempFolderPath}/{AuthorName}.{SkinName}.zip", $"{outputPath}/{AuthorName}-{AuthorName}_{SkinName}-{Version}.zip", true);
 
 				// move progress bar
 				ConvertTaskComplete();
