@@ -609,6 +609,7 @@ namespace Advocate.Scripts.Conversion
 			{ "SwordPuls_Default", "texture\\models\\weapons_r2\\titan_prime_sword\\titan_prime_sword_01" }, // copied from PrimeSword since an old skin named it this way before skin tool support
 			{ "LeadWall_Default", "texture\\models\\Weapons_R2\\titan_triple_threat\\triple_threat" },
 			{ "PlasmaRailgun_Default", "texture\\models\\Weapons_R2\\titan_plasma_railgun\\plasma_railgun" },
+			{ "PredatorCannon_Default", "texture\\models\\weapons\\predator_titan\\predator_titan" },
 			{ "SplitterRifle_Default", "texture\\models\\weapons\\titan_particle_accelerator\\titan_particle_accelerator" },
 			{ "ThermiteLauncher_Default", "texture\\models\\Weapons_R2\\titan_thermite_launcher\\thermite_launcher" },
 			{ "TrackerCannon_Default", "texture\\models\\Weapons_R2\\titan_40mm\\titan_40mm" },
