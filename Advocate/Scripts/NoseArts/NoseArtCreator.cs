@@ -4,17 +4,11 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media.Media3D;
-using System.Windows.Media.TextFormatting;
 using Advocate.Logging;
 using Advocate.Models.JSON;
-using static System.Windows.Forms.DataFormats;
 
 namespace Advocate.Scripts.NoseArts
 {
@@ -376,13 +370,10 @@ namespace Advocate.Scripts.NoseArts
 
 				Info("Writing rpak.json");
 
-				// we can just preload our rpak, since it should only contain textures
-				RPak rpak = new()
-				{
-					Preload = new() { { $"{ModName}.rpak", true } }
-				};
+				// load our rpak on any map
+				Dictionary<string, string> rpakJson = new() { { $"{ModName}.rpak", ".*" } };
 
-				File.WriteAllText($"{tempModPath}/mods/{AuthorName}.{ModName}/paks/rpak.json", JsonSerializer.Serialize(rpak, jsonOptions));
+				File.WriteAllText($"{tempModPath}/mods/{AuthorName}.{ModName}/paks/rpak.json", JsonSerializer.Serialize(rpakJson, jsonOptions));
 
 				// move progress bar
 				ConvertTaskComplete();
