@@ -6,8 +6,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using Advocate.Logging;
 using Advocate.Scripts.Conversion;
 using Pfim;
@@ -32,27 +30,41 @@ namespace Advocate.Scripts.DDS
 
 		private Header lastHeader;
 
-		public void LoadImage(BinaryReader reader)
+		// this return value is dumb, todo: better error propogation
+		public string LoadImage(BinaryReader reader)
 		{
 			// load the header
 			Header hdr = new(reader);
-			// override lastHeader if this dds is higher resolution (should make my life easier)
 
+			// override lastHeader if this dds is higher resolution (should make my life easier)
 			if (lastHeader == null || hdr.Width * hdr.Height >= lastHeader.Width * lastHeader.Height)
 				lastHeader = hdr;
 
-			// if the fourCC does not match up, skip this image
+			// if the fourCC does not match up, skip this image but don't error
 			if (lastHeader.FourCC != hdr.FourCC)
 			{
 				Logger.Debug($"fourCC ({hdr.FourCC}) for added image does not match existing images ({lastHeader.FourCC})");
-				return;
+				return String.Empty;
 			}
-			// if the DXGI format does not match up, also skip this image
+			// if the DXGI format does not match up, skip this image
 			if (lastHeader.isDX10 == hdr.isDX10 && lastHeader.DXGIFormat != hdr.DXGIFormat)
 			{
 				Logger.Debug($"{lastHeader.isDX10} != {hdr.isDX10} or {lastHeader.DXGIFormat} == {hdr.DXGIFormat}");
 				Logger.Debug($"DXGI format for added image ({hdr.DXGIFormat}) does not match existing images ({lastHeader.DXGIFormat})");
-				return;
+				return String.Empty;
+			}
+
+			// if the image dimensions are not 1:1, 2:1, or 1:2, error
+			float aspectRatio = (float)hdr.Width / (float)hdr.Height;
+			if (aspectRatio != 1 && aspectRatio != 0.5 && aspectRatio != 2.0)
+			{
+				return $"Invalid image aspect ratio, valid aspect ratios: 1:1, 1:2, 2:1";
+			}
+			
+			// if the image dimensions are not powers of 2, error
+			if (Math.Sqrt(hdr.Width) % 1 == 0 || Math.Sqrt(hdr.Height) % 1 == 0)
+			{
+				return $"Invalid image dimensions {hdr.Width}x{hdr.Height}, dimensions must be powers of 2";
 			}
 
 			// read the image data into mipmaps dictionary
@@ -77,6 +89,8 @@ namespace Advocate.Scripts.DDS
 					Logger.Debug($"Found mip level:\n Width: {width} Height: {height}");
 				}
 			}
+
+			return String.Empty;
 		}
 
 		public void SaveImage(BinaryWriter writer)

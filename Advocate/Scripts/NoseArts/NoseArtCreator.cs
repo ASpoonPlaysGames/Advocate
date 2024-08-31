@@ -66,7 +66,7 @@ namespace Advocate.Scripts.NoseArts
 		/// <value>
 		///     <para>A Bitmap of the nose art's icon, must be 256x256.</para>
 		///     <para>Generated from the _col texture
-		///     if null when <see cref="Convert(string, string, string, string, bool)"/> is called.</para>
+		///     if null when <see cref="CreateNoseArt(string, string, string, string, bool)"/> is called.</para>
 		/// </value>
 		public string? IconPath { get; private set; }
 

@@ -10,13 +10,15 @@
     <RepositoryUrl>https://github.com/ASpoonPlaysGames/Advocate</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
 
-	  <PublishSingleFile Condition="'$(Configuration)' == 'Release'">true</PublishSingleFile>
-	<SelfContained>true</SelfContained>
-	<RuntimeIdentifier>win-x86</RuntimeIdentifier>
-	<PublishReadyToRun>true</PublishReadyToRun>
-	<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
-	<GenerateDocumentationFile>True</GenerateDocumentationFile>
-	<DocumentationFile></DocumentationFile>
+    <PublishSingleFile Condition="'$(Configuration)' == 'Release'">true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile></DocumentationFile>
+    <DeterministicSourcePaths>true</DeterministicSourcePaths>
+    <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=./</PathMap>
   </PropertyGroup>
 
   <ItemGroup>

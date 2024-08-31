@@ -97,7 +97,7 @@ namespace Advocate.Pages.Converter
 
 		/// <summary>
 		///     The file path of the skin's icon.png file.
-		///     This field is optional, and a .png file will be generated during <see cref="Scripts.Conversion.Converter.Convert(string, string, string, bool)"/>
+		///     This field is optional, and a .png file will be generated during <see cref="Scripts.Conversion.Converter.Convert(string, string, string, string, bool)"/>
 		/// </summary>
 		/// <value>
 		///     A fully qualified file path, leading to a .png file, or 

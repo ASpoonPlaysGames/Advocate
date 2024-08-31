@@ -2,20 +2,16 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using Advocate.Logging;
 using Advocate.Models.JSON;
 using Advocate.Scripts.DDS;
-using Pfim;
+using HandyControl.Tools.Extension;
 
 namespace Advocate.Scripts.Conversion
 {
@@ -356,8 +352,13 @@ namespace Advocate.Scripts.Conversion
 					// read the dds file into the Manager
 					Debug($"Adding new image for texture type '{filename}' from path '{path}'");
 					BinaryReader reader = new(new FileStream(path, FileMode.Open));
-					ddsManagers[filename].LoadImage(reader);
+					string loadError = ddsManagers[filename].LoadImage(reader);
 					reader.Close();
+					if (!loadError.IsNullOrEmpty())
+					{
+						Error($"({filename}) {loadError}");
+						return false;
+					}
 
 					// add texture to skinTypes for tracking which skins are in the package
 					string type = Path.GetFileNameWithoutExtension(path).Split("_")[0];
@@ -379,7 +380,7 @@ namespace Advocate.Scripts.Conversion
 					}
 					string filePath = $"{repakTempFolderPath}/assets/{texturePath}.dds";
 					// writer doesnt create directories, so do it beforehand
-					Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+					Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
 
 					Debug($"Saving texture (with {pair.Value.MipMapCount} mips) to path '{filePath}'");
 
