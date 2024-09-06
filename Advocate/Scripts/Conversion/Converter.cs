@@ -729,7 +729,7 @@ namespace Advocate.Scripts.Conversion
 			{ "PhaseShift_viewhand", "texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_vh_v1_skn01" },
 			{ "PhaseShift_viewhands", "texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_vh_v1_skn01" },
 			{ "PhaseShift_jumpkit", "texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_j_v1_skn01" },
-			{ "PhaseShift_helmet", "texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_g_v1_skn01" },
+			{ "PhaseShift_helmet", "texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_he_v1_skn01_col" },
 			{ "PhaseShift_hair", "texture\\models\\humans\\titanpilot_gsuits\\pilot_light_ged\\p_l_ged_male_alpha_v1_skn01" },
 			// stim
 			{ "Stim_fbody", "texture\\models\\humans\\titanpilot_gsuits\\pilot_light_jester\\pilot_lit_jester_f_body" },
