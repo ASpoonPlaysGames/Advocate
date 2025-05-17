@@ -321,7 +321,7 @@ namespace Advocate.Scripts.NoseArts
 
 				Info("Writing Map file");
 
-				Map map = new(ModName, tempRePakPath, $"{tempModPath}/mods/{AuthorName}.{ModName}/paks");
+				Map map = new(ModName, $"{tempRePakPath}/", $"{tempModPath}/mods/{AuthorName}.{ModName}/paks/");
 
 				Directory.CreateDirectory($"{tempModPath}/mods/{AuthorName}.{ModName}/paks");
 
