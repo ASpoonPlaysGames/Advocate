@@ -374,7 +374,7 @@ internal class Converter
 				}
 				string filePath = $"{repakTempFolderPath}/assets/{texturePath}.dds";
 				// writer doesnt create directories, so do it beforehand
-				Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+				Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
 
 				Debug($"Saving texture (with {pair.Value.MipMapCount} mips) to path '{filePath}'");
 
