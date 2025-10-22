@@ -41,10 +41,6 @@ internal class Map
 
 	public void AddTextureAsset(string path, bool disableStreaming = false)
 	{
-		// trim texture/ from all txtr paths since repak prepends with it now, just to be safe
-		const string texturePrepend = "texture/";
-		path = path.StartsWith(texturePrepend) ? path[texturePrepend.Length..] : path;
-
 		TextureAsset asset = new() { Path = Path.ChangeExtension(path, ".rpak"), DisableStreaming = disableStreaming };
 		Files.Add(asset);
 	}
