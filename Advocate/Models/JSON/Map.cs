@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Text.Json.Serialization;
 
 namespace Advocate.Models.JSON;
@@ -44,7 +45,7 @@ internal class Map
 		const string texturePrepend = "texture/";
 		path = path.StartsWith(texturePrepend) ? path[texturePrepend.Length..] : path;
 
-		TextureAsset asset = new() { Path = path, DisableStreaming = disableStreaming };
+		TextureAsset asset = new() { Path = Path.ChangeExtension(path, ".rpak"), DisableStreaming = disableStreaming };
 		Files.Add(asset);
 	}
 }
